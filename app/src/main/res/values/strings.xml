@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">CalorieTracker</string>
+    <string name="set_calorie_goal_title">Calorie goal</string>
+    <string name="macro_split_high_carb_name">High carb</string>
+    <string name="macro_split_balanced_name">Balanced</string>
+    <string name="macro_split_high_fat_name">High fat</string>
+    <string name="macro_split_very_high_fat_name">Very high fat</string>
+    <string name="choose_macro_split_hint">Choose your macro split</string>
+    <string name="choose_macro_split_carbohydrates_title">Carbohydrates</string>
+    <string name="choose_macro_split_protein_title">Protein</string>
+    <string name="choose_macro_split_fat_title">Fat</string>
+    <string name="tdee_input_placeholder">Enter a custom TDEE</string>
+    <string name="home_screen_title">Home</string>
+    <string name="set_new_calorie_goal_button">Set new calorie goal</string>
+</resources>
