@@ -23,9 +23,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import com.dominikgold.calorietracker.R
-import com.dominikgold.calorietracker.entities.CalorieGoal
 import com.dominikgold.calorietracker.entities.MacroSplit
-import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
 import com.dominikgold.calorietracker.theming.textColorDefault
 import com.dominikgold.calorietracker.theming.textColorSubtitle
 import com.dominikgold.calorietracker.util.Translated
