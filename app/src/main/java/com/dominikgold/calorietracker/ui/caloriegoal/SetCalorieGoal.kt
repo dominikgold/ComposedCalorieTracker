@@ -29,6 +29,21 @@ import com.dominikgold.calorietracker.util.Translated
 fun SetCalorieGoalScreen() {
     val viewModel: SetCalorieGoalViewModel = viewModel()
     val uiModelState = viewModel.uiModelState.collectAsState()
+    SetCalorieGoalContent(
+        uiModel = uiModelState.value,
+        onTdeeChanged = viewModel::updateTdee,
+        onMacroSplitChosen = viewModel::updateMacroSplit,
+        onSaveButtonClicked = viewModel::saveCalorieGoal,
+    )
+}
+
+@Composable
+private fun SetCalorieGoalContent(
+    uiModel: SetCalorieGoalUiModel,
+    onTdeeChanged: (Int?) -> Unit,
+    onMacroSplitChosen: (MacroSplit) -> Unit,
+    onSaveButtonClicked: () -> Unit,
+) {
     Scaffold(topBar = {
         CalorieTrackerTopBar(
             title = Translated(R.string.set_calorie_goal_title),
@@ -36,22 +51,18 @@ fun SetCalorieGoalScreen() {
             actions = {
                 TopBarActionTextButton(
                     text = Translated(R.string.top_bar_action_save),
-                    enabled = uiModelState.value.isSaveButtonEnabled,
-                    onClick = viewModel::saveCalorieGoal,
+                    enabled = uiModel.isSaveButtonEnabled,
+                    onClick = onSaveButtonClicked,
                 )
             },
         )
     }) {
-        SetCalorieGoalContent(
-            uiModel = uiModelState.value,
-            onTdeeChanged = viewModel::updateTdee,
-            onMacroSplitChosen = viewModel::updateMacroSplit,
-        )
+        SetCalorieGoalBody(uiModel, onTdeeChanged, onMacroSplitChosen)
     }
 }
 
 @Composable
-fun SetCalorieGoalContent(
+private fun SetCalorieGoalBody(
     uiModel: SetCalorieGoalUiModel,
     onTdeeChanged: (Int?) -> Unit,
     onMacroSplitChosen: (MacroSplit) -> Unit,
@@ -81,6 +92,6 @@ fun SetCalorieGoalContent(
 @Preview(showBackground = true)
 fun SetCalorieGoalContentPreview() {
     CalorieTrackerTheme {
-        SetCalorieGoalContent(SetCalorieGoalUiModel(null, null, false), {}, {})
+        SetCalorieGoalContent(SetCalorieGoalUiModel(null, null, false), {}, {}, {})
     }
 }

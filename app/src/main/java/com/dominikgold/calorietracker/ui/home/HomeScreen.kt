@@ -1,8 +1,7 @@
 package com.dominikgold.calorietracker.ui.home
 
-import androidx.compose.foundation.Box
 import androidx.compose.foundation.Text
-import androidx.compose.foundation.layout.Stack
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
@@ -28,7 +27,7 @@ fun HomeScreen() {
 
 @Composable
 fun HomeScreenContent(onSetCalorieGoalClicked: () -> Unit) {
-    Stack(Modifier.fillMaxSize()) {
+    Box(Modifier.fillMaxSize()) {
         Box(Modifier.padding(bottom = 32.dp).align(Alignment.BottomCenter)) {
             Button(onClick = onSetCalorieGoalClicked) {
                 Text(text = Translated(resourceId = R.string.set_new_calorie_goal_button))

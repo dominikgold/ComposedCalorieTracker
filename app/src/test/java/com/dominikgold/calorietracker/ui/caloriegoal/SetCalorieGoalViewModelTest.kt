@@ -1,24 +1,29 @@
 package com.dominikgold.calorietracker.ui.caloriegoal
 
+import com.dominikgold.calorietracker.entities.CalorieGoal
 import com.dominikgold.calorietracker.entities.MacroSplit
 import com.dominikgold.calorietracker.usecases.caloriegoal.SetCalorieGoalUseCase
-import org.amshove.kluent.mock
+import com.nhaarman.mockitokotlin2.verify
 import org.amshove.kluent.shouldBe
+import org.amshove.kluent.shouldNotThrow
+import org.amshove.kluent.shouldThrow
 import org.junit.Before
-
-import org.junit.Assert.*
 import org.junit.Test
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations
 
 class SetCalorieGoalViewModelTest {
 
+    @Mock
     private lateinit var setCalorieGoalUseCase: SetCalorieGoalUseCase
 
+    @InjectMocks
     private lateinit var viewModel: SetCalorieGoalViewModel
 
     @Before
     fun setUp() {
-        setCalorieGoalUseCase = mock()
-        viewModel = SetCalorieGoalViewModel(setCalorieGoalUseCase)
+        MockitoAnnotations.initMocks(this)
     }
 
     @Test
@@ -36,6 +41,34 @@ class SetCalorieGoalViewModelTest {
 
         viewModel.updateTdee(2000)
         viewModel.uiModelState.value.isSaveButtonEnabled shouldBe true
+    }
+
+    @Test
+    fun `saving the calorie goal fails if tdee or macro split is not set`() {
+        val withoutEither = { viewModel.saveCalorieGoal() }
+        withoutEither shouldThrow Exception::class
+
+        viewModel.updateTdee(2000)
+        val withoutMacroSplit = { viewModel.saveCalorieGoal() }
+        withoutMacroSplit shouldThrow Exception::class
+
+        viewModel.updateMacroSplit(MacroSplit.BALANCED)
+        val withBoth = { viewModel.saveCalorieGoal() }
+        withBoth shouldNotThrow Exception::class
+
+        viewModel.updateTdee(null)
+        val withoutTdee = { viewModel.saveCalorieGoal() }
+        withoutTdee shouldThrow Exception::class
+    }
+
+    @Test
+    fun `saving the calorie goal is delegated to the use case`() {
+        viewModel.updateTdee(2000)
+        viewModel.updateMacroSplit(MacroSplit.BALANCED)
+
+        viewModel.saveCalorieGoal()
+
+        verify(setCalorieGoalUseCase).setCalorieGoal(CalorieGoal.createWithMacroSplit(2000, MacroSplit.BALANCED))
     }
 
 }

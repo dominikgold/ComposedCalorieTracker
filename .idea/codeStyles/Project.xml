@@ -145,7 +145,7 @@
       <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="1" />
       <option name="BLANK_LINES_AFTER_CLASS_HEADER" value="1" />
       <option name="ALIGN_MULTILINE_PARAMETERS_IN_CALLS" value="true" />
-      <option name="METHOD_CALL_CHAIN_WRAP" value="2" />
+      <option name="METHOD_CALL_CHAIN_WRAP" value="5" />
     </codeStyleSettings>
   </code_scheme>
 </component>

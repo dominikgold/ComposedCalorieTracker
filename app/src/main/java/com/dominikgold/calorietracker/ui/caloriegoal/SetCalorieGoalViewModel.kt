@@ -20,17 +20,23 @@ class SetCalorieGoalViewModel(private val setCalorieGoalUseCase: SetCalorieGoalU
     fun saveCalorieGoal() {
         val tdee = uiModelState.value.tdeeInput
         val macroSplit = chosenMacroSplit
-        require(tdee != null && macroSplit != null)
+        require(tdee != null && macroSplit != null) { "Tdee or macro split are not set when saving calorie goal" }
         setCalorieGoalUseCase.setCalorieGoal(CalorieGoal.createWithMacroSplit(tdee, macroSplit))
     }
 
     fun updateTdee(tdee: Int?) {
-        _uiModelState.value = _uiModelState.value.copy(tdeeInput = tdee)
+        _uiModelState.value = _uiModelState.value.copy(
+            tdeeInput = tdee,
+            isSaveButtonEnabled = tdee != null && chosenMacroSplit != null,
+        )
     }
 
     fun updateMacroSplit(macroSplit: MacroSplit) {
         this.chosenMacroSplit = macroSplit
-        _uiModelState.value = _uiModelState.value.copy(chosenMacroSplit = macroSplit)
+        _uiModelState.value = _uiModelState.value.copy(
+            chosenMacroSplit = macroSplit,
+            isSaveButtonEnabled = _uiModelState.value.tdeeInput != null,
+        )
     }
 
 }
