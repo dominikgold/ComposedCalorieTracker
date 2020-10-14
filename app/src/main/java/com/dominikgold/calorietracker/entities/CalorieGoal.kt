@@ -11,12 +11,12 @@ data class CalorieGoal(
 
     companion object {
 
-        fun createWithMacroPercentages(calories: Int, carbohydrates: Percentage, protein: Percentage, fat: Percentage) =
+        fun createWithMacroSplit(calories: Int, macroSplit: MacroSplit) =
                 CalorieGoal(
                         totalCalories = calories,
-                        carbohydrates = (calories * carbohydrates / 4).roundToInt(),
-                        protein = (calories * protein / 4).roundToInt(),
-                        fat = (calories * fat / 9).roundToInt(),
+                        carbohydrates = (calories * macroSplit.carbohydrates / 4).roundToInt(),
+                        protein = (calories * macroSplit.protein / 4).roundToInt(),
+                        fat = (calories * macroSplit.fat / 9).roundToInt(),
                 )
 
     }

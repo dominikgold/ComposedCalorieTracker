@@ -15,7 +15,7 @@ import androidx.ui.tooling.preview.Preview
 import com.dominikgold.calorietracker.R
 import com.dominikgold.calorietracker.navigation.viewModel
 import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
-import com.dominikgold.calorietracker.ui.CalorieTrackerTopBar
+import com.dominikgold.calorietracker.ui.topbar.CalorieTrackerTopBar
 import com.dominikgold.calorietracker.util.Translated
 
 @Composable

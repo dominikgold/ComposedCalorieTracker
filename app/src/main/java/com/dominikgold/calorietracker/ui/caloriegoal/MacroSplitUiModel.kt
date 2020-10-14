@@ -2,6 +2,7 @@ package com.dominikgold.calorietracker.ui.caloriegoal
 
 import androidx.annotation.StringRes
 import com.dominikgold.calorietracker.R
+import com.dominikgold.calorietracker.entities.CalorieGoal
 import com.dominikgold.calorietracker.entities.MacroSplit
 import kotlin.math.roundToInt
 
@@ -10,9 +11,11 @@ data class MacroSplitUiModel(private val macroSplit: MacroSplit, private val tde
     @StringRes
     val name = macroSplit.translatableName
 
-    val formattedProteinAmount = "${(tdee * macroSplit.protein / 4).roundToInt()} g"
-    val formattedCarbohydratesAmount = "${(tdee * macroSplit.carbohydrates / 4).roundToInt()} g"
-    val formattedFatAmount = "${(tdee * macroSplit.fat / 9).roundToInt()} g"
+    private val calorieGoal = CalorieGoal.createWithMacroSplit(tdee, macroSplit)
+
+    val formattedProteinAmount = "${calorieGoal.protein} g"
+    val formattedCarbohydratesAmount = "${calorieGoal.carbohydrates} g"
+    val formattedFatAmount = "${calorieGoal.fat} g"
 
 }
 

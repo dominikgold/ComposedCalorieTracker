@@ -11,14 +11,21 @@ interface NavigationStateContainer {
 
     val viewModelContainer: ViewModelContainer
 
+    fun goBack()
+
     fun switchScreen(to: Screen)
 
 }
 
 @Singleton
-class DefaultNavigationStateContainer @Inject constructor(override val viewModelContainer: ViewModelContainer) : NavigationStateContainer {
+class DefaultNavigationStateContainer @Inject constructor(override val viewModelContainer: ViewModelContainer) :
+    NavigationStateContainer {
 
     override val currentScreen = MutableStateFlow<Screen>(Screen.Home)
+
+    override fun goBack() {
+        TODO("Not yet implemented")
+    }
 
     override fun switchScreen(to: Screen) {
         viewModelContainer.release()

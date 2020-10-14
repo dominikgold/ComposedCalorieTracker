@@ -14,6 +14,9 @@ val textColorDefaultNight = Color(0xFFEDEDED)
 val textColorSubtitleDay = Color(0xFF464646)
 val textColorSubtitleNight = Color(0xFFA8A8A8)
 
+val colorTopBarButtonDay = Color(0xFFEDEDED)
+val colorTopBarButtonNight = purple200
+
 @Composable
 val textColorDefault
     get() = if (IsDarkThemeAmbient.current) textColorDefaultNight else textColorDefaultDay
@@ -21,3 +24,7 @@ val textColorDefault
 @Composable
 val textColorSubtitle
     get() = if (IsDarkThemeAmbient.current) textColorSubtitleNight else textColorSubtitleDay
+
+@Composable
+val colorTopBarButton
+    get() = if (IsDarkThemeAmbient.current) colorTopBarButtonNight else colorTopBarButtonDay
