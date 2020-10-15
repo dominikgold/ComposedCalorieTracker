@@ -74,19 +74,19 @@ private fun MacroSplitDropdownItems(onItemSelected: (MacroSplit) -> Unit) {
 @Composable
 private fun ColumnScope.MacroSplitValues(macroSplitUiModel: MacroSplitUiModel?) {
     Row {
-        Text(text = Translated(resourceId = R.string.choose_macro_split_carbohydrates_title), color = textColorDefault)
+        Text(text = Translated(R.string.choose_macro_split_carbohydrates_title), color = textColorDefault)
         Spacer(modifier = Modifier.width(16.dp))
         Text(text = macroSplitUiModel?.formattedCarbohydratesAmount ?: "", color = textColorSubtitle)
     }
     Spacer(modifier = Modifier.height(8.dp))
     Row {
-        Text(text = Translated(resourceId = R.string.choose_macro_split_protein_title), color = textColorDefault)
+        Text(text = Translated(R.string.choose_macro_split_protein_title), color = textColorDefault)
         Spacer(modifier = Modifier.width(16.dp))
         Text(text = macroSplitUiModel?.formattedProteinAmount ?: "", color = textColorSubtitle)
     }
     Spacer(modifier = Modifier.height(8.dp))
     Row {
-        Text(text = Translated(resourceId = R.string.choose_macro_split_fat_title), color = textColorDefault)
+        Text(text = Translated(R.string.choose_macro_split_fat_title), color = textColorDefault)
         Spacer(modifier = Modifier.width(16.dp))
         Text(text = macroSplitUiModel?.formattedFatAmount ?: "", color = textColorSubtitle)
     }

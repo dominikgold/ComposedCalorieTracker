@@ -1,5 +1,6 @@
 package com.dominikgold.calorietracker.repositories
 
+import com.dominikgold.calorietracker.usecases.caloriegoal.CalorieGoalRepository
 import com.dominikgold.calorietracker.usecases.intakeentries.IntakeEntryRepository
 import dagger.Binds
 import dagger.Module
@@ -8,6 +9,9 @@ import dagger.Module
 interface RepositoriesModule {
 
     @Binds
-    fun bindChoreRepository(repository: DefaultIntakeEntryRepository): IntakeEntryRepository
+    fun bindIntakeEntryRepository(repository: DefaultIntakeEntryRepository): IntakeEntryRepository
+
+    @Binds
+    fun bindCalorieGoalRepository(repository: DefaultCalorieGoalRepository): CalorieGoalRepository
 
 }
