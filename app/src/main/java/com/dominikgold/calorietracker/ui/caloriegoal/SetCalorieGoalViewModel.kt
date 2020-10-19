@@ -4,12 +4,16 @@ import com.dominikgold.calorietracker.ViewModel
 import com.dominikgold.calorietracker.di.ViewModelFactory
 import com.dominikgold.calorietracker.entities.CalorieGoal
 import com.dominikgold.calorietracker.entities.MacroSplit
+import com.dominikgold.calorietracker.navigation.Navigator
 import com.dominikgold.calorietracker.usecases.caloriegoal.SetCalorieGoalUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
-class SetCalorieGoalViewModel(private val setCalorieGoalUseCase: SetCalorieGoalUseCase) : ViewModel() {
+class SetCalorieGoalViewModel(
+    private val setCalorieGoalUseCase: SetCalorieGoalUseCase,
+    private val navigator: Navigator,
+) : ViewModel() {
 
     private val _uiModelState = MutableStateFlow(SetCalorieGoalUiModel(null, null, false))
     val uiModelState: StateFlow<SetCalorieGoalUiModel>
@@ -22,6 +26,7 @@ class SetCalorieGoalViewModel(private val setCalorieGoalUseCase: SetCalorieGoalU
         val macroSplit = chosenMacroSplit
         require(tdee != null && macroSplit != null) { "Tdee or macro split are not set when saving calorie goal" }
         setCalorieGoalUseCase.setCalorieGoal(CalorieGoal.createWithMacroSplit(tdee, macroSplit))
+        navigator.goBack()
     }
 
     fun updateTdee(tdee: Int?) {
@@ -41,11 +46,13 @@ class SetCalorieGoalViewModel(private val setCalorieGoalUseCase: SetCalorieGoalU
 
 }
 
-class SetCalorieGoalViewModelFactory @Inject constructor(private val setCalorieGoalUseCase: SetCalorieGoalUseCase) :
-    ViewModelFactory<SetCalorieGoalViewModel, Nothing, Nothing> {
+class SetCalorieGoalViewModelFactory @Inject constructor(
+    private val setCalorieGoalUseCase: SetCalorieGoalUseCase,
+    private val navigator: Navigator,
+) : ViewModelFactory<SetCalorieGoalViewModel, Nothing, Nothing> {
 
     override fun create(savedState: Nothing?, parameters: Nothing?): SetCalorieGoalViewModel {
-        return SetCalorieGoalViewModel(setCalorieGoalUseCase)
+        return SetCalorieGoalViewModel(setCalorieGoalUseCase, navigator)
     }
 
 }

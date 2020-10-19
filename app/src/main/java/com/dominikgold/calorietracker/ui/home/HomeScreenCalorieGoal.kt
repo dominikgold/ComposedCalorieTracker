@@ -34,8 +34,9 @@ fun HomeScreenCalorieGoal(uiModel: CalorieGoalUiModel) {
         Text(
             text = Translated(R.string.home_screen_calories_left, listOf(uiModel.caloriesLeft, uiModel.totalCalories)),
             textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp),
         )
+        Spacer(Modifier.height(32.dp))
         Row(Modifier.fillMaxWidth()) {
             MacroAmountLeft(
                 title = Translated(R.string.home_screen_carbs_left),

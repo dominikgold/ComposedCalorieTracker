@@ -2,23 +2,23 @@ package com.dominikgold.calorietracker.ui.topbar
 
 import com.dominikgold.calorietracker.ViewModel
 import com.dominikgold.calorietracker.di.ViewModelFactory
-import com.dominikgold.calorietracker.navigation.NavigationStateContainer
+import com.dominikgold.calorietracker.navigation.Navigator
 import javax.inject.Inject
 
-class TopBarViewModel(private val navigationStateContainer: NavigationStateContainer) : ViewModel() {
+class TopBarViewModel(private val navigator: Navigator) : ViewModel() {
 
     fun onNavigateBackClicked() {
-        navigationStateContainer.goBack()
+        navigator.goBack()
     }
 
 }
 
 class TopBarViewModelFactory @Inject constructor(
-    private val navigationStateContainer: NavigationStateContainer,
+    private val navigator: Navigator,
 ) : ViewModelFactory<TopBarViewModel, Nothing, Nothing> {
 
     override fun create(savedState: Nothing?, parameters: Nothing?): TopBarViewModel {
-        return TopBarViewModel(navigationStateContainer)
+        return TopBarViewModel(navigator)
     }
 
 }

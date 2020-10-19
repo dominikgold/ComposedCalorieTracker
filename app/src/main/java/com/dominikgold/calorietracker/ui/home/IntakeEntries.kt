@@ -1,4 +1,4 @@
-package com.dominikgold.calorietracker.ui.caloriegoal
+package com.dominikgold.calorietracker.ui.home
 
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
@@ -16,14 +16,13 @@ import androidx.ui.tooling.preview.Preview
 import com.dominikgold.calorietracker.R
 import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
 import com.dominikgold.calorietracker.theming.textColorSubtitle
-import com.dominikgold.calorietracker.ui.home.IntakeEntryUiModel
 import com.dominikgold.calorietracker.util.Translated
 
 @OptIn(ExperimentalLayout::class)
 @Composable
 fun IntakeEntryCard(uiModel: IntakeEntryUiModel) {
-    Card(modifier = Modifier.fillMaxWidth().padding(8.dp), elevation = 4.dp) {
-        Column {
+    Card(modifier = Modifier.fillMaxWidth(), elevation = 4.dp) {
+        Column(Modifier.padding(8.dp)) {
             Text(text = uiModel.name)
             FlowRow {
                 Text(

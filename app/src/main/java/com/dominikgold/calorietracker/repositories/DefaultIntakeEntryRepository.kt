@@ -8,7 +8,6 @@ import javax.inject.Inject
 class DefaultIntakeEntryRepository @Inject constructor() : IntakeEntryRepository {
 
     override suspend fun getIntakeEntries(): List<IntakeEntry> {
-        delay(3000)
         return listOf(
                 IntakeEntry("essen", 400, 20, 60, 10),
                 IntakeEntry("essen", 400, 20, 60, 10),

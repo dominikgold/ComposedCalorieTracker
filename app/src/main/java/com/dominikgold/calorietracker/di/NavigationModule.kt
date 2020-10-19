@@ -1,7 +1,7 @@
 package com.dominikgold.calorietracker.di
 
-import com.dominikgold.calorietracker.navigation.DefaultNavigationStateContainer
-import com.dominikgold.calorietracker.navigation.NavigationStateContainer
+import com.dominikgold.calorietracker.navigation.DefaultNavigator
+import com.dominikgold.calorietracker.navigation.Navigator
 import dagger.Binds
 import dagger.Module
 
@@ -9,6 +9,6 @@ import dagger.Module
 interface NavigationModule {
 
     @Binds
-    fun bindNavigationStateContainer(navigationStateContainer: DefaultNavigationStateContainer): NavigationStateContainer
+    fun bindNavigationStateContainer(navigationStateContainer: DefaultNavigator): Navigator
 
 }

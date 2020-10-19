@@ -8,16 +8,20 @@ import kotlin.reflect.KClass
 
 @Singleton
 class ViewModelProvider @Inject constructor(
-        private val factories: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModelFactory<ViewModel, Any, Any>>>
+    private val factories: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModelFactory<ViewModel, Any, Any>>>,
 ) {
 
-    fun <VM : ViewModel, SavedState, Parameters> provide(viewModelClass: KClass<VM>, savedState: SavedState?, parameters: Parameters?): VM {
+    fun <VM : ViewModel, SavedState, Parameters> provide(
+        viewModelClass: KClass<VM>,
+        savedState: SavedState?,
+        parameters: Parameters?,
+    ): VM {
         val factory = factories[viewModelClass.java]
-        @Suppress("UNCHECKED_CAST")
-        return (factory?.get()?.create(savedState, parameters) as? VM) ?: throw UnknownViewModelTypeException(viewModelClass)
+        @Suppress("UNCHECKED_CAST") return (factory?.get()?.create(savedState, parameters) as? VM)
+            ?: throw UnknownViewModelTypeException(viewModelClass)
     }
 
 }
 
-class UnknownViewModelTypeException(type: KClass<out ViewModel>)
-    : Exception("Encountered unknown ViewModel type: ${type.qualifiedName}")
+class UnknownViewModelTypeException(type: KClass<out ViewModel>) :
+    Exception("Encountered unknown ViewModel type: ${type.qualifiedName}")

@@ -3,8 +3,10 @@ package com.dominikgold.calorietracker.ui.home
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.Button
@@ -25,24 +27,29 @@ import com.dominikgold.calorietracker.util.Translated
 @Composable
 fun HomeScreen() {
     val viewModel: HomeScreenViewModel = viewModel()
+    viewModel.reload()
     val uiState = viewModel.uiState.collectAsState()
-    HomeScreenContent(onSetCalorieGoalClicked = viewModel::navigateToSetCalorieGoal, uiState = uiState.value)
+    Scaffold(topBar = { CalorieTrackerTopBar(title = Translated(R.string.home_screen_title)) }) {
+        HomeScreenContent(onSetCalorieGoalClicked = viewModel::navigateToSetCalorieGoal, uiState = uiState.value)
+    }
 }
 
 @Composable
 private fun HomeScreenContent(uiState: HomeScreenUiModel, onSetCalorieGoalClicked: () -> Unit) {
-    Scaffold(topBar = { CalorieTrackerTopBar(title = Translated(R.string.home_screen_title)) }) {
-        Box(Modifier.fillMaxSize().padding(16.dp)) {
-            if (uiState.showNoCalorieGoalSet) {
-                NoCalorieGoalSet()
-            } else if (uiState.calorieGoal != null) {
+    Box(Modifier.fillMaxSize().padding(16.dp)) {
+        if (uiState.showNoCalorieGoalSet) {
+            NoCalorieGoalSet()
+        } else if (uiState.calorieGoal != null) {
+            Column {
                 HomeScreenCalorieGoal(uiModel = uiState.calorieGoal)
+                Spacer(modifier = Modifier.height(8.dp))
                 LazyColumnFor(items = uiState.intakeEntries) {
-
+                    Spacer(modifier = Modifier.height(8.dp))
+                    IntakeEntryCard(uiModel = it)
                 }
             }
-            SetNewCalorieGoalButton(onSetCalorieGoalClicked)
         }
+        SetNewCalorieGoalButton(onSetCalorieGoalClicked)
     }
 }
 
