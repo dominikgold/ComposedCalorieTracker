@@ -15,6 +15,17 @@ data class CalorieGoalUiModel(
     val fatLeft: Grams,
 )
 
+fun CalorieGoalUiModel.addIntakeEntry(intakeEntryUiModel: IntakeEntryUiModel) = CalorieGoalUiModel(
+    this.totalCalories,
+    this.caloriesLeft + intakeEntryUiModel.calories,
+    this.totalCarbohydrates,
+    this.carbohydratesLeft + intakeEntryUiModel.carbohydrates,
+    this.totalProtein,
+    this.proteinLeft + intakeEntryUiModel.protein,
+    this.totalFat,
+    this.fatLeft + intakeEntryUiModel.fat,
+)
+
 fun CalorieGoal.toUiModel(allIntakeEntries: List<IntakeEntry>): CalorieGoalUiModel {
     var consumedCalories = 0
     var consumedCarbohydrates = 0

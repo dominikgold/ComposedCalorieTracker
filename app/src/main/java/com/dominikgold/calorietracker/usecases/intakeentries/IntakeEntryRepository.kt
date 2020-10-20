@@ -6,4 +6,6 @@ interface IntakeEntryRepository {
 
     suspend fun getIntakeEntries(): List<IntakeEntry>
 
+    fun saveIntakeEntry(intakeEntry: IntakeEntry)
+
 }

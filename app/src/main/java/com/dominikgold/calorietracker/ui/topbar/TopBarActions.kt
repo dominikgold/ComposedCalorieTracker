@@ -7,7 +7,7 @@ import com.dominikgold.calorietracker.theming.colorTopBarButton
 import com.dominikgold.calorietracker.theming.textColorSubtitle
 
 @Composable
-fun TopBarActionTextButton(text: String, enabled: Boolean, onClick: () -> Unit) {
+fun TopBarActionTextButton(text: String, enabled: Boolean = true, onClick: () -> Unit) {
     TextButton(onClick = onClick, enabled = enabled) {
         Text(text = text, color = if (enabled) colorTopBarButton else textColorSubtitle)
     }

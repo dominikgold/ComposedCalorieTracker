@@ -23,4 +23,13 @@
     <string name="intake_entry_carbs_count">%d carbs</string>
     <string name="intake_entry_protein_count">%d protein</string>
     <string name="intake_entry_fat_count">%d fat</string>
+    <string name="intake_entry_name_input_placeholder">What did you eat?</string>
+    <string name="intake_entry_calorie_input_placeholder">Calories</string>
+    <string name="intake_entry_carbohydrates_input_placeholder">Carbohydrates</string>
+    <string name="intake_entry_protein_input_placeholder">Protein</string>
+    <string name="intake_entry_fat_input_placeholder">Fat</string>
+    <string name="add_intake_entry_button_confirm">Confirm</string>
+    <string name="add_intake_entry_button">+ Add entry</string>
+    <string name="add_intake_entry_button_cancel">Cancel</string>
+    <string name="top_bar_action_change_goal">CHANGE GOAL</string>
 </resources>

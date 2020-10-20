@@ -5,7 +5,9 @@ import com.dominikgold.calorietracker.usecases.caloriegoal.DefaultSetCalorieGoal
 import com.dominikgold.calorietracker.usecases.caloriegoal.GetCalorieGoalUseCase
 import com.dominikgold.calorietracker.usecases.caloriegoal.SetCalorieGoalUseCase
 import com.dominikgold.calorietracker.usecases.intakeentries.DefaultGetIntakeEntriesUseCase
+import com.dominikgold.calorietracker.usecases.intakeentries.DefaultSaveIntakeEntryUseCase
 import com.dominikgold.calorietracker.usecases.intakeentries.GetIntakeEntriesUseCase
+import com.dominikgold.calorietracker.usecases.intakeentries.SaveIntakeEntryUseCase
 import dagger.Binds
 import dagger.Module
 
@@ -14,6 +16,9 @@ interface UseCasesModule {
 
     @Binds
     fun bindGetIntakeEntriesUseCase(useCase: DefaultGetIntakeEntriesUseCase): GetIntakeEntriesUseCase
+
+    @Binds
+    fun bindSaveIntakeEntryUseCase(useCase: DefaultSaveIntakeEntryUseCase): SaveIntakeEntryUseCase
 
     @Binds
     fun bindSetCalorieGoalUseCase(useCase: DefaultSetCalorieGoalUseCase): SetCalorieGoalUseCase

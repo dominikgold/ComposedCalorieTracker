@@ -2,11 +2,13 @@ package com.dominikgold.calorietracker.ui.home
 
 import com.dominikgold.calorietracker.ViewModel
 import com.dominikgold.calorietracker.di.ViewModelFactory
+import com.dominikgold.calorietracker.entities.CalorieGoal
 import com.dominikgold.calorietracker.entities.IntakeEntry
 import com.dominikgold.calorietracker.navigation.Navigator
 import com.dominikgold.calorietracker.navigation.Screen
 import com.dominikgold.calorietracker.usecases.caloriegoal.GetCalorieGoalUseCase
 import com.dominikgold.calorietracker.usecases.intakeentries.GetIntakeEntriesUseCase
+import com.dominikgold.calorietracker.usecases.intakeentries.SaveIntakeEntryUseCase
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,6 +20,7 @@ class HomeScreenViewModel(
     private val navigator: Navigator,
     private val getIntakeEntriesUseCase: GetIntakeEntriesUseCase,
     private val getCalorieGoalUseCase: GetCalorieGoalUseCase,
+    private val saveIntakeEntryUseCase: SaveIntakeEntryUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeScreenUiModel(
@@ -39,6 +42,20 @@ class HomeScreenViewModel(
 
     fun navigateToSetCalorieGoal() {
         navigator.switchScreen(Screen.SetCalorieGoal)
+    }
+
+    fun addIntakeEntry(uiModel: IntakeEntryUiModel) {
+        saveIntakeEntryUseCase.saveIntakeEntry(IntakeEntry(
+            uiModel.name,
+            uiModel.calories,
+            uiModel.carbohydrates,
+            uiModel.protein,
+            uiModel.fat,
+        ))
+        _uiState.value = _uiState.value.copy(
+            calorieGoal = _uiState.value.calorieGoal?.addIntakeEntry(uiModel),
+            intakeEntries = _uiState.value.intakeEntries + uiModel,
+        )
     }
 
     private fun loadHomeScreenData() {
@@ -63,10 +80,11 @@ class HomeScreenViewModelFactory @Inject constructor(
     private val navigator: Navigator,
     private val getIntakeEntriesUseCase: GetIntakeEntriesUseCase,
     private val getCalorieGoalUseCase: GetCalorieGoalUseCase,
+    private val saveIntakeEntryUseCase: SaveIntakeEntryUseCase,
 ) : ViewModelFactory<HomeScreenViewModel, Nothing, Nothing> {
 
     override fun create(savedState: Nothing?, parameters: Nothing?): HomeScreenViewModel {
-        return HomeScreenViewModel(navigator, getIntakeEntriesUseCase, getCalorieGoalUseCase)
+        return HomeScreenViewModel(navigator, getIntakeEntriesUseCase, getCalorieGoalUseCase, saveIntakeEntryUseCase)
     }
 
 }
