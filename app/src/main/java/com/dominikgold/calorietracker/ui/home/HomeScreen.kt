@@ -1,6 +1,12 @@
 package com.dominikgold.calorietracker.ui.home
 
-import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Box
@@ -73,22 +79,42 @@ private fun HomeScreenContent(
                     IntakeEntryCard(uiModel = it)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
-                if (!isAddIntakeEntrySectionVisible.value) {
-                    TextButton(onClick = { isAddIntakeEntrySectionVisible.value = true }) {
-                        Text(text = Translated(R.string.add_intake_entry_button))
-                    }
-                } else {
-                    AddIntakeEntry(
-                        onConfirmed = {
-                            Log.d("AddIntakeEntry2", "confirming $it")
-                            isAddIntakeEntrySectionVisible.value = false
-                            onIntakeEntryAdded(it)
-                        },
-                        onCancelled = { isAddIntakeEntrySectionVisible.value = false },
-                    )
-                }
+                AnimatedAddIntakeEntryButton(
+                    isVisible = !isAddIntakeEntrySectionVisible.value,
+                    enterAnimationDelay = 400,
+                    onClick = { isAddIntakeEntrySectionVisible.value = true },
+                )
+                AnimatedAddIntakeEntry(
+                    isVisible = isAddIntakeEntrySectionVisible.value,
+                    enterAnimationDelay = 200,
+                    onConfirmed = {
+                        isAddIntakeEntrySectionVisible.value = false
+                        onIntakeEntryAdded(it)
+                    },
+                    onCancelled = { isAddIntakeEntrySectionVisible.value = false },
+                )
                 Spacer(modifier = Modifier.height(64.dp))
             }
+        }
+    }
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun AnimatedAddIntakeEntryButton(
+    isVisible: Boolean,
+    enterAnimationDelay: Int,
+    onClick: () -> Unit,
+) {
+    val expandVertically = expandVertically(animSpec = TweenSpec(durationMillis = 200, delay = enterAnimationDelay))
+    val fadeIn = fadeIn(animSpec = TweenSpec(durationMillis = 200, delay = enterAnimationDelay))
+    AnimatedVisibility(
+        visible = isVisible,
+        enter = fadeIn + expandVertically,
+        exit = fadeOut(animSpec = TweenSpec(durationMillis = 200)),
+    ) {
+        TextButton(onClick = onClick) {
+            Text(text = Translated(R.string.add_intake_entry_button))
         }
     }
 }
@@ -106,6 +132,14 @@ private fun BoxScope.SetNewCalorieGoalButton(onSetCalorieGoalClicked: () -> Unit
 @Preview(showBackground = true)
 fun HomeScreenContentPreview() {
     CalorieTrackerTheme {
-        HomeScreenContent(HomeScreenUiModel(true, null, listOf()), {}, {})
+        HomeScreenContent(
+            HomeScreenUiModel(
+                showNoCalorieGoalSet = false,
+                calorieGoal = CalorieGoalUiModel(2000, 500, 200, 50, 100, 20, 50, 10),
+                intakeEntries = listOf(IntakeEntryUiModel("essen", 1500, 150, 80, 40)),
+            ),
+            {},
+            {},
+        )
     }
 }

@@ -1,6 +1,12 @@
 package com.dominikgold.calorietracker.ui.home
 
-import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -8,6 +14,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayout
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -35,7 +42,7 @@ import com.dominikgold.calorietracker.util.Translated
 @OptIn(ExperimentalLayout::class)
 @Composable
 fun IntakeEntryCard(uiModel: IntakeEntryUiModel) {
-    Card(modifier = Modifier.fillMaxWidth(), elevation = 4.dp) {
+    Card(modifier = Modifier.fillMaxWidth()) {
         Column(Modifier.padding(8.dp)) {
             Text(text = uiModel.name)
             Spacer(Modifier.height(8.dp))
@@ -61,9 +68,31 @@ fun IntakeEntryCard(uiModel: IntakeEntryUiModel) {
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun AnimatedAddIntakeEntry(
+    isVisible: Boolean,
+    enterAnimationDelay: Int,
+    onConfirmed: (IntakeEntryUiModel) -> Unit,
+    onCancelled: () -> Unit,
+) {
+    val expandVertically = expandVertically(animSpec = TweenSpec(durationMillis = 400, delay = enterAnimationDelay))
+    val fadeIn = fadeIn(animSpec = TweenSpec(durationMillis = 400, delay = enterAnimationDelay))
+    val fadeOut = fadeOut(animSpec = TweenSpec(durationMillis = 400))
+    val shrinkVertically = shrinkVertically(animSpec = TweenSpec(durationMillis = 400))
+    AnimatedVisibility(
+        visible = isVisible,
+        enter = expandVertically + fadeIn,
+        exit = fadeOut + shrinkVertically,
+    ) {
+        AddIntakeEntry(onConfirmed = onConfirmed, onCancelled = onCancelled)
+    }
+}
+
+@OptIn(ExperimentalLayout::class)
 @Composable
 fun AddIntakeEntry(onConfirmed: (IntakeEntryUiModel) -> Unit, onCancelled: () -> Unit) {
-    Card(modifier = Modifier.fillMaxWidth(), elevation = 4.dp) {
+    Card(modifier = Modifier.fillMaxWidth()) {
         Column(Modifier.padding(16.dp)) {
             val nameInput = remember { mutableStateOf("") }
             val caloriesInput = remember { mutableStateOf<Int?>(null) }
@@ -79,25 +108,32 @@ fun AddIntakeEntry(onConfirmed: (IntakeEntryUiModel) -> Unit, onCancelled: () ->
                 modifier = Modifier.fillMaxWidth(),
             )
             Spacer(modifier = Modifier.height(16.dp))
-            AddIntakeEntryMacroField(
-                inputState = caloriesInput,
-                placeholderText = Translated(resourceId = R.string.intake_entry_calorie_input_placeholder),
+            TextField(
+                value = caloriesInput.value?.toString() ?: "",
+                onValueChange = LengthInputFilter(maxLength = 5) { newInput ->
+                    caloriesInput.value = newInput.toIntOrNull()
+                },
+                placeholder = { Text(text = Translated(R.string.intake_entry_calorie_input_placeholder)) },
+                keyboardType = KeyboardType.Number,
+                modifier = Modifier.fillMaxWidth(),
             )
             Spacer(modifier = Modifier.height(16.dp))
-            AddIntakeEntryMacroField(
-                inputState = carbohydratesInput,
-                placeholderText = Translated(resourceId = R.string.intake_entry_carbohydrates_input_placeholder),
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            AddIntakeEntryMacroField(
-                inputState = proteinInput,
-                placeholderText = Translated(resourceId = R.string.intake_entry_protein_input_placeholder),
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            AddIntakeEntryMacroField(
-                inputState = fatInput,
-                placeholderText = Translated(resourceId = R.string.intake_entry_fat_input_placeholder),
-            )
+            Row {
+                AddIntakeEntryMacroField(
+                    inputState = carbohydratesInput,
+                    placeholderText = Translated(resourceId = R.string.intake_entry_carbohydrates_input_placeholder),
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                AddIntakeEntryMacroField(
+                    inputState = proteinInput,
+                    placeholderText = Translated(resourceId = R.string.intake_entry_protein_input_placeholder),
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                AddIntakeEntryMacroField(
+                    inputState = fatInput,
+                    placeholderText = Translated(resourceId = R.string.intake_entry_fat_input_placeholder),
+                )
+            }
             Spacer(modifier = Modifier.height(16.dp))
             Row(Modifier.align(Alignment.End)) {
                 Button(onClick = onCancelled) {
@@ -128,7 +164,6 @@ fun AddIntakeEntryConfirmButton(
 ) {
     Button(
         onClick = {
-            Log.d("AddIntakeEntry", "Button clicked! $calories $carbohydrates $protein $fat")
             if (calories != null && carbohydrates != null && protein != null && fat != null) {
                 onConfirmed(IntakeEntryUiModel(name, calories, carbohydrates, protein, fat))
             }
@@ -140,17 +175,15 @@ fun AddIntakeEntryConfirmButton(
 }
 
 @Composable
-private fun AddIntakeEntryMacroField(inputState: MutableState<Int?>, placeholderText: String) {
+private fun RowScope.AddIntakeEntryMacroField(inputState: MutableState<Int?>, placeholderText: String) {
     TextField(
         value = inputState.value?.toString() ?: "",
-        placeholder = {
-            Text(text = placeholderText)
-        },
         onValueChange = LengthInputFilter(maxLength = 5) { newInput ->
             inputState.value = newInput.toIntOrNull()
         },
+        placeholder = { Text(text = placeholderText) },
         keyboardType = KeyboardType.Number,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.weight(1f),
     )
 }
 
@@ -166,7 +199,7 @@ fun IntakeEntryCardPreview() {
 
 @Preview
 @Composable
-fun AddIntakeEntryBottomSheetPreview() {
+fun AddIntakeEntryPreview() {
     CalorieTrackerTheme {
         Box(Modifier.background(Color.White)) {
             AddIntakeEntry(onConfirmed = {}, onCancelled = {})

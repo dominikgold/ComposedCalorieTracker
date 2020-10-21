@@ -7,18 +7,10 @@ import javax.inject.Inject
 
 class DefaultIntakeEntryRepository @Inject constructor() : IntakeEntryRepository {
 
-    private var intakeEntries = mutableListOf(
-        IntakeEntry("essen", 400, 20, 60, 10),
-        IntakeEntry("essen", 400, 20, 60, 10),
-        IntakeEntry("essen", 400, 20, 60, 10),
-    )
+    private var intakeEntries = mutableListOf<IntakeEntry>()
 
     override suspend fun getIntakeEntries(): List<IntakeEntry> {
-        return listOf(
-                IntakeEntry("essen", 400, 20, 60, 10),
-                IntakeEntry("essen", 400, 20, 60, 10),
-                IntakeEntry("essen", 400, 20, 60, 10),
-        )
+        return intakeEntries
     }
 
     override fun saveIntakeEntry(intakeEntry: IntakeEntry) {
