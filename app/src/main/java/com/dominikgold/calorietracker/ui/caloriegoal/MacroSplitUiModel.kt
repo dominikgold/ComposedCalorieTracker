@@ -4,14 +4,13 @@ import androidx.annotation.StringRes
 import com.dominikgold.calorietracker.R
 import com.dominikgold.calorietracker.entities.CalorieGoal
 import com.dominikgold.calorietracker.entities.MacroSplit
-import kotlin.math.roundToInt
 
 data class MacroSplitUiModel(private val macroSplit: MacroSplit, private val tdee: Int) {
 
     @StringRes
     val name = macroSplit.translatableName
 
-    private val calorieGoal = CalorieGoal.createWithMacroSplit(tdee, macroSplit)
+    private val calorieGoal = CalorieGoal(tdee, macroSplit)
 
     val formattedProteinAmount = "${calorieGoal.protein} g"
     val formattedCarbohydratesAmount = "${calorieGoal.carbohydrates} g"

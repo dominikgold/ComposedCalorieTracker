@@ -2,6 +2,7 @@ package com.dominikgold.calorietracker.di
 
 import android.content.Context
 import com.dominikgold.calorietracker.MainActivity
+import com.dominikgold.calorietracker.datasources.DataSourcesModule
 import com.dominikgold.calorietracker.repositories.RepositoriesModule
 import com.dominikgold.calorietracker.ui.caloriegoal.SetCalorieGoalUiModule
 import com.dominikgold.calorietracker.ui.home.HomeScreenUiModule
@@ -17,6 +18,7 @@ import javax.inject.Singleton
 
     NavigationModule::class,
     RepositoriesModule::class,
+    DataSourcesModule::class,
 
     SetCalorieGoalUiModule::class,
     HomeScreenUiModule::class,

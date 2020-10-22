@@ -6,16 +6,16 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DefaultCalorieGoalRepository @Inject constructor() : CalorieGoalRepository {
+class DefaultCalorieGoalRepository @Inject constructor(
+    private val appProtoStore: AppProtoStore,
+) : CalorieGoalRepository {
 
-    private var currentCalorieGoal: CalorieGoal? = null
-
-    override fun saveCalorieGoal(calorieGoal: CalorieGoal) {
-        currentCalorieGoal = calorieGoal
+    override suspend fun saveCalorieGoal(calorieGoal: CalorieGoal) {
+        appProtoStore.saveCalorieGoal(calorieGoal)
     }
 
     override suspend fun getCurrentCalorieGoal(): CalorieGoal? {
-        return currentCalorieGoal
+        return appProtoStore.getCalorieGoal()
     }
 
 }

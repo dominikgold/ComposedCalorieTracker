@@ -8,6 +8,7 @@ import com.dominikgold.calorietracker.navigation.Navigator
 import com.dominikgold.calorietracker.usecases.caloriegoal.SetCalorieGoalUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SetCalorieGoalViewModel(
@@ -25,8 +26,10 @@ class SetCalorieGoalViewModel(
         val tdee = uiModelState.value.tdeeInput
         val macroSplit = chosenMacroSplit
         require(tdee != null && macroSplit != null) { "Tdee or macro split are not set when saving calorie goal" }
-        setCalorieGoalUseCase.setCalorieGoal(CalorieGoal.createWithMacroSplit(tdee, macroSplit))
-        navigator.goBack()
+        coroutineScope.launch {
+            setCalorieGoalUseCase.setCalorieGoal(CalorieGoal(tdee, macroSplit))
+            navigator.goBack()
+        }
     }
 
     fun updateTdee(tdee: Int?) {

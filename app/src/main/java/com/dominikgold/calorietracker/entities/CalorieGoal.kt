@@ -3,22 +3,12 @@ package com.dominikgold.calorietracker.entities
 import kotlin.math.roundToInt
 
 data class CalorieGoal(
-        val totalCalories: Int,
-        val carbohydrates: Grams,
-        val protein: Grams,
-        val fat: Grams,
+    val totalCalories: Int,
+    val macroSplit: MacroSplit,
 ) {
 
-    companion object {
-
-        fun createWithMacroSplit(calories: Int, macroSplit: MacroSplit) =
-                CalorieGoal(
-                        totalCalories = calories,
-                        carbohydrates = (calories * macroSplit.carbohydrates / 4).roundToInt(),
-                        protein = (calories * macroSplit.protein / 4).roundToInt(),
-                        fat = (calories * macroSplit.fat / 9).roundToInt(),
-                )
-
-    }
+    val carbohydrates = (totalCalories * macroSplit.carbohydrates / 4).roundToInt()
+    val protein = (totalCalories * macroSplit.protein / 4).roundToInt()
+    val fat = (totalCalories * macroSplit.fat / 9).roundToInt()
 
 }

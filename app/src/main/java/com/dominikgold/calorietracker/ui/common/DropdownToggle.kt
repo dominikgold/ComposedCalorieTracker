@@ -2,10 +2,13 @@ package com.dominikgold.calorietracker.ui.common
 
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.vectorResource
@@ -21,10 +24,10 @@ fun TextDropdownToggle(text: String?, placeholder: String?, isExpanded: Boolean,
     val iconResource = if (isExpanded) R.drawable.vec_icon_arrow_drop_up else R.drawable.vec_icon_arrow_drop_down
     Row(modifier) {
         Text(
-            modifier = Modifier.weight(1f),
             text = text ?: placeholder ?: "",
             color = if (text == null) textColorSubtitle else textColorDefault,
         )
+        Spacer(Modifier.weight(1f))
         Icon(asset = vectorResource(id = iconResource), tint = textColorDefault)
     }
 }
@@ -33,18 +36,20 @@ fun TextDropdownToggle(text: String?, placeholder: String?, isExpanded: Boolean,
 @Composable
 fun TextDropdownTogglePreview() {
     inLightAndDarkTheme {
-        TextDropdownToggle(
-            text = "Example",
-            placeholder = null,
-            isExpanded = false,
-            modifier = Modifier.fillMaxWidth(),
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        TextDropdownToggle(
-            text = null,
-            placeholder = "placeholder",
-            isExpanded = false,
-            modifier = Modifier.fillMaxWidth(),
-        )
+        Column(Modifier.background(MaterialTheme.colors.background)) {
+            TextDropdownToggle(
+                text = "Example",
+                placeholder = null,
+                isExpanded = false,
+                modifier = Modifier.fillMaxWidth(),
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            TextDropdownToggle(
+                text = null,
+                placeholder = "placeholder",
+                isExpanded = false,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
     }
 }

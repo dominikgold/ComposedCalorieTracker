@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option java_package = "com.dominikgold.calorietracker.datasources.models";
+option java_multiple_files = true;
+
+message ProtoCalorieGoal {
+    int32 calories = 1;
+    enum ProtoMacroSplit {
+        HIGH_CARB = 0;
+        BALANCED = 1;
+        HIGH_FAT = 2;
+        VERY_HIGH_FAT = 3;
+    }
+    ProtoMacroSplit macroSplit = 2;
+}
