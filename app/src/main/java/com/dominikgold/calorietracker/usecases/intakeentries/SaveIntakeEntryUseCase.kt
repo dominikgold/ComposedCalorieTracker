@@ -5,14 +5,14 @@ import javax.inject.Inject
 
 interface SaveIntakeEntryUseCase {
 
-    fun saveIntakeEntry(intakeEntry: IntakeEntry)
+    suspend fun saveIntakeEntry(intakeEntry: IntakeEntry)
 
 }
 
 class DefaultSaveIntakeEntryUseCase @Inject constructor(private val intakeEntryRepository: IntakeEntryRepository) :
     SaveIntakeEntryUseCase {
 
-    override fun saveIntakeEntry(intakeEntry: IntakeEntry) {
+    override suspend fun saveIntakeEntry(intakeEntry: IntakeEntry) {
         intakeEntryRepository.saveIntakeEntry(intakeEntry)
     }
 

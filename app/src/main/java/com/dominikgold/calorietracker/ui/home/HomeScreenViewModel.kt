@@ -45,13 +45,15 @@ class HomeScreenViewModel(
     }
 
     fun addIntakeEntry(uiModel: IntakeEntryUiModel) {
-        saveIntakeEntryUseCase.saveIntakeEntry(IntakeEntry(
-            uiModel.name,
-            uiModel.calories,
-            uiModel.carbohydrates,
-            uiModel.protein,
-            uiModel.fat,
-        ))
+        coroutineScope.launch {
+            saveIntakeEntryUseCase.saveIntakeEntry(IntakeEntry(
+                uiModel.name,
+                uiModel.calories,
+                uiModel.carbohydrates,
+                uiModel.protein,
+                uiModel.fat,
+            ))
+        }
         _uiState.value = _uiState.value.copy(
             calorieGoal = _uiState.value.calorieGoal?.addIntakeEntry(uiModel),
             intakeEntries = _uiState.value.intakeEntries + uiModel,

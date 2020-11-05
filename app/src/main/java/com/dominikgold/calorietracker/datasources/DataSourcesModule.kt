@@ -1,10 +1,11 @@
 package com.dominikgold.calorietracker.datasources
 
+import com.dominikgold.calorietracker.datasources.db.RoomDbModule
 import com.dominikgold.calorietracker.repositories.AppProtoStore
 import dagger.Binds
 import dagger.Module
 
-@Module
+@Module(includes = [RoomDbModule::class])
 interface DataSourcesModule {
 
     @Binds

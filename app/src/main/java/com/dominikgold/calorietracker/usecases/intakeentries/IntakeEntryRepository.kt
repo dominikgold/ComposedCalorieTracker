@@ -4,8 +4,8 @@ import com.dominikgold.calorietracker.entities.IntakeEntry
 
 interface IntakeEntryRepository {
 
-    suspend fun getIntakeEntries(): List<IntakeEntry>
+    suspend fun getIntakeEntriesForToday(): List<IntakeEntry>
 
-    fun saveIntakeEntry(intakeEntry: IntakeEntry)
+    suspend fun saveIntakeEntry(intakeEntry: IntakeEntry)
 
 }

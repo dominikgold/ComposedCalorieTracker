@@ -27,6 +27,7 @@ android {
         }
     }
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -44,6 +45,10 @@ android {
     androidExtensions {
         features = ["parcelize"]
     }
+    packagingOptions {
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
+    }
 }
 
 dependencies {
@@ -53,7 +58,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
 
-    implementation "androidx.core:core-ktx:$androidArchCoreVersion"
+    implementation "androidx.core:core-ktx:$androidCoreVersion"
     implementation "androidx.appcompat:appcompat:$androidAppCompatVersion"
     implementation "com.google.android.material:material:$androidMaterialComponentsVersion"
     implementation "androidx.compose.ui:ui:$compose_version"
@@ -67,16 +72,31 @@ dependencies {
     // Protobuf
     implementation  "com.google.protobuf:protobuf-javalite:$protobuf_version"
 
+    // Room
+    implementation "androidx.room:room-runtime:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+
     implementation "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugarJdkLibsVersion"
 
     testImplementation "junit:junit:4.13"
     testImplementation "org.amshove.kluent:kluent:$kluentVersion"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
 
-    androidTestImplementation "androidx.test.ext:junit:1.1.2"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
+    androidTestImplementation "androidx.test.ext:junit:$androidXTestJUnitVersion"
+    androidTestImplementation "androidx.test:core:$androidXTestVersion"
+    androidTestImplementation "androidx.test:rules:$androidXTestVersion"
+    androidTestImplementation "androidx.test:runner:$androidXTestVersion"
+    androidTestImplementation "androidx.arch.core:core-testing:$androidArchCoreVersion"
+    androidTestImplementation "androidx.room:room-testing:$roomVersion"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
+
+    androidTestImplementation "org.amshove.kluent:kluent-android:$kluentVersion"
 
 }
 

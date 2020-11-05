@@ -12,6 +12,6 @@ interface GetIntakeEntriesUseCase {
 class DefaultGetIntakeEntriesUseCase @Inject constructor(private val intakeEntryRepository: IntakeEntryRepository)
     : GetIntakeEntriesUseCase {
 
-    override suspend fun getIntakeEntries() = intakeEntryRepository.getIntakeEntries()
+    override suspend fun getIntakeEntries() = intakeEntryRepository.getIntakeEntriesForToday()
 
 }
