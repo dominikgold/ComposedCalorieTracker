@@ -1,4 +1,4 @@
-package com.dominikgold.calorietracker.datasources.db
+package com.dominikgold.calorietracker.datasources.db.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
