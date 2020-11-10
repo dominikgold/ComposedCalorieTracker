@@ -7,9 +7,9 @@ Example app for tracking nutritional intake and body weight written with Jetpack
 - Dependency Injection with Dagger
 - Clean Architecture
 - MVVM without Jetpack ViewModel, view models are scoped to top level navigation destinations
-- #TODO: back navigation
+- back navigation
 - #TODO: saving state across process death
 - #TODO: more advanced theming
-- #TODO: improved functionality
+- #TODO: bigger and improved feature set
 - #TODO: UI tests
 - #TODO: Modularization
