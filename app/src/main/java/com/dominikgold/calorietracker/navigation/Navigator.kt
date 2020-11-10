@@ -33,15 +33,15 @@ class DefaultNavigator @Inject constructor(private val viewModelProvider: ViewMo
         }
         viewModelContainer.release()
         val backStackEntry = backStack.removeLast()
-        currentScreen.value = backStackEntry.screen
         viewModelContainer = backStackEntry.viewModelContainer
+        currentScreen.value = backStackEntry.screen
         return true
     }
 
     override fun switchScreen(to: Screen) {
         val backStackEntry = BackStackEntry(currentScreen.value, viewModelContainer)
-        currentScreen.value = to
         viewModelContainer = ViewModelContainer(viewModelProvider)
+        currentScreen.value = to
         backStack.add(backStackEntry)
     }
 

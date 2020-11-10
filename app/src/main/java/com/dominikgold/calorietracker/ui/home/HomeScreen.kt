@@ -53,7 +53,6 @@ fun HomeScreen() {
         },
     ) {
         HomeScreenContent(
-            onSetCalorieGoalClicked = viewModel::navigateToSetCalorieGoal,
             onIntakeEntryAdded = viewModel::addIntakeEntry,
             uiState = uiState.value,
         )
@@ -63,7 +62,6 @@ fun HomeScreen() {
 @Composable
 private fun HomeScreenContent(
     uiState: HomeScreenUiModel,
-    onSetCalorieGoalClicked: () -> Unit,
     onIntakeEntryAdded: (IntakeEntryUiModel) -> Unit,
 ) {
     Box(Modifier.fillMaxSize().padding(16.dp)) {
@@ -138,7 +136,6 @@ fun HomeScreenContentPreview() {
                 calorieGoal = CalorieGoalUiModel(2000, 500, 200, 50, 100, 20, 50, 10),
                 intakeEntries = listOf(IntakeEntryUiModel("essen", 1500, 150, 80, 40)),
             ),
-            {},
             {},
         )
     }
