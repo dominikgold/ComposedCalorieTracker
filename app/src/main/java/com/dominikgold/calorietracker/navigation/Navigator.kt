@@ -1,6 +1,9 @@
 package com.dominikgold.calorietracker.navigation
 
+import android.os.Parcelable
+import androidx.compose.foundation.currentTextStyle
 import com.dominikgold.calorietracker.di.ViewModelProvider
+import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
@@ -15,6 +18,10 @@ interface Navigator {
     fun goBack(): Boolean
 
     fun switchScreen(to: Screen)
+
+    fun saveState(): NavigatorState
+
+    fun restoreState(state: NavigatorState)
 
 }
 
@@ -43,6 +50,13 @@ class DefaultNavigator @Inject constructor(private val viewModelProvider: ViewMo
         viewModelContainer = ViewModelContainer(viewModelProvider)
         currentScreen.value = to
         backStack.add(backStackEntry)
+    }
+
+    override fun saveState() = NavigatorState(backStack.map { it.screen }, currentScreen.value)
+
+    override fun restoreState(state: NavigatorState) {
+        backStack.addAll(state.backStack.map { BackStackEntry(it, ViewModelContainer(viewModelProvider)) })
+        currentScreen.value = state.currentScreen
     }
 
     private data class BackStackEntry(val screen: Screen, val viewModelContainer: ViewModelContainer)

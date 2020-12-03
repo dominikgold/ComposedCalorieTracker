@@ -10,6 +10,9 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.vectorResource
@@ -27,10 +30,12 @@ import com.dominikgold.calorietracker.util.Translated
 
 @Composable
 fun SetCalorieGoalScreen() {
-    val viewModel: SetCalorieGoalViewModel = viewModel()
-    val uiModelState = viewModel.uiModelState.collectAsState()
+    var savedState: SetCalorieGoalUiModel? by savedInstanceState { null }
+    val viewModel: SetCalorieGoalViewModel = viewModel(savedState = savedState)
+    val uiModelState by viewModel.uiModelState.collectAsState()
+    savedState = uiModelState
     SetCalorieGoalContent(
-        uiModel = uiModelState.value,
+        uiModel = uiModelState,
         onTdeeChanged = viewModel::updateTdee,
         onMacroSplitChosen = viewModel::updateMacroSplit,
         onSaveButtonClicked = viewModel::saveCalorieGoal,
@@ -68,8 +73,7 @@ private fun SetCalorieGoalBody(
     onMacroSplitChosen: (MacroSplit) -> Unit,
 ) {
     Column(
-        modifier = Modifier.padding(16.dp)
-            .fillMaxWidth(),
+        modifier = Modifier.padding(16.dp).fillMaxWidth(),
         horizontalAlignment = Alignment.Start,
     ) {
         TextField(

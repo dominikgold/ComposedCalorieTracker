@@ -7,6 +7,7 @@ import androidx.compose.runtime.Providers
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.setContent
 import com.dominikgold.calorietracker.navigation.Navigator
+import com.dominikgold.calorietracker.navigation.NavigatorState
 import com.dominikgold.calorietracker.navigation.Screen
 import com.dominikgold.calorietracker.navigation.ViewModelContainer
 import com.dominikgold.calorietracker.navigation.ViewModelContainerAmbient
@@ -15,7 +16,7 @@ import com.dominikgold.calorietracker.ui.caloriegoal.SetCalorieGoalScreen
 import com.dominikgold.calorietracker.ui.home.HomeScreen
 import javax.inject.Inject
 
-private const val EXTRA_CURRENT_SCREEN = "EXTRA_CURRENT_SCREEN"
+private const val EXTRA_NAVIGATOR_STATE = "EXTRA_NAVIGATOR_STATE"
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (applicationContext as CalorieTrackerApplication).daggerAppComponent.inject(this)
-        savedInstanceState?.getParcelable<Screen>(EXTRA_CURRENT_SCREEN)?.let(navigator::switchScreen)
+        savedInstanceState?.getParcelable<NavigatorState>(EXTRA_NAVIGATOR_STATE)?.let(navigator::restoreState)
         setContent {
             CalorieTrackerTheme {
                 Main(navigator = navigator)
@@ -37,6 +38,11 @@ class MainActivity : AppCompatActivity() {
         if (!navigator.goBack()) {
             super.onBackPressed()
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable(EXTRA_NAVIGATOR_STATE, navigator.saveState())
     }
 }
 

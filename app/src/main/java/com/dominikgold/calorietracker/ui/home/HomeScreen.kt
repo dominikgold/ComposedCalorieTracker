@@ -127,9 +127,9 @@ private fun BoxScope.SetNewCalorieGoalButton(onSetCalorieGoalClicked: () -> Unit
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview
 fun HomeScreenContentPreview() {
-    CalorieTrackerTheme {
+    CalorieTrackerTheme(darkTheme = true) {
         HomeScreenContent(
             HomeScreenUiModel(
                 showNoCalorieGoalSet = false,

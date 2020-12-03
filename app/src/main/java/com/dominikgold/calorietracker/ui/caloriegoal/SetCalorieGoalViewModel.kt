@@ -14,9 +14,10 @@ import javax.inject.Inject
 class SetCalorieGoalViewModel(
     private val setCalorieGoalUseCase: SetCalorieGoalUseCase,
     private val navigator: Navigator,
+    savedState: SetCalorieGoalUiModel?,
 ) : ViewModel() {
 
-    private val _uiModelState = MutableStateFlow(SetCalorieGoalUiModel(null, null, false))
+    private val _uiModelState = MutableStateFlow(savedState ?: SetCalorieGoalUiModel(null, null, false))
     val uiModelState: StateFlow<SetCalorieGoalUiModel>
         get() = _uiModelState
 
@@ -52,10 +53,10 @@ class SetCalorieGoalViewModel(
 class SetCalorieGoalViewModelFactory @Inject constructor(
     private val setCalorieGoalUseCase: SetCalorieGoalUseCase,
     private val navigator: Navigator,
-) : ViewModelFactory<SetCalorieGoalViewModel, Nothing, Nothing> {
+) : ViewModelFactory<SetCalorieGoalViewModel, SetCalorieGoalUiModel, Nothing> {
 
-    override fun create(savedState: Nothing?, parameters: Nothing?): SetCalorieGoalViewModel {
-        return SetCalorieGoalViewModel(setCalorieGoalUseCase, navigator)
+    override fun create(savedState: SetCalorieGoalUiModel?, parameters: Nothing?): SetCalorieGoalViewModel {
+        return SetCalorieGoalViewModel(setCalorieGoalUseCase, navigator, savedState)
     }
 
 }
