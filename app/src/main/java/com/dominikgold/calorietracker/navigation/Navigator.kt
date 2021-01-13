@@ -1,23 +1,23 @@
 package com.dominikgold.calorietracker.navigation
 
-import android.os.Parcelable
-import androidx.compose.foundation.currentTextStyle
 import com.dominikgold.calorietracker.di.ViewModelProvider
-import kotlinx.android.parcel.Parcelize
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.dominikgold.calorietracker.ui.bottomnav.BottomNavigationTab
+import com.dominikgold.calorietracker.ui.bottomnav.BottomNavigationTab.*
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
 interface Navigator {
 
-    val currentScreen: StateFlow<Screen>
+    val currentNavigationStateEntry: StateFlow<NavigationStateEntry>
 
-    val viewModelContainer: ViewModelContainer
+    val selectedBottomNavigationTab: BottomNavigationTab
 
     fun goBack(): Boolean
 
     fun switchScreen(to: Screen)
+
+    fun onBottomNavigationTabSelected(tab: BottomNavigationTab)
 
     fun saveState(): NavigatorState
 
@@ -28,37 +28,41 @@ interface Navigator {
 @Singleton
 class DefaultNavigator @Inject constructor(private val viewModelProvider: ViewModelProvider) : Navigator {
 
-    override val currentScreen = MutableStateFlow<Screen>(Screen.Home)
+    private val bottomNavigationStateContainer = BottomNavigationStateContainer(initialScreenForTabs = mapOf(
+        HOME to NavigationStateEntry(Screen.Home, DefaultViewModelContainer(viewModelProvider)),
+        STATISTICS to NavigationStateEntry(Screen.Statistics, DefaultViewModelContainer(viewModelProvider)),
+        SETTINGS to NavigationStateEntry(Screen.Settings, DefaultViewModelContainer(viewModelProvider)),
+    ))
 
-    override var viewModelContainer = ViewModelContainer(viewModelProvider)
+    override val currentNavigationStateEntry: StateFlow<NavigationStateEntry>
+        get() = bottomNavigationStateContainer.currentNavigationStateEntry
 
-    private val backStack = mutableListOf<BackStackEntry>()
+    override val selectedBottomNavigationTab: BottomNavigationTab
+        get() = bottomNavigationStateContainer.selectedTab
 
     override fun goBack(): Boolean {
-        if (backStack.isEmpty()) {
-            return false
-        }
-        viewModelContainer.release()
-        val backStackEntry = backStack.removeLast()
-        viewModelContainer = backStackEntry.viewModelContainer
-        currentScreen.value = backStackEntry.screen
-        return true
+        return bottomNavigationStateContainer.popBackStack() != null
     }
 
     override fun switchScreen(to: Screen) {
-        val backStackEntry = BackStackEntry(currentScreen.value, viewModelContainer)
-        viewModelContainer = ViewModelContainer(viewModelProvider)
-        currentScreen.value = to
-        backStack.add(backStackEntry)
+        bottomNavigationStateContainer.add(NavigationStateEntry(
+            screen = to,
+            viewModelContainer = DefaultViewModelContainer(viewModelProvider),
+        ))
     }
 
-    override fun saveState() = NavigatorState(backStack.map { it.screen }, currentScreen.value)
+    override fun onBottomNavigationTabSelected(tab: BottomNavigationTab) {
+        if (bottomNavigationStateContainer.selectedTab == tab) {
+            bottomNavigationStateContainer.clearSelectedTabStack()
+        } else {
+            bottomNavigationStateContainer.switchSelectedTab(tab)
+        }
+    }
+
+    override fun saveState() = NavigatorState(bottomNavigationStateContainer.saveState())
 
     override fun restoreState(state: NavigatorState) {
-        backStack.addAll(state.backStack.map { BackStackEntry(it, ViewModelContainer(viewModelProvider)) })
-        currentScreen.value = state.currentScreen
+        bottomNavigationStateContainer.restoreState(state.bottomNavigationSavedState, viewModelProvider)
     }
-
-    private data class BackStackEntry(val screen: Screen, val viewModelContainer: ViewModelContainer)
 
 }

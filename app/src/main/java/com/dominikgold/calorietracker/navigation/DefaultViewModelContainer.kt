@@ -8,12 +8,25 @@ import com.dominikgold.calorietracker.di.ViewModelProvider
 import javax.inject.Inject
 import kotlin.reflect.KClass
 
-class ViewModelContainer @Inject constructor(private val viewModelProvider: ViewModelProvider) {
+interface ViewModelContainer {
+
+    fun <VM : ViewModel, SavedState, Parameters> get(
+        viewModelClass: KClass<VM>,
+        savedState: SavedState?,
+        parameters: Parameters?,
+    ): VM
+
+    fun release()
+
+}
+
+class DefaultViewModelContainer @Inject constructor(private val viewModelProvider: ViewModelProvider) :
+    ViewModelContainer {
 
     private val viewModels = mutableMapOf<ViewModelTag, ViewModel>()
 
     @Suppress("UNCHECKED_CAST")
-    fun <VM : ViewModel, SavedState, Parameters> get(
+    override fun <VM : ViewModel, SavedState, Parameters> get(
         viewModelClass: KClass<VM>,
         savedState: SavedState?,
         parameters: Parameters?,
@@ -23,7 +36,7 @@ class ViewModelContainer @Inject constructor(private val viewModelProvider: View
         return viewModel as VM
     }
 
-    fun release() {
+    override fun release() {
         viewModels.values.forEach { it.release() }
         viewModels.clear()
     }

@@ -11,4 +11,9 @@ sealed class Screen : Parcelable {
     @Parcelize
     object SetCalorieGoal : Screen()
 
+    @Parcelize
+    object Statistics : Screen()
+
+    @Parcelize
+    object Settings : Screen()
 }

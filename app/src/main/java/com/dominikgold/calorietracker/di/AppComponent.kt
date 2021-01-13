@@ -4,6 +4,7 @@ import android.content.Context
 import com.dominikgold.calorietracker.MainActivity
 import com.dominikgold.calorietracker.datasources.DataSourcesModule
 import com.dominikgold.calorietracker.repositories.RepositoriesModule
+import com.dominikgold.calorietracker.ui.bottomnav.BottomNavigationUiModule
 import com.dominikgold.calorietracker.ui.caloriegoal.SetCalorieGoalUiModule
 import com.dominikgold.calorietracker.ui.home.HomeScreenUiModule
 import com.dominikgold.calorietracker.ui.topbar.TopBarUiModule
@@ -23,6 +24,7 @@ import javax.inject.Singleton
     SetCalorieGoalUiModule::class,
     HomeScreenUiModule::class,
     TopBarUiModule::class,
+    BottomNavigationUiModule::class,
 ])
 interface AppComponent {
 

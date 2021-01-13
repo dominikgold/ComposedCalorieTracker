@@ -9,11 +9,12 @@ import androidx.compose.ui.platform.setContent
 import com.dominikgold.calorietracker.navigation.Navigator
 import com.dominikgold.calorietracker.navigation.NavigatorState
 import com.dominikgold.calorietracker.navigation.Screen
-import com.dominikgold.calorietracker.navigation.ViewModelContainer
 import com.dominikgold.calorietracker.navigation.ViewModelContainerAmbient
 import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
 import com.dominikgold.calorietracker.ui.caloriegoal.SetCalorieGoalScreen
 import com.dominikgold.calorietracker.ui.home.HomeScreen
+import com.dominikgold.calorietracker.ui.settings.SettingsScreen
+import com.dominikgold.calorietracker.ui.statistics.StatisticsScreen
 import javax.inject.Inject
 
 private const val EXTRA_NAVIGATOR_STATE = "EXTRA_NAVIGATOR_STATE"
@@ -48,15 +49,12 @@ class MainActivity : AppCompatActivity() {
 
 @Composable
 fun Main(navigator: Navigator) {
-    val screen = navigator.currentScreen.collectAsState()
-    CurrentScreen(screen.value, navigator.viewModelContainer)
-}
-
-@Composable
-fun CurrentScreen(screen: Screen, viewModelContainer: ViewModelContainer) {
-    Providers(ViewModelContainerAmbient provides viewModelContainer) {
-        when (screen) {
+    val navigationStateEntry = navigator.currentNavigationStateEntry.collectAsState()
+    Providers(ViewModelContainerAmbient provides navigationStateEntry.value.viewModelContainer) {
+        when (navigationStateEntry.value.screen) {
             Screen.Home -> HomeScreen()
+            Screen.Statistics -> StatisticsScreen()
+            Screen.Settings -> SettingsScreen()
             Screen.SetCalorieGoal -> SetCalorieGoalScreen()
         }
     }

@@ -30,6 +30,8 @@ import androidx.ui.tooling.preview.Preview
 import com.dominikgold.calorietracker.R
 import com.dominikgold.calorietracker.navigation.viewModel
 import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
+import com.dominikgold.calorietracker.ui.bottomnav.BottomNavigationTab
+import com.dominikgold.calorietracker.ui.bottomnav.CalorieTrackerBottomNavigation
 import com.dominikgold.calorietracker.ui.topbar.CalorieTrackerTopBar
 import com.dominikgold.calorietracker.ui.topbar.TopBarActionTextButton
 import com.dominikgold.calorietracker.util.Translated
@@ -51,6 +53,7 @@ fun HomeScreen() {
                 },
             )
         },
+        bottomBar = { CalorieTrackerBottomNavigation() },
     ) {
         HomeScreenContent(
             onIntakeEntryAdded = viewModel::addIntakeEntry,
@@ -113,15 +116,6 @@ fun AnimatedAddIntakeEntryButton(
     ) {
         TextButton(onClick = onClick) {
             Text(text = Translated(R.string.add_intake_entry_button))
-        }
-    }
-}
-
-@Composable
-private fun BoxScope.SetNewCalorieGoalButton(onSetCalorieGoalClicked: () -> Unit) {
-    Card(Modifier.padding(bottom = 16.dp).align(Alignment.BottomCenter), elevation = 8.dp) {
-        Button(onClick = onSetCalorieGoalClicked) {
-            Text(text = Translated(resourceId = R.string.set_new_calorie_goal_button))
         }
     }
 }
