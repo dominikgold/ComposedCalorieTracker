@@ -6,9 +6,9 @@ import com.dominikgold.calorietracker.entities.IntakeEntry
 data class IntakeEntryUiModel(
     val name: String,
     val calories: Int,
-    val carbohydrates: Grams,
-    val protein: Grams,
-    val fat: Grams,
+    val carbohydrates: Grams?,
+    val protein: Grams?,
+    val fat: Grams?,
 )
 
 fun IntakeEntry.toUiModel() = IntakeEntryUiModel(

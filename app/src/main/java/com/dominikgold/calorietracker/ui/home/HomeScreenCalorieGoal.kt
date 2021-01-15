@@ -1,6 +1,6 @@
 package com.dominikgold.calorietracker.ui.home
 
-import androidx.compose.foundation.Text
+import androidx.compose.material.Text
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,7 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import com.dominikgold.calorietracker.R
 import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
 import com.dominikgold.calorietracker.util.Translated
@@ -38,21 +38,27 @@ fun HomeScreenCalorieGoal(uiModel: CalorieGoalUiModel) {
         )
         Spacer(Modifier.height(32.dp))
         Row(Modifier.fillMaxWidth()) {
-            MacroAmountLeft(
-                title = Translated(R.string.home_screen_carbs_left),
-                macrosLeft = uiModel.carbohydratesLeft,
-                totalMacros = uiModel.totalCarbohydrates,
-            )
-            MacroAmountLeft(
-                title = Translated(R.string.home_screen_protein_left),
-                macrosLeft = uiModel.proteinLeft,
-                totalMacros = uiModel.totalProtein,
-            )
-            MacroAmountLeft(
-                title = Translated(R.string.home_screen_fat_left),
-                macrosLeft = uiModel.fatLeft,
-                totalMacros = uiModel.totalFat,
-            )
+            uiModel.carbohydratesGoal?.let {
+                MacroAmountLeft(
+                    title = Translated(R.string.home_screen_carbs_left),
+                    macrosLeft = it.amountLeft,
+                    totalMacros = it.totalAmount,
+                )
+            }
+            uiModel.proteinGoal?.let {
+                MacroAmountLeft(
+                    title = Translated(R.string.home_screen_protein_left),
+                    macrosLeft = it.amountLeft,
+                    totalMacros = it.totalAmount,
+                )
+            }
+            uiModel.fatGoal?.let {
+                MacroAmountLeft(
+                    title = Translated(R.string.home_screen_fat_left),
+                    macrosLeft = it.amountLeft,
+                    totalMacros = it.totalAmount,
+                )
+            }
         }
     }
 }
@@ -77,12 +83,9 @@ fun HomeScreenCalorieGoalPreview() {
             HomeScreenCalorieGoal(uiModel = CalorieGoalUiModel(
                 totalCalories = 2000,
                 caloriesLeft = 1500,
-                totalCarbohydrates = 150,
-                carbohydratesLeft = 100,
-                totalProtein = 100,
-                proteinLeft = 10,
-                totalFat = 50,
-                fatLeft = 0,
+                carbohydratesGoal = MacroGoalUiModel(150, 100),
+                proteinGoal = MacroGoalUiModel(100, 10),
+                fatGoal = MacroGoalUiModel(50, 0),
             ))
         }
     }

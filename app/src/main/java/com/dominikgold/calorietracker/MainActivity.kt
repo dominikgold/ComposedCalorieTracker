@@ -9,7 +9,7 @@ import androidx.compose.ui.platform.setContent
 import com.dominikgold.calorietracker.navigation.Navigator
 import com.dominikgold.calorietracker.navigation.NavigatorState
 import com.dominikgold.calorietracker.navigation.Screen
-import com.dominikgold.calorietracker.navigation.ViewModelContainerAmbient
+import com.dominikgold.calorietracker.navigation.AmbientViewModelContainer
 import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
 import com.dominikgold.calorietracker.ui.caloriegoal.SetCalorieGoalScreen
 import com.dominikgold.calorietracker.ui.home.HomeScreen
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun Main(navigator: Navigator) {
     val navigationStateEntry = navigator.currentNavigationStateEntry.collectAsState()
-    Providers(ViewModelContainerAmbient provides navigationStateEntry.value.viewModelContainer) {
+    Providers(AmbientViewModelContainer provides navigationStateEntry.value.viewModelContainer) {
         when (navigationStateEntry.value.screen) {
             Screen.Home -> HomeScreen()
             Screen.Statistics -> StatisticsScreen()

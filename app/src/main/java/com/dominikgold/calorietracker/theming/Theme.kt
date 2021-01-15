@@ -7,7 +7,6 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
 import androidx.compose.runtime.staticAmbientOf
-import com.dominikgold.calorietracker.navigation.ViewModelContainerAmbient
 
 private val DarkColorPalette = darkColors(
         primary = purple200,
@@ -38,7 +37,7 @@ fun CalorieTrackerTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Co
         LightColorPalette
     }
 
-    Providers(IsDarkThemeAmbient provides darkTheme) {
+    Providers(AmbientIsDarkTheme provides darkTheme) {
         MaterialTheme(
                 colors = colors,
                 typography = typography,
@@ -48,4 +47,4 @@ fun CalorieTrackerTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Co
     }
 }
 
-val IsDarkThemeAmbient = staticAmbientOf { false }
+val AmbientIsDarkTheme = staticAmbientOf { false }

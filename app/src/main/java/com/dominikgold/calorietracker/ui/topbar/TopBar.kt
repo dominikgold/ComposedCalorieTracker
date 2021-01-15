@@ -1,19 +1,19 @@
 package com.dominikgold.calorietracker.ui.topbar
 
-import androidx.compose.foundation.Icon
-import androidx.compose.foundation.Text
+import androidx.compose.material.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.VectorAsset
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import com.dominikgold.calorietracker.R
 import com.dominikgold.calorietracker.navigation.viewModel
 import com.dominikgold.calorietracker.util.inLightAndDarkTheme
@@ -21,7 +21,7 @@ import com.dominikgold.calorietracker.util.inLightAndDarkTheme
 @Composable
 fun CalorieTrackerTopBar(
     title: String,
-    navigationIcon: VectorAsset? = null,
+    navigationIcon: ImageVector? = null,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     val viewModel: TopBarViewModel = viewModel()
@@ -36,7 +36,7 @@ fun CalorieTrackerTopBar(
 @Composable
 private fun CalorieTrackerTopBarContent(
     title: String,
-    navigationIcon: VectorAsset? = null,
+    navigationIcon: ImageVector? = null,
     onNavigationIconClick: () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
 ) {
@@ -50,9 +50,9 @@ private fun CalorieTrackerTopBarContent(
 }
 
 @Composable
-private fun NavigationIcon(icon: VectorAsset, onClick: () -> Unit) {
+private fun NavigationIcon(icon: ImageVector, onClick: () -> Unit) {
     IconButton(onClick = onClick) {
-        Icon(asset = icon)
+        Icon(imageVector = icon)
     }
 }
 

@@ -10,7 +10,7 @@ data class MacroSplitUiModel(private val macroSplit: MacroSplit, private val tde
     @StringRes
     val name = macroSplit.translatableName
 
-    private val calorieGoal = CalorieGoal(tdee, macroSplit)
+    private val calorieGoal = CalorieGoal.createWithMacroSplit(tdee, macroSplit)
 
     val formattedProteinAmount = "${calorieGoal.protein} g"
     val formattedCarbohydratesAmount = "${calorieGoal.carbohydrates} g"

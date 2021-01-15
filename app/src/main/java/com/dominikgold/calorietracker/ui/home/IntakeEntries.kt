@@ -7,7 +7,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.Text
+import androidx.compose.material.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.TextField
@@ -32,7 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import com.dominikgold.calorietracker.R
 import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
 import com.dominikgold.calorietracker.theming.textColorSubtitle
@@ -51,18 +52,24 @@ fun IntakeEntryCard(uiModel: IntakeEntryUiModel) {
                     text = Translated(R.string.intake_entry_calorie_count, listOf(uiModel.calories)),
                     color = textColorSubtitle,
                 )
-                Text(
-                    text = Translated(R.string.intake_entry_carbs_count, listOf(uiModel.carbohydrates)),
-                    color = textColorSubtitle,
-                )
-                Text(
-                    text = Translated(R.string.intake_entry_protein_count, listOf(uiModel.protein)),
-                    color = textColorSubtitle,
-                )
-                Text(
-                    text = Translated(R.string.intake_entry_fat_count, listOf(uiModel.fat)),
-                    color = textColorSubtitle,
-                )
+                uiModel.carbohydrates?.let { carbohydrates ->
+                    Text(
+                        text = Translated(R.string.intake_entry_carbs_count, listOf(carbohydrates)),
+                        color = textColorSubtitle,
+                    )
+                }
+                uiModel.protein?.let { protein ->
+                    Text(
+                        text = Translated(R.string.intake_entry_protein_count, listOf(protein)),
+                        color = textColorSubtitle,
+                    )
+                }
+                uiModel.fat?.let { fat ->
+                    Text(
+                        text = Translated(R.string.intake_entry_fat_count, listOf(fat)),
+                        color = textColorSubtitle,
+                    )
+                }
             }
         }
     }
@@ -114,7 +121,7 @@ fun AddIntakeEntry(onConfirmed: (IntakeEntryUiModel) -> Unit, onCancelled: () ->
                     caloriesInput.value = newInput.toIntOrNull()
                 },
                 placeholder = { Text(text = Translated(R.string.intake_entry_calorie_input_placeholder)) },
-                keyboardType = KeyboardType.Number,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth(),
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -182,7 +189,7 @@ private fun RowScope.AddIntakeEntryMacroField(inputState: MutableState<Int?>, pl
             inputState.value = newInput.toIntOrNull()
         },
         placeholder = { Text(text = placeholderText) },
-        keyboardType = KeyboardType.Number,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         modifier = Modifier.weight(1f),
     )
 }

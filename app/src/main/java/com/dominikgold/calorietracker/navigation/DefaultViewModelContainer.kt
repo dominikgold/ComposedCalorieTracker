@@ -47,15 +47,15 @@ class DefaultViewModelContainer @Inject constructor(private val viewModelProvide
 inline fun <reified VM : ViewModel, SavedState, Parameters> viewModel(
     savedState: SavedState?,
     parameters: Parameters?,
-) = ViewModelContainerAmbient.current.get(VM::class, savedState, parameters)
+) = AmbientViewModelContainer.current.get(VM::class, savedState, parameters)
 
 @Composable
 inline fun <reified VM : ViewModel, SavedState> viewModel(savedState: SavedState?) =
-    ViewModelContainerAmbient.current.get(VM::class, savedState, null)
+    AmbientViewModelContainer.current.get(VM::class, savedState, null)
 
 @Composable
-inline fun <reified VM : ViewModel> viewModel() = ViewModelContainerAmbient.current.get(VM::class, null, null)
+inline fun <reified VM : ViewModel> viewModel() = AmbientViewModelContainer.current.get(VM::class, null, null)
 
-val ViewModelContainerAmbient = staticAmbientOf<ViewModelContainer> {
+val AmbientViewModelContainer = staticAmbientOf<ViewModelContainer> {
     throw IllegalStateException("No ViewModelContainer provided")
 }

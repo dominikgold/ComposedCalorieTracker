@@ -1,9 +1,10 @@
 package com.dominikgold.calorietracker.navigation
 
-import androidx.compose.runtime.state
 import com.dominikgold.calorietracker.di.ViewModelProvider
 import com.dominikgold.calorietracker.ui.bottomnav.BottomNavigationTab
-import com.dominikgold.calorietracker.ui.bottomnav.BottomNavigationTab.*
+import com.dominikgold.calorietracker.ui.bottomnav.BottomNavigationTab.HOME
+import com.dominikgold.calorietracker.ui.bottomnav.BottomNavigationTab.SETTINGS
+import com.dominikgold.calorietracker.ui.bottomnav.BottomNavigationTab.STATISTICS
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify

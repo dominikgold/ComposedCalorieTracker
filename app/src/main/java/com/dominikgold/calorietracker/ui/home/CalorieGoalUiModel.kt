@@ -7,23 +7,31 @@ import com.dominikgold.calorietracker.entities.IntakeEntry
 data class CalorieGoalUiModel(
     val totalCalories: Int,
     val caloriesLeft: Int,
-    val totalCarbohydrates: Grams,
-    val carbohydratesLeft: Grams,
-    val totalProtein: Grams,
-    val proteinLeft: Grams,
-    val totalFat: Grams,
-    val fatLeft: Grams,
+    val carbohydratesGoal: MacroGoalUiModel?,
+    val proteinGoal: MacroGoalUiModel?,
+    val fatGoal: MacroGoalUiModel?,
+)
+
+data class MacroGoalUiModel(
+    val totalAmount: Grams,
+    val amountLeft: Grams,
 )
 
 fun CalorieGoalUiModel.addIntakeEntry(intakeEntryUiModel: IntakeEntryUiModel) = CalorieGoalUiModel(
-    this.totalCalories,
-    this.caloriesLeft + intakeEntryUiModel.calories,
-    this.totalCarbohydrates,
-    this.carbohydratesLeft + intakeEntryUiModel.carbohydrates,
-    this.totalProtein,
-    this.proteinLeft + intakeEntryUiModel.protein,
-    this.totalFat,
-    this.fatLeft + intakeEntryUiModel.fat,
+    totalCalories = this.totalCalories,
+    caloriesLeft = this.caloriesLeft + intakeEntryUiModel.calories,
+    carbohydratesGoal = this.carbohydratesGoal?.copy(
+        totalAmount = carbohydratesGoal.totalAmount,
+        amountLeft = carbohydratesGoal.amountLeft + (intakeEntryUiModel.carbohydrates ?: 0),
+    ),
+    proteinGoal = this.proteinGoal?.copy(
+        totalAmount = proteinGoal.totalAmount,
+        amountLeft = proteinGoal.amountLeft + (intakeEntryUiModel.protein ?: 0),
+    ),
+    fatGoal = this.fatGoal?.copy(
+        totalAmount = fatGoal.totalAmount,
+        amountLeft = fatGoal.amountLeft + (intakeEntryUiModel.fat ?: 0),
+    ),
 )
 
 fun CalorieGoal.toUiModel(allIntakeEntries: List<IntakeEntry>): CalorieGoalUiModel {
@@ -33,18 +41,15 @@ fun CalorieGoal.toUiModel(allIntakeEntries: List<IntakeEntry>): CalorieGoalUiMod
     var consumedFat = 0
     allIntakeEntries.forEach {
         consumedCalories += it.calories
-        consumedCarbohydrates += it.carbohydrates
-        consumedProtein += it.protein
-        consumedFat += it.fat
+        consumedCarbohydrates += it.carbohydrates ?: 0
+        consumedProtein += it.protein ?: 0
+        consumedFat += it.fat ?: 0
     }
     return CalorieGoalUiModel(
         totalCalories = this.totalCalories,
         caloriesLeft = this.totalCalories - consumedCalories,
-        totalCarbohydrates = this.carbohydrates,
-        carbohydratesLeft = this.carbohydrates - consumedCarbohydrates,
-        totalProtein = this.protein,
-        proteinLeft = this.protein - consumedProtein,
-        totalFat = this.fat,
-        fatLeft = this.fat - consumedFat,
+        carbohydratesGoal = this.carbohydrates?.let { MacroGoalUiModel(it, it - consumedCarbohydrates) },
+        proteinGoal = this.protein?.let { MacroGoalUiModel(it, it - consumedCarbohydrates) },
+        fatGoal = this.fat?.let { MacroGoalUiModel(it, it - consumedCarbohydrates) },
     )
 }

@@ -19,12 +19,12 @@ val colorTopBarButtonNight = purple200
 
 @Composable
 val textColorDefault
-    get() = if (IsDarkThemeAmbient.current) textColorDefaultNight else textColorDefaultDay
+    get() = if (AmbientIsDarkTheme.current) textColorDefaultNight else textColorDefaultDay
 
 @Composable
 val textColorSubtitle
-    get() = if (IsDarkThemeAmbient.current) textColorSubtitleNight else textColorSubtitleDay
+    get() = if (AmbientIsDarkTheme.current) textColorSubtitleNight else textColorSubtitleDay
 
 @Composable
 val colorTopBarButton
-    get() = if (IsDarkThemeAmbient.current) colorTopBarButtonNight else colorTopBarButtonDay
+    get() = if (AmbientIsDarkTheme.current) colorTopBarButtonNight else colorTopBarButtonDay

@@ -8,7 +8,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.ScrollableColumn
-import androidx.compose.foundation.Text
+import androidx.compose.material.Text
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Spacer
@@ -26,7 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import com.dominikgold.calorietracker.R
 import com.dominikgold.calorietracker.navigation.viewModel
 import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
@@ -127,7 +127,13 @@ fun HomeScreenContentPreview() {
         HomeScreenContent(
             HomeScreenUiModel(
                 showNoCalorieGoalSet = false,
-                calorieGoal = CalorieGoalUiModel(2000, 500, 200, 50, 100, 20, 50, 10),
+                calorieGoal = CalorieGoalUiModel(
+                    totalCalories = 2000,
+                    caloriesLeft = 500,
+                    carbohydratesGoal = MacroGoalUiModel(200, 50),
+                    proteinGoal = MacroGoalUiModel(100, 20),
+                    fatGoal = MacroGoalUiModel(50, 10),
+                ),
                 intakeEntries = listOf(IntakeEntryUiModel("essen", 1500, 150, 80, 40)),
             ),
             {},

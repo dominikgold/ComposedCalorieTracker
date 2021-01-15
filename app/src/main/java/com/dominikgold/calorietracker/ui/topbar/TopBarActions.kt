@@ -1,6 +1,6 @@
 package com.dominikgold.calorietracker.ui.topbar
 
-import androidx.compose.foundation.Text
+import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import com.dominikgold.calorietracker.theming.colorTopBarButton

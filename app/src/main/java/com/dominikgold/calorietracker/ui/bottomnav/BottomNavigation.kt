@@ -1,11 +1,11 @@
 package com.dominikgold.calorietracker.ui.bottomnav
 
-import androidx.compose.foundation.Icon
-import androidx.compose.foundation.Text
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.runtime.Composable
-import androidx.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Preview
 import com.dominikgold.calorietracker.navigation.viewModel
 import com.dominikgold.calorietracker.util.inLightAndDarkTheme
 
@@ -28,7 +28,7 @@ fun CalorieTrackerBottomNavigationContent(
     BottomNavigation {
         availableTabs.forEach { tab ->
             BottomNavigationItem(
-                icon = { Icon(asset = tab.icon) },
+                icon = { Icon(imageVector = tab.icon) },
                 label = { Text(tab.title) },
                 selected = tab == selectedTab,
                 onClick = { onTabSelected(tab) },

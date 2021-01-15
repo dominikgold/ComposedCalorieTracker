@@ -78,7 +78,7 @@ class SetCalorieGoalViewModelTest {
 
         viewModel.saveCalorieGoal()
 
-        verify(setCalorieGoalUseCase).setCalorieGoal(CalorieGoal(2000, MacroSplit.BALANCED))
+        verify(setCalorieGoalUseCase).setCalorieGoal(CalorieGoal.createWithMacroSplit(2000, MacroSplit.BALANCED))
     }
 
     @Test

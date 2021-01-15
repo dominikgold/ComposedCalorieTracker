@@ -28,7 +28,7 @@ class SetCalorieGoalViewModel(
         val macroSplit = chosenMacroSplit
         require(tdee != null && macroSplit != null) { "Tdee or macro split are not set when saving calorie goal" }
         coroutineScope.launch {
-            setCalorieGoalUseCase.setCalorieGoal(CalorieGoal(tdee, macroSplit))
+            setCalorieGoalUseCase.setCalorieGoal(CalorieGoal.createWithMacroSplit(tdee, macroSplit))
             navigator.goBack()
         }
     }
