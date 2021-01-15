@@ -65,7 +65,7 @@ fun HomeScreen() {
 @Composable
 private fun HomeScreenContent(
     uiState: HomeScreenUiModel,
-    onIntakeEntryAdded: (IntakeEntryUiModel) -> Unit,
+    onIntakeEntryAdded: (AddIntakeEntryUiModel) -> Unit,
 ) {
     Box(Modifier.fillMaxSize().padding(16.dp)) {
         if (uiState.showNoCalorieGoalSet) {

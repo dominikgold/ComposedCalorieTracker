@@ -37,4 +37,5 @@
     <string name="statistics_screen_title">Statistics</string>
     <string name="settings_tab_title">Settings</string>
     <string name="settings_screen_title">Settings</string>
+    <string name="dropdown_reset_macro_split">Reset</string>
 </resources>

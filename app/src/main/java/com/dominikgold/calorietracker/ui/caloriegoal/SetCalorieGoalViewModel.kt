@@ -3,6 +3,8 @@ package com.dominikgold.calorietracker.ui.caloriegoal
 import com.dominikgold.calorietracker.ViewModel
 import com.dominikgold.calorietracker.di.ViewModelFactory
 import com.dominikgold.calorietracker.entities.CalorieGoal
+import com.dominikgold.calorietracker.entities.Grams
+import com.dominikgold.calorietracker.entities.MacroGoals
 import com.dominikgold.calorietracker.entities.MacroSplit
 import com.dominikgold.calorietracker.navigation.Navigator
 import com.dominikgold.calorietracker.usecases.caloriegoal.SetCalorieGoalUseCase
@@ -10,42 +12,67 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 class SetCalorieGoalViewModel(
     private val setCalorieGoalUseCase: SetCalorieGoalUseCase,
     private val navigator: Navigator,
-    savedState: SetCalorieGoalUiModel?,
+    savedState: SetCalorieGoalUiState?,
 ) : ViewModel() {
 
-    private val _uiModelState = MutableStateFlow(savedState ?: SetCalorieGoalUiModel(null, null, false))
-    val uiModelState: StateFlow<SetCalorieGoalUiModel>
-        get() = _uiModelState
-
-    private var chosenMacroSplit: MacroSplit? = null
+    private val _uiState = MutableStateFlow(savedState ?: SetCalorieGoalUiState(null, null, null, null, null))
+    val uiState: StateFlow<SetCalorieGoalUiState>
+        get() = _uiState
 
     fun saveCalorieGoal() {
-        val tdee = uiModelState.value.tdeeInput
-        val macroSplit = chosenMacroSplit
-        require(tdee != null && macroSplit != null) { "Tdee or macro split are not set when saving calorie goal" }
+        val tdee = uiState.value.tdeeInput
+        require(tdee != null) { "Tdee is not set when saving calorie goal" }
         coroutineScope.launch {
-            setCalorieGoalUseCase.setCalorieGoal(CalorieGoal.createWithMacroSplit(tdee, macroSplit))
+            setCalorieGoalUseCase.setCalorieGoal(CalorieGoal(
+                totalCalories = tdee,
+                macroGoals = MacroGoals(
+                    carbohydrates = uiState.value.carbohydratesInput,
+                    protein = uiState.value.proteinInput,
+                    fat = uiState.value.fatInput,
+                ),
+            ))
             navigator.goBack()
         }
     }
 
     fun updateTdee(tdee: Int?) {
-        _uiModelState.value = _uiModelState.value.copy(
-            tdeeInput = tdee,
-            isSaveButtonEnabled = tdee != null && chosenMacroSplit != null,
-        )
+        val chosenMacroSplit = uiState.value.chosenMacroSplit
+        if (chosenMacroSplit != null) {
+            val macroGoals = tdee?.let { MacroGoals.createWithMacroSplit(it, chosenMacroSplit) }
+            _uiState.value = _uiState.value.copy(
+                tdeeInput = tdee,
+                carbohydratesInput = macroGoals?.carbohydrates,
+                proteinInput = macroGoals?.protein,
+                fatInput = macroGoals?.fat,
+            )
+            _uiState.value = _uiState.value.copy(tdeeInput = tdee)
+        } else {
+            _uiState.value = _uiState.value.copy(tdeeInput = tdee)
+        }
     }
 
-    fun updateMacroSplit(macroSplit: MacroSplit) {
-        this.chosenMacroSplit = macroSplit
-        _uiModelState.value = _uiModelState.value.copy(
-            chosenMacroSplit = macroSplit,
-            isSaveButtonEnabled = _uiModelState.value.tdeeInput != null,
-        )
+    fun updateChosenMacroSplit(macroSplit: MacroSplit?) {
+        if (macroSplit != null) {
+            val macroGoals = uiState.value.tdeeInput?.let { tdee -> MacroGoals.createWithMacroSplit(tdee, macroSplit) }
+            _uiState.value = _uiState.value.copy(
+                chosenMacroSplit = macroSplit,
+                carbohydratesInput = macroGoals?.carbohydrates,
+                proteinInput = macroGoals?.protein,
+                fatInput = macroGoals?.fat,
+            )
+        } else {
+            _uiState.value = _uiState.value.copy(
+                carbohydratesInput = null,
+                proteinInput = null,
+                fatInput = null,
+                chosenMacroSplit = null,
+            )
+        }
     }
 
 }
@@ -53,9 +80,9 @@ class SetCalorieGoalViewModel(
 class SetCalorieGoalViewModelFactory @Inject constructor(
     private val setCalorieGoalUseCase: SetCalorieGoalUseCase,
     private val navigator: Navigator,
-) : ViewModelFactory<SetCalorieGoalViewModel, SetCalorieGoalUiModel, Nothing> {
+) : ViewModelFactory<SetCalorieGoalViewModel, SetCalorieGoalUiState, Nothing> {
 
-    override fun create(savedState: SetCalorieGoalUiModel?, parameters: Nothing?): SetCalorieGoalViewModel {
+    override fun create(savedState: SetCalorieGoalUiState?, parameters: Nothing?): SetCalorieGoalViewModel {
         return SetCalorieGoalViewModel(setCalorieGoalUseCase, navigator, savedState)
     }
 

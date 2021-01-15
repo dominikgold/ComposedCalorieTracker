@@ -3,7 +3,7 @@ package com.dominikgold.calorietracker.navigation
 import android.os.Parcelable
 import com.dominikgold.calorietracker.di.ViewModelProvider
 import com.dominikgold.calorietracker.ui.bottomnav.BottomNavigationTab
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 

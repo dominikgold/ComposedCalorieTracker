@@ -17,20 +17,20 @@ data class MacroGoalUiModel(
     val amountLeft: Grams,
 )
 
-fun CalorieGoalUiModel.addIntakeEntry(intakeEntryUiModel: IntakeEntryUiModel) = CalorieGoalUiModel(
+fun CalorieGoalUiModel.addIntakeEntry(intakeEntry: IntakeEntry) = CalorieGoalUiModel(
     totalCalories = this.totalCalories,
-    caloriesLeft = this.caloriesLeft + intakeEntryUiModel.calories,
+    caloriesLeft = this.caloriesLeft + intakeEntry.calories,
     carbohydratesGoal = this.carbohydratesGoal?.copy(
         totalAmount = carbohydratesGoal.totalAmount,
-        amountLeft = carbohydratesGoal.amountLeft + (intakeEntryUiModel.carbohydrates ?: 0),
+        amountLeft = carbohydratesGoal.amountLeft + (intakeEntry.carbohydrates ?: 0),
     ),
     proteinGoal = this.proteinGoal?.copy(
         totalAmount = proteinGoal.totalAmount,
-        amountLeft = proteinGoal.amountLeft + (intakeEntryUiModel.protein ?: 0),
+        amountLeft = proteinGoal.amountLeft + (intakeEntry.protein ?: 0),
     ),
     fatGoal = this.fatGoal?.copy(
         totalAmount = fatGoal.totalAmount,
-        amountLeft = fatGoal.amountLeft + (intakeEntryUiModel.fat ?: 0),
+        amountLeft = fatGoal.amountLeft + (intakeEntry.fat ?: 0),
     ),
 )
 
@@ -48,8 +48,8 @@ fun CalorieGoal.toUiModel(allIntakeEntries: List<IntakeEntry>): CalorieGoalUiMod
     return CalorieGoalUiModel(
         totalCalories = this.totalCalories,
         caloriesLeft = this.totalCalories - consumedCalories,
-        carbohydratesGoal = this.carbohydrates?.let { MacroGoalUiModel(it, it - consumedCarbohydrates) },
-        proteinGoal = this.protein?.let { MacroGoalUiModel(it, it - consumedCarbohydrates) },
-        fatGoal = this.fat?.let { MacroGoalUiModel(it, it - consumedCarbohydrates) },
+        carbohydratesGoal = this.macroGoals.carbohydrates?.let { MacroGoalUiModel(it, it - consumedCarbohydrates) },
+        proteinGoal = this.macroGoals.protein?.let { MacroGoalUiModel(it, it - consumedCarbohydrates) },
+        fatGoal = this.macroGoals.fat?.let { MacroGoalUiModel(it, it - consumedCarbohydrates) },
     )
 }

@@ -10,6 +10,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Scaffold
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -31,23 +32,23 @@ import com.dominikgold.calorietracker.util.Translated
 
 @Composable
 fun SetCalorieGoalScreen() {
-    var savedState: SetCalorieGoalUiModel? by savedInstanceState { null }
-    val viewModel: SetCalorieGoalViewModel = viewModel(savedState = savedState)
-    val uiModelState by viewModel.uiModelState.collectAsState()
-    savedState = uiModelState
+    val savedState: MutableState<SetCalorieGoalUiState?> = savedInstanceState { null }
+    val viewModel: SetCalorieGoalViewModel = viewModel(savedState = savedState.value)
+    val uiModelState by viewModel.uiState.collectAsState()
+    savedState.value = uiModelState
     SetCalorieGoalContent(
-        uiModel = uiModelState,
+        uiState = uiModelState,
         onTdeeChanged = viewModel::updateTdee,
-        onMacroSplitChosen = viewModel::updateMacroSplit,
+        onMacroSplitChosen = viewModel::updateChosenMacroSplit,
         onSaveButtonClicked = viewModel::saveCalorieGoal,
     )
 }
 
 @Composable
 private fun SetCalorieGoalContent(
-    uiModel: SetCalorieGoalUiModel,
+    uiState: SetCalorieGoalUiState,
     onTdeeChanged: (Int?) -> Unit,
-    onMacroSplitChosen: (MacroSplit) -> Unit,
+    onMacroSplitChosen: (MacroSplit?) -> Unit,
     onSaveButtonClicked: () -> Unit,
 ) {
     Scaffold(topBar = {
@@ -57,28 +58,30 @@ private fun SetCalorieGoalContent(
             actions = {
                 TopBarActionTextButton(
                     text = Translated(R.string.top_bar_action_save),
-                    enabled = uiModel.isSaveButtonEnabled,
+                    enabled = uiState.isSaveButtonEnabled,
                     onClick = onSaveButtonClicked,
                 )
             },
         )
     }) {
-        SetCalorieGoalBody(uiModel, onTdeeChanged, onMacroSplitChosen)
+        SetCalorieGoalBody(uiState, onTdeeChanged, onMacroSplitChosen)
     }
 }
 
 @Composable
 private fun SetCalorieGoalBody(
-    uiModel: SetCalorieGoalUiModel,
+    uiState: SetCalorieGoalUiState,
     onTdeeChanged: (Int?) -> Unit,
-    onMacroSplitChosen: (MacroSplit) -> Unit,
+    onMacroSplitChosen: (MacroSplit?) -> Unit,
 ) {
     Column(
-        modifier = Modifier.padding(16.dp).fillMaxWidth(),
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.Start,
     ) {
         TextField(
-            value = uiModel.tdeeInput?.toString() ?: "",
+            value = uiState.tdeeInput?.toString() ?: "",
             placeholder = {
                 Text(text = Translated(resourceId = R.string.tdee_input_placeholder))
             },
@@ -89,7 +92,7 @@ private fun SetCalorieGoalBody(
             modifier = Modifier.fillMaxWidth(),
         )
         Spacer(modifier = Modifier.height(16.dp))
-        ChooseMacroSplit(uiModel.macroSplitUiModel, onMacroSplitChosen)
+        SetMacroGoals(uiState, onMacroSplitChosen)
     }
 }
 
@@ -97,6 +100,6 @@ private fun SetCalorieGoalBody(
 @Preview(showBackground = true)
 fun SetCalorieGoalContentPreview() {
     CalorieTrackerTheme {
-        SetCalorieGoalContent(SetCalorieGoalUiModel(null, null, false), {}, {}, {})
+        SetCalorieGoalContent(SetCalorieGoalUiState(null, null, null, null, null), {}, {}, {})
     }
 }

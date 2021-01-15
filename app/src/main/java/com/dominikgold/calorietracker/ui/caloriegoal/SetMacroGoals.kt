@@ -28,19 +28,20 @@ import com.dominikgold.calorietracker.util.Translated
 import com.dominikgold.calorietracker.util.inLightAndDarkTheme
 
 @Composable
-fun ChooseMacroSplit(macroSplitUiModel: MacroSplitUiModel?, onMacroSplitChosen: (MacroSplit) -> Unit) {
+fun SetMacroGoals(uiState: SetCalorieGoalUiState, onMacroSplitChosen: (MacroSplit?) -> Unit) {
     Column {
         var dropdownMenuExpanded by remember { mutableStateOf(false) }
         DropdownMenu(
             toggle = {
                 TextDropdownToggle(
-                    text = Translated(macroSplitUiModel?.name),
+                    text = Translated(uiState.macroSplitName),
                     placeholder = Translated(R.string.choose_macro_split_hint),
                     isExpanded = dropdownMenuExpanded,
                     modifier = Modifier.fillMaxWidth(),
                 )
             },
-            toggleModifier = Modifier.clickable(onClick = { dropdownMenuExpanded = !dropdownMenuExpanded })
+            toggleModifier = Modifier
+                .clickable(onClick = { dropdownMenuExpanded = !dropdownMenuExpanded })
                 .fillMaxWidth()
                 .padding(top = 8.dp, bottom = 8.dp),
             expanded = dropdownMenuExpanded,
@@ -53,12 +54,15 @@ fun ChooseMacroSplit(macroSplitUiModel: MacroSplitUiModel?, onMacroSplitChosen: 
             })
         }
         Spacer(modifier = Modifier.height(16.dp))
-        MacroSplitValues(macroSplitUiModel = macroSplitUiModel)
+        IndividualMacroGoals(uiState = uiState)
     }
 }
 
 @Composable
-private fun MacroSplitDropdownItems(onItemSelected: (MacroSplit) -> Unit) {
+private fun MacroSplitDropdownItems(onItemSelected: (MacroSplit?) -> Unit) {
+    DropdownMenuItem(onClick = { onItemSelected(null) }) {
+        Text(text = Translated(R.string.dropdown_reset_macro_split))
+    }
     MacroSplit.values().forEach { macroSplit ->
         DropdownMenuItem(onClick = { onItemSelected(macroSplit) }) {
             Text(text = Translated(macroSplit.translatableName))
@@ -67,30 +71,30 @@ private fun MacroSplitDropdownItems(onItemSelected: (MacroSplit) -> Unit) {
 }
 
 @Composable
-private fun MacroSplitValues(macroSplitUiModel: MacroSplitUiModel?) {
+private fun IndividualMacroGoals(uiState: SetCalorieGoalUiState) {
     Row {
         Text(text = Translated(R.string.choose_macro_split_carbohydrates_title), color = textColorDefault)
         Spacer(modifier = Modifier.width(16.dp))
-        Text(text = macroSplitUiModel?.formattedCarbohydratesAmount ?: "", color = textColorSubtitle)
+        Text(text = uiState.formattedCarbohydratesAmount, color = textColorSubtitle)
     }
     Spacer(modifier = Modifier.height(8.dp))
     Row {
         Text(text = Translated(R.string.choose_macro_split_protein_title), color = textColorDefault)
         Spacer(modifier = Modifier.width(16.dp))
-        Text(text = macroSplitUiModel?.formattedProteinAmount ?: "", color = textColorSubtitle)
+        Text(text = uiState.formattedProteinAmount, color = textColorSubtitle)
     }
     Spacer(modifier = Modifier.height(8.dp))
     Row {
         Text(text = Translated(R.string.choose_macro_split_fat_title), color = textColorDefault)
         Spacer(modifier = Modifier.width(16.dp))
-        Text(text = macroSplitUiModel?.formattedFatAmount ?: "", color = textColorSubtitle)
+        Text(text = uiState.formattedFatAmount, color = textColorSubtitle)
     }
 }
 
 @Composable
 @Preview
-fun ChooseMacroSplitPreview() {
+fun SetMacroGoalsPreview() {
     inLightAndDarkTheme {
-        ChooseMacroSplit(MacroSplitUiModel(MacroSplit.HIGH_CARB, 2000)) {}
+        SetMacroGoals(SetCalorieGoalUiState(2000, 150, 100, 50, MacroSplit.HIGH_CARB)) {}
     }
 }

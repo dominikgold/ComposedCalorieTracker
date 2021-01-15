@@ -22,6 +22,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.material.Card
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -80,7 +82,7 @@ fun IntakeEntryCard(uiModel: IntakeEntryUiModel) {
 fun AnimatedAddIntakeEntry(
     isVisible: Boolean,
     enterAnimationDelay: Int,
-    onConfirmed: (IntakeEntryUiModel) -> Unit,
+    onConfirmed: (AddIntakeEntryUiModel) -> Unit,
     onCancelled: () -> Unit,
 ) {
     val expandVertically = expandVertically(animSpec = TweenSpec(durationMillis = 400, delay = enterAnimationDelay))
@@ -98,27 +100,21 @@ fun AnimatedAddIntakeEntry(
 
 @OptIn(ExperimentalLayout::class)
 @Composable
-fun AddIntakeEntry(onConfirmed: (IntakeEntryUiModel) -> Unit, onCancelled: () -> Unit) {
+fun AddIntakeEntry(onConfirmed: (AddIntakeEntryUiModel) -> Unit, onCancelled: () -> Unit) {
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(Modifier.padding(16.dp)) {
-            val nameInput = remember { mutableStateOf("") }
-            val caloriesInput = remember { mutableStateOf<Int?>(null) }
-            val carbohydratesInput = remember { mutableStateOf<Int?>(null) }
-            val proteinInput = remember { mutableStateOf<Int?>(null) }
-            val fatInput = remember { mutableStateOf<Int?>(null) }
+            var uiModel by mutableStateOf(AddIntakeEntryUiModel("", null, null, null, null))
             TextField(
-                value = nameInput.value,
-                onValueChange = { nameInput.value = it },
-                placeholder = {
-                    Text(text = Translated(resourceId = R.string.intake_entry_name_input_placeholder))
-                },
+                value = uiModel.name,
+                onValueChange = { uiModel = uiModel.copy(name = it) },
+                placeholder = { Text(text = Translated(resourceId = R.string.intake_entry_name_input_placeholder)) },
                 modifier = Modifier.fillMaxWidth(),
             )
             Spacer(modifier = Modifier.height(16.dp))
             TextField(
-                value = caloriesInput.value?.toString() ?: "",
+                value = uiModel.calories?.toString() ?: "",
                 onValueChange = LengthInputFilter(maxLength = 5) { newInput ->
-                    caloriesInput.value = newInput.toIntOrNull()
+                    uiModel = uiModel.copy(calories = newInput.toIntOrNull())
                 },
                 placeholder = { Text(text = Translated(R.string.intake_entry_calorie_input_placeholder)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -127,17 +123,20 @@ fun AddIntakeEntry(onConfirmed: (IntakeEntryUiModel) -> Unit, onCancelled: () ->
             Spacer(modifier = Modifier.height(16.dp))
             Row {
                 AddIntakeEntryMacroField(
-                    inputState = carbohydratesInput,
+                    currentValue = uiModel.carbohydrates,
+                    onChanged = { uiModel = uiModel.copy(carbohydrates = it) },
                     placeholderText = Translated(resourceId = R.string.intake_entry_carbohydrates_input_placeholder),
                 )
                 Spacer(modifier = Modifier.width(16.dp))
                 AddIntakeEntryMacroField(
-                    inputState = proteinInput,
+                    currentValue = uiModel.protein,
+                    onChanged = { uiModel = uiModel.copy(protein = it) },
                     placeholderText = Translated(resourceId = R.string.intake_entry_protein_input_placeholder),
                 )
                 Spacer(modifier = Modifier.width(16.dp))
                 AddIntakeEntryMacroField(
-                    inputState = fatInput,
+                    currentValue = uiModel.fat,
+                    onChanged = { uiModel = uiModel.copy(fat = it) },
                     placeholderText = Translated(resourceId = R.string.intake_entry_fat_input_placeholder),
                 )
             }
@@ -148,12 +147,8 @@ fun AddIntakeEntry(onConfirmed: (IntakeEntryUiModel) -> Unit, onCancelled: () ->
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 AddIntakeEntryConfirmButton(
-                    name = nameInput.value,
-                    calories = caloriesInput.value,
-                    carbohydrates = carbohydratesInput.value,
-                    protein = proteinInput.value,
-                    fat = fatInput.value,
-                    onConfirmed = onConfirmed,
+                    uiModel = uiModel,
+                    onConfirmed = { onConfirmed(uiModel) },
                 )
             }
         }
@@ -162,31 +157,20 @@ fun AddIntakeEntry(onConfirmed: (IntakeEntryUiModel) -> Unit, onCancelled: () ->
 
 @Composable
 fun AddIntakeEntryConfirmButton(
-    name: String,
-    calories: Int?,
-    carbohydrates: Int?,
-    protein: Int?,
-    fat: Int?,
-    onConfirmed: (IntakeEntryUiModel) -> Unit,
+    uiModel: AddIntakeEntryUiModel,
+    onConfirmed: () -> Unit,
 ) {
-    Button(
-        onClick = {
-            if (calories != null && carbohydrates != null && protein != null && fat != null) {
-                onConfirmed(IntakeEntryUiModel(name, calories, carbohydrates, protein, fat))
-            }
-        },
-        enabled = calories != null && carbohydrates != null && protein != null && fat != null,
-    ) {
+    Button(onClick = onConfirmed, enabled = uiModel.isConfirmButtonEnabled) {
         Text(text = Translated(R.string.add_intake_entry_button_confirm))
     }
 }
 
 @Composable
-private fun RowScope.AddIntakeEntryMacroField(inputState: MutableState<Int?>, placeholderText: String) {
+private fun RowScope.AddIntakeEntryMacroField(currentValue: Int?, onChanged: (Int?) -> Unit, placeholderText: String) {
     TextField(
-        value = inputState.value?.toString() ?: "",
+        value = currentValue?.toString() ?: "",
         onValueChange = LengthInputFilter(maxLength = 5) { newInput ->
-            inputState.value = newInput.toIntOrNull()
+            onChanged(newInput.toIntOrNull())
         },
         placeholder = { Text(text = placeholderText) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),

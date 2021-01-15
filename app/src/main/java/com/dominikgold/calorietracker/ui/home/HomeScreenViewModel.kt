@@ -44,19 +44,21 @@ class HomeScreenViewModel(
         navigator.switchScreen(Screen.SetCalorieGoal)
     }
 
-    fun addIntakeEntry(uiModel: IntakeEntryUiModel) {
+    fun addIntakeEntry(uiModel: AddIntakeEntryUiModel) {
+        require(uiModel.calories != null)
+        val intakeEntry = IntakeEntry(
+            name = uiModel.name,
+            calories = uiModel.calories,
+            carbohydrates = uiModel.carbohydrates,
+            protein = uiModel.protein,
+            fat = uiModel.fat,
+        )
         coroutineScope.launch {
-            saveIntakeEntryUseCase.saveIntakeEntry(IntakeEntry(
-                uiModel.name,
-                uiModel.calories,
-                uiModel.carbohydrates,
-                uiModel.protein,
-                uiModel.fat,
-            ))
+            saveIntakeEntryUseCase.saveIntakeEntry(intakeEntry)
         }
         _uiState.value = _uiState.value.copy(
-            calorieGoal = _uiState.value.calorieGoal?.addIntakeEntry(uiModel),
-            intakeEntries = _uiState.value.intakeEntries + uiModel,
+            calorieGoal = _uiState.value.calorieGoal?.addIntakeEntry(intakeEntry),
+            intakeEntries = _uiState.value.intakeEntries + intakeEntry.toUiModel(),
         )
     }
 

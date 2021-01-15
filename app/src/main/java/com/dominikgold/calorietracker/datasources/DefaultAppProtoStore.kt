@@ -8,6 +8,7 @@ import androidx.datastore.createDataStore
 import com.dominikgold.calorietracker.datasources.models.ProtoCalorieGoal
 import com.dominikgold.calorietracker.di.ApplicationContext
 import com.dominikgold.calorietracker.entities.CalorieGoal
+import com.dominikgold.calorietracker.entities.MacroGoals
 import com.dominikgold.calorietracker.repositories.AppProtoStore
 import kotlinx.coroutines.flow.firstOrNull
 import java.io.InputStream
@@ -29,18 +30,20 @@ class DefaultAppProtoStore @Inject constructor(@ApplicationContext context: Cont
         calorieGoalStore.updateData {
             ProtoCalorieGoal.newBuilder()
                 .setCalories(calorieGoal.totalCalories)
-                .setCarbohydrates(calorieGoal.carbohydrates ?: -1)
-                .setProtein(calorieGoal.protein ?: -1)
-                .setFat(calorieGoal.fat ?: -1)
+                .setCarbohydrates(calorieGoal.macroGoals.carbohydrates ?: -1)
+                .setProtein(calorieGoal.macroGoals.protein ?: -1)
+                .setFat(calorieGoal.macroGoals.fat ?: -1)
                 .build()
         }
     }
 
     private fun ProtoCalorieGoal.toEntity() = CalorieGoal(
         totalCalories = this.calories,
-        carbohydrates = this.carbohydrates.takeIf { it > 0 },
-        protein = this.protein.takeIf { it > 0 },
-        fat = this.fat.takeIf { it > 0 },
+        macroGoals = MacroGoals(
+            carbohydrates = this.carbohydrates.takeIf { it > 0 },
+            protein = this.protein.takeIf { it > 0 },
+            fat = this.fat.takeIf { it > 0 },
+        ),
     )
 
 }
