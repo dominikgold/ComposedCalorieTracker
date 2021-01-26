@@ -1,6 +1,6 @@
 package com.dominikgold.calorietracker.di
 
-import com.dominikgold.calorietracker.ViewModel
+import com.dominikgold.compose.viewmodel.ViewModel
 import dagger.MapKey
 import kotlin.reflect.KClass
 

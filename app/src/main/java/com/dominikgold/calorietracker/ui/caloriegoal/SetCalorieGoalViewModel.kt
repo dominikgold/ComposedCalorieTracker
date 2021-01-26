@@ -1,6 +1,6 @@
 package com.dominikgold.calorietracker.ui.caloriegoal
 
-import com.dominikgold.calorietracker.ViewModel
+import com.dominikgold.compose.viewmodel.ViewModel
 import com.dominikgold.calorietracker.di.ViewModelFactory
 import com.dominikgold.calorietracker.entities.CalorieGoal
 import com.dominikgold.calorietracker.entities.Grams

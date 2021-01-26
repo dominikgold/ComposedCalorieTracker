@@ -15,7 +15,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
 import com.dominikgold.calorietracker.R
-import com.dominikgold.calorietracker.navigation.viewModel
+import com.dominikgold.compose.viewmodel.viewModel
 import com.dominikgold.calorietracker.util.inLightAndDarkTheme
 
 @Composable

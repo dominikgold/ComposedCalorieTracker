@@ -1,13 +1,13 @@
 package com.dominikgold.calorietracker.ui.bottomnav
 
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.dominikgold.calorietracker.navigation.viewModel
 import com.dominikgold.calorietracker.util.inLightAndDarkTheme
+import com.dominikgold.compose.viewmodel.viewModel
 
 @Composable
 fun CalorieTrackerBottomNavigation() {

@@ -1,10 +1,11 @@
 package com.dominikgold.calorietracker.navigation
 
-import com.dominikgold.calorietracker.di.ViewModelProvider
+import com.dominikgold.calorietracker.di.DefaultViewModelProvider
 import com.dominikgold.calorietracker.ui.bottomnav.BottomNavigationTab
 import com.dominikgold.calorietracker.ui.bottomnav.BottomNavigationTab.HOME
 import com.dominikgold.calorietracker.ui.bottomnav.BottomNavigationTab.SETTINGS
 import com.dominikgold.calorietracker.ui.bottomnav.BottomNavigationTab.STATISTICS
+import com.dominikgold.compose.viewmodel.ViewModelContainer
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
@@ -194,7 +195,7 @@ class BottomNavigationStateContainerTest {
 
         val savedState = stateContainer.saveState()
         val newStateContainer = BottomNavigationStateContainer(initialScreenForTabs)
-        newStateContainer.restoreState(savedState, ViewModelProvider(mapOf()))
+        newStateContainer.restoreState(savedState, DefaultViewModelProvider(mapOf()))
 
         stateContainer.selectedTab shouldBeEqualTo STATISTICS
         stateContainer.currentNavigationStateEntry.value.screen shouldBeEqualTo Screen.Statistics

@@ -9,12 +9,12 @@ import androidx.compose.ui.platform.setContent
 import com.dominikgold.calorietracker.navigation.Navigator
 import com.dominikgold.calorietracker.navigation.NavigatorState
 import com.dominikgold.calorietracker.navigation.Screen
-import com.dominikgold.calorietracker.navigation.AmbientViewModelContainer
 import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
 import com.dominikgold.calorietracker.ui.caloriegoal.SetCalorieGoalScreen
 import com.dominikgold.calorietracker.ui.home.HomeScreen
 import com.dominikgold.calorietracker.ui.settings.SettingsScreen
 import com.dominikgold.calorietracker.ui.statistics.StatisticsScreen
+import com.dominikgold.compose.viewmodel.AmbientViewModelContainer
 import javax.inject.Inject
 
 private const val EXTRA_NAVIGATOR_STATE = "EXTRA_NAVIGATOR_STATE"

@@ -1,5 +1,7 @@
-package com.dominikgold.calorietracker
+package com.dominikgold.compose.viewmodel
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.staticAmbientOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -11,7 +13,7 @@ open class ViewModel {
 
     protected val coroutineScope: CoroutineScope = ViewModelScope()
 
-    fun release() {
+    internal fun release() {
         coroutineScope.cancel(CancellationException("ViewModel has been released"))
     }
 

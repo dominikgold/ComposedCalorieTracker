@@ -1,6 +1,6 @@
 package com.dominikgold.calorietracker.ui.topbar
 
-import com.dominikgold.calorietracker.ViewModel
+import com.dominikgold.compose.viewmodel.ViewModel
 import com.dominikgold.calorietracker.di.ViewModelFactory
 import com.dominikgold.calorietracker.navigation.Navigator
 import javax.inject.Inject

@@ -52,6 +52,7 @@ android {
 
 dependencies {
 
+    implementation(project(":compose-viewmodel"))
     implementation(Dependencies.kotlinSdk)
 
     implementation(Dependencies.coroutinesCore)

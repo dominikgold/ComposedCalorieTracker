@@ -1,17 +1,18 @@
 package com.dominikgold.calorietracker.di
 
-import com.dominikgold.calorietracker.ViewModel
+import com.dominikgold.compose.viewmodel.ViewModel
+import com.dominikgold.compose.viewmodel.ViewModelProvider
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
 import kotlin.reflect.KClass
 
 @Singleton
-class ViewModelProvider @Inject constructor(
+class DefaultViewModelProvider @Inject constructor(
     private val factories: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModelFactory<ViewModel, Any, Any>>>,
-) {
+): ViewModelProvider {
 
-    fun <VM : ViewModel, SavedState, Parameters> provide(
+    override fun <VM : ViewModel, SavedState, Parameters> provide(
         viewModelClass: KClass<VM>,
         savedState: SavedState?,
         parameters: Parameters?,

@@ -1,8 +1,9 @@
 package com.dominikgold.calorietracker.navigation
 
-import com.dominikgold.calorietracker.di.ViewModelProvider
+import com.dominikgold.calorietracker.di.DefaultViewModelProvider
 import com.dominikgold.calorietracker.ui.bottomnav.BottomNavigationTab
 import com.dominikgold.calorietracker.ui.bottomnav.BottomNavigationTab.*
+import com.dominikgold.compose.viewmodel.DefaultViewModelContainer
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -26,7 +27,7 @@ interface Navigator {
 }
 
 @Singleton
-class DefaultNavigator @Inject constructor(private val viewModelProvider: ViewModelProvider) : Navigator {
+class DefaultNavigator @Inject constructor(private val viewModelProvider: DefaultViewModelProvider) : Navigator {
 
     private val bottomNavigationStateContainer = BottomNavigationStateContainer(initialScreenForTabs = mapOf(
         HOME to NavigationStateEntry(Screen.Home, DefaultViewModelContainer(viewModelProvider)),

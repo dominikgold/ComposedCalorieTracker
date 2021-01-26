@@ -1,11 +1,12 @@
 package com.dominikgold.calorietracker.navigation
 
 import android.os.Parcelable
-import com.dominikgold.calorietracker.di.ViewModelProvider
+import com.dominikgold.calorietracker.di.DefaultViewModelProvider
 import com.dominikgold.calorietracker.ui.bottomnav.BottomNavigationTab
-import kotlinx.parcelize.Parcelize
+import com.dominikgold.compose.viewmodel.DefaultViewModelContainer
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.parcelize.Parcelize
 
 /**
  * This class manages the navigation state for the bottom navigation.
@@ -95,7 +96,7 @@ class BottomNavigationStateContainer(initialScreenForTabs: Map<BottomNavigationT
         selectedTabHistory = selectedTabHistory,
     )
 
-    fun restoreState(state: BottomNavigationSavedState, viewModelProvider: ViewModelProvider) {
+    fun restoreState(state: BottomNavigationSavedState, viewModelProvider: DefaultViewModelProvider) {
         selectedTabHistory.clear()
         selectedTabHistory.addAll(state.selectedTabHistory)
         state.tabScreenHistories.forEach { (tab, history) ->
