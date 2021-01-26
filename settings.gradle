@@ -1,2 +1,3 @@
 rootProject.name = "CalorieTracker"
 include ':app'
+include ':compose-viewmodel'
