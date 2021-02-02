@@ -34,9 +34,6 @@ android {
 }
 
 dependencies {
-
     implementation(Dependencies.coroutinesCore)
-
     implementation(Dependencies.composeUi)
-
 }
