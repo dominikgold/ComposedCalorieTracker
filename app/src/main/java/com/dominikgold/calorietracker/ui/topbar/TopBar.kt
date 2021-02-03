@@ -52,7 +52,7 @@ private fun CalorieTrackerTopBarContent(
 @Composable
 private fun NavigationIcon(icon: ImageVector, onClick: () -> Unit) {
     IconButton(onClick = onClick) {
-        Icon(imageVector = icon)
+        Icon(imageVector = icon, contentDescription = null)
     }
 }
 

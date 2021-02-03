@@ -24,15 +24,6 @@ data class SetCalorieGoalUiState(
     val isSaveButtonEnabled: Boolean
         get() = tdeeInput != null
 
-    @IgnoredOnParcel
-    val formattedProteinAmount = proteinInput?.let { "$it g" } ?: ""
-
-    @IgnoredOnParcel
-    val formattedCarbohydratesAmount = carbohydratesInput?.let { "$it g" } ?: ""
-
-    @IgnoredOnParcel
-    val formattedFatAmount = fatInput?.let { "$it g" } ?: ""
-
 }
 
 val MacroSplit.translatableName: Int

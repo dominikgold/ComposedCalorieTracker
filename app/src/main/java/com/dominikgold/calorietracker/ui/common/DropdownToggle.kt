@@ -28,7 +28,7 @@ fun TextDropdownToggle(text: String?, placeholder: String?, isExpanded: Boolean,
             color = if (text == null) textColorSubtitle else textColorDefault,
         )
         Spacer(Modifier.weight(1f))
-        Icon(imageVector = vectorResource(id = iconResource), tint = textColorDefault)
+        Icon(imageVector = vectorResource(id = iconResource), contentDescription = null, tint = textColorDefault)
     }
 }
 

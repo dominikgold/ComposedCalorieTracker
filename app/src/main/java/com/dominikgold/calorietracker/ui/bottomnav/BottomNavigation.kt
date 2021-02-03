@@ -28,7 +28,7 @@ fun CalorieTrackerBottomNavigationContent(
     BottomNavigation {
         availableTabs.forEach { tab ->
             BottomNavigationItem(
-                icon = { Icon(imageVector = tab.icon) },
+                icon = { Icon(imageVector = tab.icon, contentDescription = null) },
                 label = { Text(tab.title) },
                 selected = tab == selectedTab,
                 onClick = { onTabSelected(tab) },

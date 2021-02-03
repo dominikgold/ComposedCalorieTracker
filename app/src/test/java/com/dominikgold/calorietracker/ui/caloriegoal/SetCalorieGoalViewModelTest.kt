@@ -125,4 +125,64 @@ class SetCalorieGoalViewModelTest {
         verify(navigator).goBack()
     }
 
+    @Test
+    fun `updating protein updates protein value in ui state`() {
+        viewModel.updateProtein(100)
+        viewModel.uiState.value.proteinInput shouldBeEqualTo 100
+
+        viewModel.updateProtein(null)
+        viewModel.uiState.value.proteinInput shouldBe null
+    }
+
+    @Test
+    fun `saving calorie goal uses specifically chosen protein amount`() = runBlockingTest {
+        viewModel.updateTdee(2000)
+        viewModel.updateProtein(100)
+
+        viewModel.saveCalorieGoal()
+
+        val expectedMacroGoals = MacroGoals(protein = 100, carbohydrates = null, fat = null)
+        verify(setCalorieGoalUseCase).setCalorieGoal(CalorieGoal(2000, expectedMacroGoals))
+    }
+
+    @Test
+    fun `updating carbohydrates updates carbohydrates value in ui state`() {
+        viewModel.updateCarbohydrates(100)
+        viewModel.uiState.value.carbohydratesInput shouldBeEqualTo 100
+
+        viewModel.updateCarbohydrates(null)
+        viewModel.uiState.value.carbohydratesInput shouldBe null
+    }
+
+    @Test
+    fun `saving calorie goal uses specifically chosen carbohydrates amount`() = runBlockingTest {
+        viewModel.updateTdee(2000)
+        viewModel.updateCarbohydrates(100)
+
+        viewModel.saveCalorieGoal()
+
+        val expectedMacroGoals = MacroGoals(carbohydrates = 100, protein = null, fat = null)
+        verify(setCalorieGoalUseCase).setCalorieGoal(CalorieGoal(2000, expectedMacroGoals))
+    }
+
+    @Test
+    fun `updating fat updates fat value in ui state`() {
+        viewModel.updateFat(100)
+        viewModel.uiState.value.fatInput shouldBeEqualTo 100
+
+        viewModel.updateFat(null)
+        viewModel.uiState.value.fatInput shouldBe null
+    }
+
+    @Test
+    fun `saving calorie goal uses specifically chosen fat amount`() = runBlockingTest {
+        viewModel.updateTdee(2000)
+        viewModel.updateFat(100)
+
+        viewModel.saveCalorieGoal()
+
+        val expectedMacroGoals = MacroGoals(fat = 100, carbohydrates = null, protein = null)
+        verify(setCalorieGoalUseCase).setCalorieGoal(CalorieGoal(2000, expectedMacroGoals))
+    }
+
 }

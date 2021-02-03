@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -21,6 +22,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dominikgold.calorietracker.R
+import com.dominikgold.calorietracker.entities.Grams
 import com.dominikgold.calorietracker.entities.MacroSplit
 import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
 import com.dominikgold.calorietracker.ui.topbar.CalorieTrackerTopBar
@@ -33,12 +35,11 @@ import com.dominikgold.compose.viewmodel.viewModel
 fun SetCalorieGoalScreen() {
     val savedState: MutableState<SetCalorieGoalUiState?> = savedInstanceState { null }
     val viewModel: SetCalorieGoalViewModel = viewModel(savedState = savedState.value)
-    val uiModelState by viewModel.uiState.collectAsState()
-    savedState.value = uiModelState
+    val uiState by viewModel.uiState.collectAsState()
+    savedState.value = uiState
     SetCalorieGoalContent(
-        uiState = uiModelState,
-        onTdeeChanged = viewModel::updateTdee,
-        onMacroSplitChosen = viewModel::updateChosenMacroSplit,
+        uiState = uiState,
+        setCalorieGoalActions = viewModel,
         onSaveButtonClicked = viewModel::saveCalorieGoal,
     )
 }
@@ -46,8 +47,7 @@ fun SetCalorieGoalScreen() {
 @Composable
 private fun SetCalorieGoalContent(
     uiState: SetCalorieGoalUiState,
-    onTdeeChanged: (Int?) -> Unit,
-    onMacroSplitChosen: (MacroSplit?) -> Unit,
+    setCalorieGoalActions: SetCalorieGoalActions,
     onSaveButtonClicked: () -> Unit,
 ) {
     Scaffold(topBar = {
@@ -63,35 +63,31 @@ private fun SetCalorieGoalContent(
             },
         )
     }) {
-        SetCalorieGoalBody(uiState, onTdeeChanged, onMacroSplitChosen)
+        SetCalorieGoalBody(uiState, setCalorieGoalActions)
     }
 }
 
 @Composable
-private fun SetCalorieGoalBody(
-    uiState: SetCalorieGoalUiState,
-    onTdeeChanged: (Int?) -> Unit,
-    onMacroSplitChosen: (MacroSplit?) -> Unit,
-) {
+private fun SetCalorieGoalBody(uiState: SetCalorieGoalUiState, setCalorieGoalActions: SetCalorieGoalActions) {
     Column(
         modifier = Modifier
             .padding(16.dp)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.Start,
     ) {
-        TextField(
+        OutlinedTextField(
             value = uiState.tdeeInput?.toString() ?: "",
             placeholder = {
                 Text(text = Translated(resourceId = R.string.tdee_input_placeholder))
             },
             onValueChange = LengthInputFilter(maxLength = 5) { newInput ->
-                onTdeeChanged(newInput.toIntOrNull())
+                setCalorieGoalActions.updateTdee(newInput.toIntOrNull())
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth(),
         )
         Spacer(modifier = Modifier.height(16.dp))
-        SetMacroGoals(uiState, onMacroSplitChosen)
+        SetMacroGoals(uiState, setCalorieGoalActions)
     }
 }
 
@@ -99,6 +95,12 @@ private fun SetCalorieGoalBody(
 @Preview(showBackground = true)
 fun SetCalorieGoalContentPreview() {
     CalorieTrackerTheme {
-        SetCalorieGoalContent(SetCalorieGoalUiState(null, null, null, null, null), {}, {}, {})
+        SetCalorieGoalContent(SetCalorieGoalUiState(null, null, null, null, null), object : SetCalorieGoalActions {
+            override fun updateTdee(tdee: Int?) {}
+            override fun updateChosenMacroSplit(macroSplit: MacroSplit?) {}
+            override fun updateProtein(protein: Grams?) {}
+            override fun updateCarbohydrates(carbohydrates: Grams?) {}
+            override fun updateFat(fat: Grams?) {}
+        }) {}
     }
 }

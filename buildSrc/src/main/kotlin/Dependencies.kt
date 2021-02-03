@@ -5,11 +5,11 @@ object Dependencies {
     val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
 
-    val kotlinVersion = "1.4.21"
+    val kotlinVersion = "1.4.21-2"
     val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     val kotlinSdk = "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
-    val composeVersion = "1.0.0-alpha10"
+    val composeVersion = "1.0.0-alpha11"
     val composeUi = "androidx.compose.ui:ui:$composeVersion"
     val composeMaterial = "androidx.compose.material:material:$composeVersion"
     val composeTooling = "androidx.compose.ui:ui-tooling:$composeVersion"

@@ -18,7 +18,7 @@ class SetCalorieGoalViewModel(
     private val setCalorieGoalUseCase: SetCalorieGoalUseCase,
     private val navigator: Navigator,
     savedState: SetCalorieGoalUiState?,
-) : ViewModel() {
+) : ViewModel(), SetCalorieGoalActions {
 
     private val _uiState = MutableStateFlow(savedState ?: SetCalorieGoalUiState(null, null, null, null, null))
     val uiState: StateFlow<SetCalorieGoalUiState>
@@ -40,7 +40,7 @@ class SetCalorieGoalViewModel(
         }
     }
 
-    fun updateTdee(tdee: Int?) {
+    override fun updateTdee(tdee: Int?) {
         val chosenMacroSplit = uiState.value.chosenMacroSplit
         if (chosenMacroSplit != null) {
             val macroGoals = tdee?.let { MacroGoals.createWithMacroSplit(it, chosenMacroSplit) }
@@ -56,7 +56,7 @@ class SetCalorieGoalViewModel(
         }
     }
 
-    fun updateChosenMacroSplit(macroSplit: MacroSplit?) {
+    override fun updateChosenMacroSplit(macroSplit: MacroSplit?) {
         if (macroSplit != null) {
             val macroGoals = uiState.value.tdeeInput?.let { tdee -> MacroGoals.createWithMacroSplit(tdee, macroSplit) }
             _uiState.value = _uiState.value.copy(
@@ -73,6 +73,18 @@ class SetCalorieGoalViewModel(
                 chosenMacroSplit = null,
             )
         }
+    }
+
+    override fun updateProtein(protein: Grams?) {
+        _uiState.value = _uiState.value.copy(proteinInput = protein)
+    }
+
+    override fun updateCarbohydrates(carbohydrates: Grams?) {
+        _uiState.value = _uiState.value.copy(carbohydratesInput = carbohydrates)
+    }
+
+    override fun updateFat(fat: Grams?) {
+        _uiState.value = _uiState.value.copy(fatInput = fat)
     }
 
 }
