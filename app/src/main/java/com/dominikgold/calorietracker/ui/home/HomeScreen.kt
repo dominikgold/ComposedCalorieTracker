@@ -15,6 +15,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Scaffold
@@ -67,34 +70,42 @@ private fun HomeScreenContent(
     uiState: HomeScreenUiModel,
     onIntakeEntryAdded: (AddIntakeEntryUiModel) -> Unit,
 ) {
-    Box(Modifier.fillMaxSize().padding(16.dp)) {
+    Box(Modifier
+            .fillMaxSize()
+            .padding(16.dp)) {
         if (uiState.showNoCalorieGoalSet) {
             NoCalorieGoalSet()
         } else if (uiState.calorieGoal != null) {
             val isAddIntakeEntrySectionVisible = remember { mutableStateOf(false) }
-            ScrollableColumn {
-                HomeScreenCalorieGoal(uiModel = uiState.calorieGoal)
-                Spacer(modifier = Modifier.height(8.dp))
-                uiState.intakeEntries.forEach {
+            LazyColumn {
+                item {
+                    HomeScreenCalorieGoal(uiModel = uiState.calorieGoal)
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+                items(items = uiState.intakeEntries) {
                     Spacer(modifier = Modifier.height(8.dp))
                     IntakeEntryCard(uiModel = it)
                 }
-                Spacer(modifier = Modifier.height(8.dp))
-                AnimatedAddIntakeEntryButton(
-                    isVisible = !isAddIntakeEntrySectionVisible.value,
-                    enterAnimationDelay = 400,
-                    onClick = { isAddIntakeEntrySectionVisible.value = true },
-                )
-                AnimatedAddIntakeEntry(
-                    isVisible = isAddIntakeEntrySectionVisible.value,
-                    enterAnimationDelay = 200,
-                    onConfirmed = {
-                        isAddIntakeEntrySectionVisible.value = false
-                        onIntakeEntryAdded(it)
-                    },
-                    onCancelled = { isAddIntakeEntrySectionVisible.value = false },
-                )
-                Spacer(modifier = Modifier.height(64.dp))
+                item { Spacer(modifier = Modifier.height(8.dp)) }
+                item {
+                    AnimatedAddIntakeEntryButton(
+                        isVisible = !isAddIntakeEntrySectionVisible.value,
+                        enterAnimationDelay = 400,
+                        onClick = { isAddIntakeEntrySectionVisible.value = true },
+                    )
+                }
+                item {
+                    AnimatedAddIntakeEntry(
+                        isVisible = isAddIntakeEntrySectionVisible.value,
+                        enterAnimationDelay = 200,
+                        onConfirmed = {
+                            isAddIntakeEntrySectionVisible.value = false
+                            onIntakeEntryAdded(it)
+                        },
+                        onCancelled = { isAddIntakeEntrySectionVisible.value = false },
+                    )
+                }
+                item { Spacer(modifier = Modifier.height(64.dp)) }
             }
         }
     }
@@ -107,7 +118,10 @@ fun AnimatedAddIntakeEntryButton(
     enterAnimationDelay: Int,
     onClick: () -> Unit,
 ) {
-    val expandVertically = expandVertically(animSpec = TweenSpec(durationMillis = 200, delay = enterAnimationDelay))
+    val expandVertically = expandVertically(
+        expandFrom = Alignment.Top,
+        animSpec = TweenSpec(durationMillis = 200, delay = enterAnimationDelay),
+    )
     val fadeIn = fadeIn(animSpec = TweenSpec(durationMillis = 200, delay = enterAnimationDelay))
     AnimatedVisibility(
         visible = isVisible,

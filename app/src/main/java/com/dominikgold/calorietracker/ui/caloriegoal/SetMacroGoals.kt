@@ -1,6 +1,8 @@
 package com.dominikgold.calorietracker.ui.caloriegoal
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ConstraintLayout
 import androidx.compose.foundation.layout.Dimension
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.dominikgold.calorietracker.R
 import com.dominikgold.calorietracker.entities.Grams
 import com.dominikgold.calorietracker.entities.MacroSplit
+import com.dominikgold.calorietracker.theming.TextStyles
 import com.dominikgold.calorietracker.theming.textColorDefault
 import com.dominikgold.calorietracker.ui.common.TextDropdownToggle
 import com.dominikgold.calorietracker.util.LengthInputFilter
@@ -91,7 +95,7 @@ private fun IndividualMacroGoals(uiState: SetCalorieGoalUiState, setCalorieGoalA
                 bottom.linkTo(carbsInput.bottom)
             },
             text = Translated(R.string.choose_macro_split_carbohydrates_title),
-            color = textColorDefault,
+            style = TextStyles.Title,
             overflow = TextOverflow.Ellipsis,
         )
         Text(
@@ -102,9 +106,8 @@ private fun IndividualMacroGoals(uiState: SetCalorieGoalUiState, setCalorieGoalA
                 centerHorizontallyTo(carbsTitle)
             },
             text = Translated(R.string.choose_macro_split_protein_title),
-            color = textColorDefault,
+            style = TextStyles.Title,
             overflow = TextOverflow.Ellipsis,
-            textAlign = TextAlign.End,
         )
         Text(
             modifier = Modifier.constrainAs(fatTitle) {
@@ -114,9 +117,8 @@ private fun IndividualMacroGoals(uiState: SetCalorieGoalUiState, setCalorieGoalA
                 centerHorizontallyTo(carbsTitle)
             },
             text = Translated(R.string.choose_macro_split_fat_title),
-            color = textColorDefault,
+            style = TextStyles.Title,
             overflow = TextOverflow.Ellipsis,
-            textAlign = TextAlign.End,
         )
         OutlinedTextField(
             value = uiState.carbohydratesInput?.toString() ?: "",
@@ -164,12 +166,15 @@ private fun IndividualMacroGoals(uiState: SetCalorieGoalUiState, setCalorieGoalA
 @Preview
 fun SetMacroGoalsPreview() {
     inLightAndDarkTheme {
-        SetMacroGoals(SetCalorieGoalUiState(2000, 150, 100, 50, MacroSplit.HIGH_CARB), object : SetCalorieGoalActions {
-            override fun updateTdee(tdee: Int?) {}
-            override fun updateChosenMacroSplit(macroSplit: MacroSplit?) {}
-            override fun updateProtein(protein: Grams?) {}
-            override fun updateCarbohydrates(carbohydrates: Grams?) {}
-            override fun updateFat(fat: Grams?) {}
-        })
+        Box(Modifier.background(MaterialTheme.colors.background)) {
+            SetMacroGoals(SetCalorieGoalUiState(2000, 150, 100, 50, MacroSplit.HIGH_CARB),
+                          object : SetCalorieGoalActions {
+                              override fun updateTdee(tdee: Int?) {}
+                              override fun updateChosenMacroSplit(macroSplit: MacroSplit?) {}
+                              override fun updateProtein(protein: Grams?) {}
+                              override fun updateCarbohydrates(carbohydrates: Grams?) {}
+                              override fun updateFat(fat: Grams?) {}
+                          })
+        }
     }
 }

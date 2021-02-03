@@ -22,15 +22,15 @@ fun CalorieGoalUiModel.addIntakeEntry(intakeEntry: IntakeEntry) = CalorieGoalUiM
     caloriesLeft = this.caloriesLeft + intakeEntry.calories,
     carbohydratesGoal = this.carbohydratesGoal?.copy(
         totalAmount = carbohydratesGoal.totalAmount,
-        amountLeft = carbohydratesGoal.amountLeft + (intakeEntry.carbohydrates ?: 0),
+        amountLeft = carbohydratesGoal.amountLeft - (intakeEntry.carbohydrates ?: 0),
     ),
     proteinGoal = this.proteinGoal?.copy(
         totalAmount = proteinGoal.totalAmount,
-        amountLeft = proteinGoal.amountLeft + (intakeEntry.protein ?: 0),
+        amountLeft = proteinGoal.amountLeft - (intakeEntry.protein ?: 0),
     ),
     fatGoal = this.fatGoal?.copy(
         totalAmount = fatGoal.totalAmount,
-        amountLeft = fatGoal.amountLeft + (intakeEntry.fat ?: 0),
+        amountLeft = fatGoal.amountLeft - (intakeEntry.fat ?: 0),
     ),
 )
 
@@ -49,7 +49,7 @@ fun CalorieGoal.toUiModel(allIntakeEntries: List<IntakeEntry>): CalorieGoalUiMod
         totalCalories = this.totalCalories,
         caloriesLeft = this.totalCalories - consumedCalories,
         carbohydratesGoal = this.macroGoals.carbohydrates?.let { MacroGoalUiModel(it, it - consumedCarbohydrates) },
-        proteinGoal = this.macroGoals.protein?.let { MacroGoalUiModel(it, it - consumedCarbohydrates) },
-        fatGoal = this.macroGoals.fat?.let { MacroGoalUiModel(it, it - consumedCarbohydrates) },
+        proteinGoal = this.macroGoals.protein?.let { MacroGoalUiModel(it, it - consumedProtein) },
+        fatGoal = this.macroGoals.fat?.let { MacroGoalUiModel(it, it - consumedFat) },
     )
 }

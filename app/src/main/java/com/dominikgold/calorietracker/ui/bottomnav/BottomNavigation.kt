@@ -3,6 +3,7 @@ package com.dominikgold.calorietracker.ui.bottomnav
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,7 +26,8 @@ fun CalorieTrackerBottomNavigationContent(
     selectedTab: BottomNavigationTab,
     onTabSelected: (BottomNavigationTab) -> Unit,
 ) {
-    BottomNavigation {
+
+    BottomNavigation(backgroundColor = MaterialTheme.colors.surface) {
         availableTabs.forEach { tab ->
             BottomNavigationItem(
                 icon = { Icon(imageVector = tab.icon, contentDescription = null) },

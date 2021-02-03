@@ -93,7 +93,7 @@ class BottomNavigationStateContainer(initialScreenForTabs: Map<BottomNavigationT
         tabScreenHistories = tabScreenHistories.mapValues { (_, history) ->
             history.map { it.screen }
         },
-        selectedTabHistory = selectedTabHistory,
+        selectedTabHistory = selectedTabHistory.toList(),
     )
 
     fun restoreState(state: BottomNavigationSavedState, viewModelProvider: DefaultViewModelProvider) {

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -41,6 +42,7 @@ private fun CalorieTrackerTopBarContent(
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     TopAppBar(
+        backgroundColor = MaterialTheme.colors.surface,
         title = { Text(text = title) },
         navigationIcon = navigationIcon?.let { navIcon ->
             { NavigationIcon(icon = navIcon, onClick = onNavigationIconClick) }

@@ -25,6 +25,7 @@ import androidx.compose.material.Button
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.material.Card
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -38,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
 import com.dominikgold.calorietracker.R
 import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
+import com.dominikgold.calorietracker.theming.TextStyles
 import com.dominikgold.calorietracker.theming.textColorSubtitle
 import com.dominikgold.calorietracker.util.LengthInputFilter
 import com.dominikgold.calorietracker.util.Translated
@@ -45,32 +47,29 @@ import com.dominikgold.calorietracker.util.Translated
 @OptIn(ExperimentalLayout::class)
 @Composable
 fun IntakeEntryCard(uiModel: IntakeEntryUiModel) {
-    Card(modifier = Modifier.fillMaxWidth()) {
-        Column(Modifier.padding(8.dp)) {
-            Text(text = uiModel.name)
+    Card(modifier = Modifier.fillMaxWidth(), elevation = 2.dp) {
+        Column(Modifier.padding(16.dp)) {
+            Text(text = uiModel.name, style = TextStyles.Title)
             Spacer(Modifier.height(8.dp))
             FlowRow(mainAxisSpacing = 16.dp, crossAxisSpacing = 8.dp) {
                 Text(
                     text = Translated(R.string.intake_entry_calorie_count, listOf(uiModel.calories)),
-                    color = textColorSubtitle,
+                    style = TextStyles.Subtitle,
                 )
                 uiModel.carbohydrates?.let { carbohydrates ->
                     Text(
                         text = Translated(R.string.intake_entry_carbs_count, listOf(carbohydrates)),
-                        color = textColorSubtitle,
+                        style = TextStyles.Subtitle,
                     )
                 }
                 uiModel.protein?.let { protein ->
                     Text(
                         text = Translated(R.string.intake_entry_protein_count, listOf(protein)),
-                        color = textColorSubtitle,
+                        style = TextStyles.Subtitle,
                     )
                 }
                 uiModel.fat?.let { fat ->
-                    Text(
-                        text = Translated(R.string.intake_entry_fat_count, listOf(fat)),
-                        color = textColorSubtitle,
-                    )
+                    Text(text = Translated(R.string.intake_entry_fat_count, listOf(fat)), style = TextStyles.Subtitle)
                 }
             }
         }
@@ -101,17 +100,17 @@ fun AnimatedAddIntakeEntry(
 @OptIn(ExperimentalLayout::class)
 @Composable
 fun AddIntakeEntry(onConfirmed: (AddIntakeEntryUiModel) -> Unit, onCancelled: () -> Unit) {
-    Card(modifier = Modifier.fillMaxWidth()) {
+    var uiModel by mutableStateOf(AddIntakeEntryUiModel("", null, null, null, null))
+    Card(modifier = Modifier.fillMaxWidth(), elevation = 2.dp) {
         Column(Modifier.padding(16.dp)) {
-            var uiModel by mutableStateOf(AddIntakeEntryUiModel("", null, null, null, null))
-            TextField(
+            OutlinedTextField(
                 value = uiModel.name,
                 onValueChange = { uiModel = uiModel.copy(name = it) },
                 placeholder = { Text(text = Translated(resourceId = R.string.intake_entry_name_input_placeholder)) },
                 modifier = Modifier.fillMaxWidth(),
             )
             Spacer(modifier = Modifier.height(16.dp))
-            TextField(
+            OutlinedTextField(
                 value = uiModel.calories?.toString() ?: "",
                 onValueChange = LengthInputFilter(maxLength = 5) { newInput ->
                     uiModel = uiModel.copy(calories = newInput.toIntOrNull())
@@ -167,7 +166,7 @@ fun AddIntakeEntryConfirmButton(
 
 @Composable
 private fun RowScope.AddIntakeEntryMacroField(currentValue: Int?, onChanged: (Int?) -> Unit, placeholderText: String) {
-    TextField(
+    OutlinedTextField(
         value = currentValue?.toString() ?: "",
         onValueChange = LengthInputFilter(maxLength = 5) { newInput ->
             onChanged(newInput.toIntOrNull())

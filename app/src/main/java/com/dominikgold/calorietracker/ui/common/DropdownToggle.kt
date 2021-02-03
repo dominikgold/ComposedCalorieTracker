@@ -15,8 +15,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
 import com.dominikgold.calorietracker.R
+import com.dominikgold.calorietracker.theming.TextStyles
 import com.dominikgold.calorietracker.theming.textColorDefault
-import com.dominikgold.calorietracker.theming.textColorSubtitle
 import com.dominikgold.calorietracker.util.inLightAndDarkTheme
 
 @Composable
@@ -25,7 +25,7 @@ fun TextDropdownToggle(text: String?, placeholder: String?, isExpanded: Boolean,
     Row(modifier) {
         Text(
             text = text ?: placeholder ?: "",
-            color = if (text == null) textColorSubtitle else textColorDefault,
+            style = TextStyles.Subtitle,
         )
         Spacer(Modifier.weight(1f))
         Icon(imageVector = vectorResource(id = iconResource), contentDescription = null, tint = textColorDefault)

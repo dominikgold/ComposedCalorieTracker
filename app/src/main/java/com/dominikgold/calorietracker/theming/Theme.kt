@@ -7,26 +7,30 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
 import androidx.compose.runtime.staticAmbientOf
+import androidx.compose.ui.graphics.Color
 
 private val DarkColorPalette = darkColors(
-        primary = purple200,
-        primaryVariant = purple700,
-        secondary = teal200
+    primary = calorieTrackerBlueNight,
+    primaryVariant = calorieTrackerBlueNight,
+    onPrimary = Color.White,
+    secondary = calorieTrackerBlueNight,
+    onSecondary = Color.White,
+    background = backgroundNight,
+    surface = backgroundNight,
+    onSurface = textColorDefaultNight,
+    onBackground = textColorDefaultNight,
 )
 
 private val LightColorPalette = lightColors(
-        primary = purple500,
-        primaryVariant = purple700,
-        secondary = teal200
-
-        /* Other default colors to override
-    background = Color.White,
-    surface = Color.White,
+    primary = calorieTrackerBlueDay,
+    primaryVariant = calorieTrackerBlueDay,
     onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    */
+    secondary = calorieTrackerBlueDay,
+    onSecondary = Color.White,
+    background = backgroundDay,
+    surface = backgroundDay,
+    onSurface = textColorDefaultDay,
+    onBackground = textColorDefaultDay,
 )
 
 @Composable
@@ -38,12 +42,7 @@ fun CalorieTrackerTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Co
     }
 
     Providers(AmbientIsDarkTheme provides darkTheme) {
-        MaterialTheme(
-                colors = colors,
-                typography = typography,
-                shapes = shapes,
-                content = content
-        )
+        MaterialTheme(colors = colors, typography = typography, shapes = shapes, content = content)
     }
 }
 
