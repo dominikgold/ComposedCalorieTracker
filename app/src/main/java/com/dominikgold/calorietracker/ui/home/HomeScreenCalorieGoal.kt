@@ -37,6 +37,7 @@ fun NoCalorieGoalSet(onSetCalorieGoalClicked: () -> Unit) {
             style = TextStyles.Title,
             modifier = Modifier.align(Alignment.CenterHorizontally),
         )
+        Spacer(modifier = Modifier.height(32.dp))
         ElevatedButton(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             text = Translated(R.string.set_first_calorie_goal_button),

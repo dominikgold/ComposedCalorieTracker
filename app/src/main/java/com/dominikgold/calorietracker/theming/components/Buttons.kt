@@ -1,6 +1,5 @@
 package com.dominikgold.calorietracker.theming.components
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.ButtonElevation
@@ -28,6 +27,6 @@ fun ElevatedButton(
     onClick: () -> Unit,
 ) {
     Button(modifier = modifier, onClick = onClick, elevation = elevation, enabled = enabled) {
-        Text(text = text, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
+        Text(text = text, textAlign = TextAlign.Center)
     }
 }
