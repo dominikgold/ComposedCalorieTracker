@@ -14,7 +14,7 @@
     <string name="set_new_calorie_goal_button">Set new calorie goal</string>
     <string name="top_bar_action_save">SAVE</string>
     <string name="home_screen_no_calorie_goal_set_message">With Composed Calorie Tracker, you can track your daily
-        calorie and macro nutrients intake as well as your body weight changes.\n To start, declare a calorie goal and
+        calorie and macro nutrients intake as well as your changes in body weight.\n To start, declare a calorie goal and
         get to it!</string>
     <string name="home_screen_amount_left">%s left:</string>
     <string name="home_screen_amount_exceeded">%s exceeded by:</string>

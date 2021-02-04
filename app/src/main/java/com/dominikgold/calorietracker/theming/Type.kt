@@ -84,3 +84,7 @@ val TextStyle.ClearGreen
 @Composable
 val TextStyle.WarningRed
     get() = this.copy(color = warningRed)
+
+@Composable
+val TextStyle.PrimaryBlue
+    get() = this.copy(color = primaryBlue)
