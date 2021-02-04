@@ -4,80 +4,102 @@ import androidx.compose.material.Text
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
 import com.dominikgold.calorietracker.R
 import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
+import com.dominikgold.calorietracker.theming.ClearGreen
 import com.dominikgold.calorietracker.theming.TextStyles
+import com.dominikgold.calorietracker.theming.WarningRed
+import com.dominikgold.calorietracker.theming.components.ElevatedButton
 import com.dominikgold.calorietracker.util.Translated
+import kotlin.math.absoluteValue
 
 @Composable
-fun NoCalorieGoalSet() {
-    Text(
-        text = Translated(R.string.home_screen_no_calorie_goal_set_message),
-        textAlign = TextAlign.Center,
-        style = TextStyles.Headline,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(32.dp),
-    )
+fun NoCalorieGoalSet(onSetCalorieGoalClicked: () -> Unit) {
+    Column(Modifier
+               .fillMaxWidth()
+               .padding(32.dp)) {
+        Text(
+            text = Translated(R.string.home_screen_no_calorie_goal_set_message),
+            textAlign = TextAlign.Center,
+            style = TextStyles.Title,
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+        )
+        ElevatedButton(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            text = Translated(R.string.set_first_calorie_goal_button),
+            onClick = onSetCalorieGoalClicked,
+        )
+    }
 }
 
 @Composable
 fun HomeScreenCalorieGoal(uiModel: CalorieGoalUiModel) {
     Column(Modifier.fillMaxWidth()) {
-        Text(
-            text = Translated(R.string.home_screen_calories_left, listOf(uiModel.caloriesLeft, uiModel.totalCalories)),
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp),
+        AmountLeftText(
+            name = Translated(resourceId = R.string.home_screen_calories_name),
+            isExceeded = uiModel.isExceeded,
+            amountLeft = uiModel.caloriesLeft,
         )
-        Spacer(Modifier.height(32.dp))
-        Row(Modifier.fillMaxWidth()) {
-            uiModel.carbohydratesGoal?.let {
-                MacroAmountLeft(
-                    title = Translated(R.string.home_screen_carbs_left),
-                    macrosLeft = it.amountLeft,
-                    totalMacros = it.totalAmount,
-                )
-            }
-            uiModel.proteinGoal?.let {
-                MacroAmountLeft(
-                    title = Translated(R.string.home_screen_protein_left),
-                    macrosLeft = it.amountLeft,
-                    totalMacros = it.totalAmount,
-                )
-            }
-            uiModel.fatGoal?.let {
-                MacroAmountLeft(
-                    title = Translated(R.string.home_screen_fat_left),
-                    macrosLeft = it.amountLeft,
-                    totalMacros = it.totalAmount,
-                )
-            }
+        uiModel.carbohydratesGoal?.let {
+            Spacer(Modifier.height(8.dp))
+            AmountLeftText(
+                name = Translated(resourceId = R.string.home_screen_carbs_name),
+                isExceeded = it.isExceeded,
+                amountLeft = it.amountLeft,
+            )
+        }
+        uiModel.proteinGoal?.let {
+            Spacer(Modifier.height(8.dp))
+            AmountLeftText(
+                name = Translated(resourceId = R.string.home_screen_protein_name),
+                isExceeded = it.isExceeded,
+                amountLeft = it.amountLeft,
+            )
+        }
+        uiModel.fatGoal?.let {
+            Spacer(Modifier.height(8.dp))
+            AmountLeftText(
+                name = Translated(resourceId = R.string.home_screen_fat_name),
+                isExceeded = it.isExceeded,
+                amountLeft = it.amountLeft,
+            )
         }
     }
 }
 
 @Composable
-private fun RowScope.MacroAmountLeft(title: String, macrosLeft: Int, totalMacros: Int) {
-    Column(Modifier.weight(1f)) {
-        Text(text = title, modifier = Modifier.align(Alignment.CenterHorizontally))
-        Spacer(modifier = Modifier.height(8.dp))
+private fun AmountLeftText(name: String, isExceeded: Boolean, amountLeft: Int) {
+    Row {
+        Text(text = Translated(if (isExceeded) {
+            R.string.home_screen_amount_exceeded
+        } else {
+            R.string.home_screen_amount_left
+        }, listOf(name)), modifier = Modifier.align(Alignment.CenterVertically))
+
+        Spacer(modifier = Modifier.width(16.dp))
+
+        val amountLeftTextStyle = if (isExceeded) {
+            TextStyles.NumberInformation.WarningRed
+        } else {
+            TextStyles.NumberInformation.ClearGreen
+        }
         Text(
-            text = Translated(R.string.home_screen_macros_left_format, listOf(macrosLeft, totalMacros)),
-            modifier = Modifier.align(Alignment.CenterHorizontally),
+            text = amountLeft.absoluteValue.toString(),
+            style = amountLeftTextStyle,
+            modifier = Modifier.align(Alignment.CenterVertically),
         )
     }
 }

@@ -6,8 +6,14 @@ import androidx.compose.ui.graphics.Color
 val backgroundDay = Color(0xFFFFFFFF)
 val backgroundNight = Color(0xFF212121)
 
-val calorieTrackerBlueDay = Color(0xFF2E7294)
-val calorieTrackerBlueNight = Color(0xFF47B1E6)
+val primaryBlueDay = Color(0xFF2E7294)
+val primaryBlueNight = Color(0xFF47B1E6)
+
+val warningRedDay = Color(0xFFEA4C48)
+val warningRedNight = Color(0xFFF45652)
+
+val clearGreenDay = Color(0xFF2E9462)
+val clearGreenNight = Color(0xFF27A159)
 
 val textColorDefaultDay = Color(0xFF121212)
 val textColorDefaultNight = Color(0xFFFDFDFD)
@@ -27,8 +33,16 @@ val textColorSubtitle
     get() = if (AmbientIsDarkTheme.current) textColorSubtitleNight else textColorSubtitleDay
 
 @Composable
-val calorieTrackerBlue
-    get() = if (AmbientIsDarkTheme.current) calorieTrackerBlueNight else calorieTrackerBlueDay
+val primaryBlue
+    get() = if (AmbientIsDarkTheme.current) primaryBlueNight else primaryBlueDay
+
+@Composable
+val warningRed
+    get() = if (AmbientIsDarkTheme.current) warningRedNight else warningRedDay
+
+@Composable
+val clearGreen
+    get() = if (AmbientIsDarkTheme.current) clearGreenNight else clearGreenDay
 
 @Composable
 val colorDisabled

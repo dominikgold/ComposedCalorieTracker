@@ -10,15 +10,18 @@
     <string name="choose_macro_split_protein_title">Protein</string>
     <string name="choose_macro_split_fat_title">Fat</string>
     <string name="tdee_input_placeholder">Enter a custom TDEE</string>
-    <string name="home_screen_title">Home</string>
+    <string name="home_screen_title">Today</string>
     <string name="set_new_calorie_goal_button">Set new calorie goal</string>
     <string name="top_bar_action_save">SAVE</string>
-    <string name="home_screen_no_calorie_goal_set_message">You haven\'t set a calorie goal yet.</string>
-    <string name="home_screen_calories_left">You still have %1$d from your total of %2$d calories left.</string>
-    <string name="home_screen_carbs_left">Carbs left</string>
-    <string name="home_screen_macros_left_format">%1$d from %2$d</string>
-    <string name="home_screen_protein_left">Protein left</string>
-    <string name="home_screen_fat_left">Fat left</string>
+    <string name="home_screen_no_calorie_goal_set_message">With Composed Calorie Tracker, you can track your daily
+        calorie and macro nutrients intake as well as your body weight changes.\n To start, declare a calorie goal and
+        get to it!</string>
+    <string name="home_screen_amount_left">%s left:</string>
+    <string name="home_screen_amount_exceeded">%s exceeded by:</string>
+    <string name="home_screen_calories_name">Calories</string>
+    <string name="home_screen_carbs_name">Carbs</string>
+    <string name="home_screen_protein_name">Protein</string>
+    <string name="home_screen_fat_name">Fat</string>
     <string name="intake_entry_calorie_count">%d calories</string>
     <string name="intake_entry_carbs_count">%d carbs</string>
     <string name="intake_entry_protein_count">%d protein</string>
@@ -39,4 +42,8 @@
     <string name="settings_screen_title">Settings</string>
     <string name="dropdown_reset_macro_split">Reset</string>
     <string name="macro_goal_unit_grams">grams</string>
+    <string name="set_first_calorie_goal_button">Set your calorie goal</string>
+    <string name="home_screen_greeting_morning">Good morning!</string>
+    <string name="home_screen_greeting_afternoon">Good afternoon!</string>
+    <string name="home_screen_greeting_evening">Good evening!</string>
 </resources>

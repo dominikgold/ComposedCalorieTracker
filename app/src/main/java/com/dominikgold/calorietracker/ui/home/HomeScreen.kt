@@ -11,6 +11,7 @@ import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.material.Text
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -33,6 +34,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.dominikgold.calorietracker.R
 import com.dominikgold.compose.viewmodel.viewModel
 import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
+import com.dominikgold.calorietracker.theming.TextStyles
+import com.dominikgold.calorietracker.theming.components.StandardTextButton
 import com.dominikgold.calorietracker.ui.bottomnav.BottomNavigationTab
 import com.dominikgold.calorietracker.ui.bottomnav.CalorieTrackerBottomNavigation
 import com.dominikgold.calorietracker.ui.topbar.CalorieTrackerTopBar
@@ -61,6 +64,8 @@ fun HomeScreen() {
         HomeScreenContent(
             onIntakeEntryAdded = viewModel::addIntakeEntry,
             uiState = uiState.value,
+            greeting = viewModel.greeting,
+            onSetCalorieGoalClicked = viewModel::navigateToSetCalorieGoal,
         )
     }
 }
@@ -68,19 +73,23 @@ fun HomeScreen() {
 @Composable
 private fun HomeScreenContent(
     uiState: HomeScreenUiModel,
+    greeting: String,
     onIntakeEntryAdded: (AddIntakeEntryUiModel) -> Unit,
+    onSetCalorieGoalClicked: () -> Unit,
 ) {
-    Box(Modifier
-            .fillMaxSize()
-            .padding(16.dp)) {
+    Box(Modifier.fillMaxSize().padding(vertical = 16.dp)) {
         if (uiState.showNoCalorieGoalSet) {
-            NoCalorieGoalSet()
+            NoCalorieGoalSet(onSetCalorieGoalClicked = onSetCalorieGoalClicked)
         } else if (uiState.calorieGoal != null) {
             val isAddIntakeEntrySectionVisible = remember { mutableStateOf(false) }
             LazyColumn {
                 item {
-                    HomeScreenCalorieGoal(uiModel = uiState.calorieGoal)
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Column(Modifier.padding(horizontal = 16.dp)) {
+                        HomeScreenGreeting(greeting = greeting)
+                        Spacer(modifier = Modifier.height(24.dp))
+                        HomeScreenCalorieGoal(uiModel = uiState.calorieGoal)
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
                 }
                 items(items = uiState.intakeEntries) {
                     Spacer(modifier = Modifier.height(8.dp))
@@ -128,10 +137,15 @@ fun AnimatedAddIntakeEntryButton(
         enter = fadeIn + expandVertically,
         exit = fadeOut(animSpec = TweenSpec(durationMillis = 200)),
     ) {
-        TextButton(onClick = onClick) {
-            Text(text = Translated(R.string.add_intake_entry_button))
+        Box(Modifier.padding(horizontal = 16.dp)) {
+            StandardTextButton(text = Translated(R.string.add_intake_entry_button), onClick = onClick)
         }
     }
+}
+
+@Composable
+fun HomeScreenGreeting(greeting: String) {
+    Text(text = greeting, style = TextStyles.Headline)
 }
 
 @Composable
@@ -150,6 +164,8 @@ fun HomeScreenContentPreview() {
                 ),
                 intakeEntries = listOf(IntakeEntryUiModel("essen", 1500, 150, 80, 40)),
             ),
+            "Good morning!",
+            {},
             {},
         )
     }

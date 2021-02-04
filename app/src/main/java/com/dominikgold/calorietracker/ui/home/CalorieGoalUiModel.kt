@@ -10,16 +10,20 @@ data class CalorieGoalUiModel(
     val carbohydratesGoal: MacroGoalUiModel?,
     val proteinGoal: MacroGoalUiModel?,
     val fatGoal: MacroGoalUiModel?,
-)
+) {
+    val isExceeded: Boolean = caloriesLeft < 0
+}
 
 data class MacroGoalUiModel(
     val totalAmount: Grams,
     val amountLeft: Grams,
-)
+) {
+    val isExceeded: Boolean = amountLeft < 0
+}
 
 fun CalorieGoalUiModel.addIntakeEntry(intakeEntry: IntakeEntry) = CalorieGoalUiModel(
     totalCalories = this.totalCalories,
-    caloriesLeft = this.caloriesLeft + intakeEntry.calories,
+    caloriesLeft = this.caloriesLeft - intakeEntry.calories,
     carbohydratesGoal = this.carbohydratesGoal?.copy(
         totalAmount = carbohydratesGoal.totalAmount,
         amountLeft = carbohydratesGoal.amountLeft - (intakeEntry.carbohydrates ?: 0),

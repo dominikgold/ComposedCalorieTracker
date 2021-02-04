@@ -47,29 +47,32 @@ import com.dominikgold.calorietracker.util.Translated
 @OptIn(ExperimentalLayout::class)
 @Composable
 fun IntakeEntryCard(uiModel: IntakeEntryUiModel) {
-    Card(modifier = Modifier.fillMaxWidth(), elevation = 2.dp) {
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp), elevation = 2.dp) {
         Column(Modifier.padding(16.dp)) {
             Text(text = uiModel.name, style = TextStyles.Title)
             Spacer(Modifier.height(8.dp))
             FlowRow(mainAxisSpacing = 16.dp, crossAxisSpacing = 8.dp) {
                 Text(
                     text = Translated(R.string.intake_entry_calorie_count, listOf(uiModel.calories)),
-                    style = TextStyles.Subtitle,
+                    style = TextStyles.SubtitleSmall,
                 )
                 uiModel.carbohydrates?.let { carbohydrates ->
                     Text(
                         text = Translated(R.string.intake_entry_carbs_count, listOf(carbohydrates)),
-                        style = TextStyles.Subtitle,
+                        style = TextStyles.SubtitleSmall,
                     )
                 }
                 uiModel.protein?.let { protein ->
                     Text(
                         text = Translated(R.string.intake_entry_protein_count, listOf(protein)),
-                        style = TextStyles.Subtitle,
+                        style = TextStyles.SubtitleSmall,
                     )
                 }
                 uiModel.fat?.let { fat ->
-                    Text(text = Translated(R.string.intake_entry_fat_count, listOf(fat)), style = TextStyles.Subtitle)
+                    Text(text = Translated(R.string.intake_entry_fat_count, listOf(fat)),
+                         style = TextStyles.SubtitleSmall)
                 }
             }
         }
@@ -93,11 +96,12 @@ fun AnimatedAddIntakeEntry(
         enter = expandVertically + fadeIn,
         exit = fadeOut + shrinkVertically,
     ) {
-        AddIntakeEntry(onConfirmed = onConfirmed, onCancelled = onCancelled)
+        Box(Modifier.padding(horizontal = 16.dp)) {
+            AddIntakeEntry(onConfirmed = onConfirmed, onCancelled = onCancelled)
+        }
     }
 }
 
-@OptIn(ExperimentalLayout::class)
 @Composable
 fun AddIntakeEntry(onConfirmed: (AddIntakeEntryUiModel) -> Unit, onCancelled: () -> Unit) {
     var uiModel by mutableStateOf(AddIntakeEntryUiModel("", null, null, null, null))

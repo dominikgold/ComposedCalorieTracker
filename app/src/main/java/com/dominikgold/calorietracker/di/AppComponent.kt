@@ -20,6 +20,7 @@ import javax.inject.Singleton
     NavigationModule::class,
     RepositoriesModule::class,
     DataSourcesModule::class,
+    UtilsModule::class,
 
     SetCalorieGoalUiModule::class,
     HomeScreenUiModule::class,

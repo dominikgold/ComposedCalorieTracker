@@ -10,10 +10,10 @@ import androidx.compose.runtime.staticAmbientOf
 import androidx.compose.ui.graphics.Color
 
 private val DarkColorPalette = darkColors(
-    primary = calorieTrackerBlueNight,
-    primaryVariant = calorieTrackerBlueNight,
+    primary = primaryBlueNight,
+    primaryVariant = primaryBlueNight,
     onPrimary = Color.White,
-    secondary = calorieTrackerBlueNight,
+    secondary = primaryBlueNight,
     onSecondary = Color.White,
     background = backgroundNight,
     surface = backgroundNight,
@@ -22,10 +22,10 @@ private val DarkColorPalette = darkColors(
 )
 
 private val LightColorPalette = lightColors(
-    primary = calorieTrackerBlueDay,
-    primaryVariant = calorieTrackerBlueDay,
+    primary = primaryBlueDay,
+    primaryVariant = primaryBlueDay,
     onPrimary = Color.White,
-    secondary = calorieTrackerBlueDay,
+    secondary = primaryBlueDay,
     onSecondary = Color.White,
     background = backgroundDay,
     surface = backgroundDay,
