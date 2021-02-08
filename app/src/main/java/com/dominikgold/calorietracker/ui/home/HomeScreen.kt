@@ -49,15 +49,7 @@ fun HomeScreen() {
     val uiState = viewModel.uiState.collectAsState()
     Scaffold(
         topBar = {
-            CalorieTrackerTopBar(
-                title = Translated(R.string.home_screen_title),
-                actions = {
-                    TopBarActionTextButton(
-                        text = Translated(R.string.top_bar_action_change_goal),
-                        onClick = viewModel::navigateToSetCalorieGoal,
-                    )
-                },
-            )
+            CalorieTrackerTopBar(title = Translated(R.string.home_screen_title))
         },
         bottomBar = { CalorieTrackerBottomNavigation() },
     ) {
@@ -77,7 +69,9 @@ private fun HomeScreenContent(
     onIntakeEntryAdded: (AddIntakeEntryUiModel) -> Unit,
     onSetCalorieGoalClicked: () -> Unit,
 ) {
-    Box(Modifier.fillMaxSize().padding(vertical = 16.dp)) {
+    Box(Modifier
+            .fillMaxSize()
+            .padding(vertical = 16.dp)) {
         if (uiState.showNoCalorieGoalSet) {
             NoCalorieGoalSet(onSetCalorieGoalClicked = onSetCalorieGoalClicked)
         } else if (uiState.calorieGoal != null) {

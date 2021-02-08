@@ -30,7 +30,7 @@ import kotlin.math.absoluteValue
 fun NoCalorieGoalSet(onSetCalorieGoalClicked: () -> Unit) {
     Column(Modifier
                .fillMaxWidth()
-               .padding(32.dp)) {
+               .padding(24.dp)) {
         Text(
             text = Translated(R.string.home_screen_no_calorie_goal_set_message),
             textAlign = TextAlign.Center,

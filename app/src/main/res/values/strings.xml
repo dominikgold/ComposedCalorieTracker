@@ -14,7 +14,7 @@
     <string name="set_new_calorie_goal_button">Set new calorie goal</string>
     <string name="top_bar_action_save">SAVE</string>
     <string name="home_screen_no_calorie_goal_set_message">With Composed Calorie Tracker, you can track your daily
-        calorie and macro nutrients intake as well as your changes in body weight.\n To start, declare a calorie goal and
+        calorie and macro nutrients intake as well as your changes in body weight.\n\n To start, declare a calorie goal and
         get to it!</string>
     <string name="home_screen_amount_left">%s left:</string>
     <string name="home_screen_amount_exceeded">%s exceeded by:</string>
@@ -34,7 +34,6 @@
     <string name="add_intake_entry_button_confirm">Confirm</string>
     <string name="add_intake_entry_button">+ Add entry</string>
     <string name="add_intake_entry_button_cancel">Cancel</string>
-    <string name="top_bar_action_change_goal">CHANGE GOAL</string>
     <string name="home_tab_title">Home</string>
     <string name="statistics_tab_title">Statistics</string>
     <string name="statistics_screen_title">Statistics</string>
@@ -46,4 +45,7 @@
     <string name="home_screen_greeting_morning">Good morning!</string>
     <string name="home_screen_greeting_afternoon">Good afternoon!</string>
     <string name="home_screen_greeting_evening">Good evening!</string>
+    <string name="settings_item_change_calorie_goal">Change calorie goal</string>
+    <string name="settings_item_change_measurement_system">Change measurement system</string>
+    <string name="settings_item_set_reminders">Set reminders</string>
 </resources>
