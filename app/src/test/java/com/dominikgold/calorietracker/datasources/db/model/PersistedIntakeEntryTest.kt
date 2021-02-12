@@ -10,7 +10,12 @@ class PersistedIntakeEntryTest {
 
     @Test
     fun `mapping an entity to PersistedIntakeEntry uses -1 in place of null for macros`() {
-        val entity = IntakeEntry(name = "lunch", calories = 500, carbohydrates = null, protein = null, fat = null)
+        val entity = IntakeEntry(id = "",
+                                 name = "lunch",
+                                 calories = 500,
+                                 carbohydrates = null,
+                                 protein = null,
+                                 fat = null)
 
         val persistedModel = entity.toPersistedModel()
 

@@ -8,6 +8,7 @@ import com.dominikgold.calorietracker.entities.IntakeEntry
 import com.dominikgold.calorietracker.navigation.Navigator
 import com.dominikgold.calorietracker.navigation.Screen
 import com.dominikgold.calorietracker.usecases.caloriegoal.GetCalorieGoalUseCase
+import com.dominikgold.calorietracker.usecases.intakeentries.DeleteIntakeEntryUseCase
 import com.dominikgold.calorietracker.usecases.intakeentries.GetIntakeEntriesUseCase
 import com.dominikgold.calorietracker.usecases.intakeentries.SaveIntakeEntryUseCase
 import com.dominikgold.calorietracker.util.StringProvider
@@ -25,6 +26,7 @@ class HomeScreenViewModel(
     private val getIntakeEntriesUseCase: GetIntakeEntriesUseCase,
     private val getCalorieGoalUseCase: GetCalorieGoalUseCase,
     private val saveIntakeEntryUseCase: SaveIntakeEntryUseCase,
+    private val deleteIntakeEntryUseCase: DeleteIntakeEntryUseCase,
     private val stringProvider: StringProvider,
 ) : ViewModel() {
 
@@ -59,6 +61,7 @@ class HomeScreenViewModel(
     fun addIntakeEntry(uiModel: AddIntakeEntryUiModel) {
         require(uiModel.calories != null)
         val intakeEntry = IntakeEntry(
+            id = "",
             name = uiModel.name,
             calories = uiModel.calories,
             carbohydrates = uiModel.carbohydrates,
@@ -71,6 +74,16 @@ class HomeScreenViewModel(
         _uiState.value = _uiState.value.copy(
             calorieGoal = _uiState.value.calorieGoal?.addIntakeEntry(intakeEntry),
             intakeEntries = _uiState.value.intakeEntries + intakeEntry.toUiModel(),
+        )
+    }
+
+    fun deleteIntakeEntry(uiModel: IntakeEntryUiModel) {
+        coroutineScope.launch {
+            deleteIntakeEntryUseCase.deleteIntakeEntry(uiModel.id)
+        }
+        _uiState.value = _uiState.value.copy(
+            calorieGoal = _uiState.value.calorieGoal?.removeIntakeEntry(uiModel),
+            intakeEntries = _uiState.value.intakeEntries - uiModel,
         )
     }
 
@@ -97,11 +110,17 @@ class HomeScreenViewModelFactory @Inject constructor(
     private val getIntakeEntriesUseCase: GetIntakeEntriesUseCase,
     private val getCalorieGoalUseCase: GetCalorieGoalUseCase,
     private val saveIntakeEntryUseCase: SaveIntakeEntryUseCase,
+    private val deleteIntakeEntryUseCase: DeleteIntakeEntryUseCase,
     private val stringProvider: StringProvider,
 ) : ViewModelFactory<HomeScreenViewModel, Nothing, Nothing> {
 
     override fun create(savedState: Nothing?, parameters: Nothing?): HomeScreenViewModel {
-        return HomeScreenViewModel(navigator, getIntakeEntriesUseCase, getCalorieGoalUseCase, saveIntakeEntryUseCase, stringProvider)
+        return HomeScreenViewModel(navigator,
+                                   getIntakeEntriesUseCase,
+                                   getCalorieGoalUseCase,
+                                   saveIntakeEntryUseCase,
+                                   deleteIntakeEntryUseCase,
+                                   stringProvider)
     }
 
 }

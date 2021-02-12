@@ -6,11 +6,8 @@ import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.material.Text
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,11 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material.Button
-import androidx.compose.material.Card
 import androidx.compose.material.Scaffold
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -36,10 +29,8 @@ import com.dominikgold.compose.viewmodel.viewModel
 import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
 import com.dominikgold.calorietracker.theming.TextStyles
 import com.dominikgold.calorietracker.theming.components.StandardTextButton
-import com.dominikgold.calorietracker.ui.bottomnav.BottomNavigationTab
 import com.dominikgold.calorietracker.ui.bottomnav.CalorieTrackerBottomNavigation
 import com.dominikgold.calorietracker.ui.topbar.CalorieTrackerTopBar
-import com.dominikgold.calorietracker.ui.topbar.TopBarActionTextButton
 import com.dominikgold.calorietracker.util.Translated
 
 @Composable
@@ -54,9 +45,10 @@ fun HomeScreen() {
         bottomBar = { CalorieTrackerBottomNavigation() },
     ) {
         HomeScreenContent(
-            onIntakeEntryAdded = viewModel::addIntakeEntry,
             uiState = uiState.value,
             greeting = viewModel.greeting,
+            onIntakeEntryAdded = viewModel::addIntakeEntry,
+            onIntakeEntryDeleted = viewModel::deleteIntakeEntry,
             onSetCalorieGoalClicked = viewModel::navigateToSetCalorieGoal,
         )
     }
@@ -67,6 +59,7 @@ private fun HomeScreenContent(
     uiState: HomeScreenUiModel,
     greeting: String,
     onIntakeEntryAdded: (AddIntakeEntryUiModel) -> Unit,
+    onIntakeEntryDeleted: (IntakeEntryUiModel) -> Unit,
     onSetCalorieGoalClicked: () -> Unit,
 ) {
     Box(Modifier
@@ -87,7 +80,7 @@ private fun HomeScreenContent(
                 }
                 items(items = uiState.intakeEntries) { intakeEntry ->
                     Spacer(modifier = Modifier.height(8.dp))
-                    IntakeEntryCard(uiModel = intakeEntry)
+                    IntakeEntryCard(uiModel = intakeEntry, onIntakeEntryDeleted = onIntakeEntryDeleted)
                 }
                 item { Spacer(modifier = Modifier.height(8.dp)) }
                 item {
@@ -147,7 +140,7 @@ fun HomeScreenGreeting(greeting: String) {
 fun HomeScreenContentPreview() {
     CalorieTrackerTheme(darkTheme = true) {
         HomeScreenContent(
-            HomeScreenUiModel(
+            uiState = HomeScreenUiModel(
                 showNoCalorieGoalSet = false,
                 calorieGoal = CalorieGoalUiModel(
                     totalCalories = 2000,
@@ -156,11 +149,12 @@ fun HomeScreenContentPreview() {
                     proteinGoal = MacroGoalUiModel(100, 20),
                     fatGoal = MacroGoalUiModel(50, 10),
                 ),
-                intakeEntries = listOf(IntakeEntryUiModel("essen", 1500, 150, 80, 40)),
+                intakeEntries = listOf(IntakeEntryUiModel("", "essen", 1500, 150, 80, 40)),
             ),
-            "Good morning!",
+            greeting = "Good morning!",
             {},
             {},
+            {}
         )
     }
 }

@@ -16,6 +16,10 @@ class DefaultIntakeEntryRepository @Inject constructor(
         return intakeEntryDataSource.getIntakeEntriesForDate(LocalDate.now()).map(PersistedIntakeEntry::toEntity)
     }
 
+    override suspend fun deleteIntakeEntry(id: String) {
+        intakeEntryDataSource.deleteIntakeEntry(id.toInt())
+    }
+
     override suspend fun saveIntakeEntry(intakeEntry: IntakeEntry) {
         intakeEntryDataSource.addIntakeEntry(intakeEntry.toPersistedModel())
     }

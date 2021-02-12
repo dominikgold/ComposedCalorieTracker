@@ -7,7 +7,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.material.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,58 +21,69 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.TextField
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.dominikgold.calorietracker.R
 import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
 import com.dominikgold.calorietracker.theming.TextStyles
-import com.dominikgold.calorietracker.theming.textColorSubtitle
 import com.dominikgold.calorietracker.util.LengthInputFilter
 import com.dominikgold.calorietracker.util.Translated
 import com.dominikgold.calorietracker.util.inLightAndDarkTheme
 
 @OptIn(ExperimentalLayout::class)
 @Composable
-fun IntakeEntryCard(uiModel: IntakeEntryUiModel) {
-    Card(modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 16.dp), elevation = 2.dp) {
-        Column(Modifier.padding(16.dp)) {
-            Text(text = uiModel.name, style = TextStyles.Title)
-            Spacer(Modifier.height(8.dp))
-            FlowRow(mainAxisSpacing = 16.dp, crossAxisSpacing = 8.dp) {
+fun IntakeEntryCard(uiModel: IntakeEntryUiModel, onIntakeEntryDeleted: (IntakeEntryUiModel) -> Unit) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        elevation = 2.dp,
+    ) {
+        Column {
+            Row(Modifier.fillMaxWidth()) {
                 Text(
-                    text = Translated(R.string.intake_entry_calorie_count, listOf(uiModel.calories)),
-                    style = TextStyles.SubtitleSmall,
+                    text = uiModel.name,
+                    style = TextStyles.Title,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(top = 16.dp, start = 16.dp),
                 )
-                uiModel.carbohydrates?.let { carbohydrates ->
-                    Text(
-                        text = Translated(R.string.intake_entry_carbs_count, listOf(carbohydrates)),
-                        style = TextStyles.SubtitleSmall,
-                    )
+                IconButton(modifier = Modifier.padding(4.dp), onClick = { onIntakeEntryDeleted(uiModel) }) {
+                    Icon(vectorResource(id = R.drawable.vec_icon_delete_intake_entry), contentDescription = null)
                 }
-                uiModel.protein?.let { protein ->
-                    Text(
-                        text = Translated(R.string.intake_entry_protein_count, listOf(protein)),
-                        style = TextStyles.SubtitleSmall,
-                    )
-                }
-                uiModel.fat?.let { fat ->
-                    Text(text = Translated(R.string.intake_entry_fat_count, listOf(fat)),
+            }
+            Spacer(Modifier.height(8.dp))
+            Box(Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
+                FlowRow(mainAxisSpacing = 16.dp, crossAxisSpacing = 8.dp) {
+                    Text(text = Translated(R.string.intake_entry_calorie_count, listOf(uiModel.calories)),
                          style = TextStyles.SubtitleSmall)
+                    uiModel.carbohydrates?.let { carbohydrates ->
+                        Text(text = Translated(R.string.intake_entry_carbs_count, listOf(carbohydrates)),
+                             style = TextStyles.SubtitleSmall)
+                    }
+                    uiModel.protein?.let { protein ->
+                        Text(text = Translated(R.string.intake_entry_protein_count, listOf(protein)),
+                             style = TextStyles.SubtitleSmall)
+                    }
+                    uiModel.fat?.let { fat ->
+                        Text(text = Translated(R.string.intake_entry_fat_count, listOf(fat)),
+                             style = TextStyles.SubtitleSmall)
+                    }
                 }
             }
         }
@@ -97,7 +107,7 @@ fun AnimatedAddIntakeEntry(
         enter = expandVertically + fadeIn,
         exit = fadeOut + shrinkVertically,
     ) {
-        Box(Modifier.padding(horizontal = 16.dp)) {
+        Box(Modifier.padding(horizontal = 16.dp, vertical = 4.dp)) {
             AddIntakeEntry(onConfirmed = onConfirmed, onCancelled = onCancelled)
         }
     }
@@ -187,8 +197,15 @@ private fun RowScope.AddIntakeEntryMacroField(currentValue: Int?, onChanged: (In
 fun IntakeEntryCardPreview() {
     inLightAndDarkTheme {
         Column {
-            IntakeEntryCard(uiModel = IntakeEntryUiModel("protein.", 1000, 0, 250, 0))
-            IntakeEntryCard(uiModel = IntakeEntryUiModel("very very long food name that spans longer than one line.", 300, null, null, null))
+            IntakeEntryCard(uiModel = IntakeEntryUiModel("", "protein.", 1000, 0, 250, 0), {})
+            IntakeEntryCard(uiModel = IntakeEntryUiModel(
+                "",
+                "very very long food name that spans longer than one line.",
+                300,
+                null,
+                null,
+                null,
+            ), {})
         }
     }
 }

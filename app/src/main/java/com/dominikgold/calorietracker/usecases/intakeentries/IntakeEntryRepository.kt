@@ -8,4 +8,6 @@ interface IntakeEntryRepository {
 
     suspend fun saveIntakeEntry(intakeEntry: IntakeEntry)
 
+    suspend fun deleteIntakeEntry(id: String)
+
 }

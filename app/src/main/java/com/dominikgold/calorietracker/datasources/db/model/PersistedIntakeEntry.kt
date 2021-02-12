@@ -20,8 +20,14 @@ data class PersistedIntakeEntry(
 
 }
 
-fun PersistedIntakeEntry.toEntity() =
-    IntakeEntry(name, calories, carbohydrates.takeIf { it >= 0 }, protein.takeIf { it >= 0 }, fat.takeIf { it >= 0 })
+fun PersistedIntakeEntry.toEntity() = IntakeEntry(
+    id = id.toString(),
+    name = name,
+    calories = calories,
+    carbohydrates = carbohydrates.takeIf { it >= 0 },
+    protein = protein.takeIf { it >= 0 },
+    fat = fat.takeIf { it >= 0 },
+)
 
 fun IntakeEntry.toPersistedModel() =
     PersistedIntakeEntry(name, calories, carbohydrates ?: -1, protein ?: -1, fat ?: -1, LocalDate.now())

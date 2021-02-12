@@ -38,6 +38,23 @@ fun CalorieGoalUiModel.addIntakeEntry(intakeEntry: IntakeEntry) = CalorieGoalUiM
     ),
 )
 
+fun CalorieGoalUiModel.removeIntakeEntry(uiModel: IntakeEntryUiModel) = CalorieGoalUiModel(
+    totalCalories = this.totalCalories,
+    caloriesLeft = this.caloriesLeft + uiModel.calories,
+    carbohydratesGoal = this.carbohydratesGoal?.copy(
+        totalAmount = carbohydratesGoal.totalAmount,
+        amountLeft = carbohydratesGoal.amountLeft + (uiModel.carbohydrates ?: 0),
+    ),
+    proteinGoal = this.proteinGoal?.copy(
+        totalAmount = proteinGoal.totalAmount,
+        amountLeft = proteinGoal.amountLeft + (uiModel.protein ?: 0),
+    ),
+    fatGoal = this.fatGoal?.copy(
+        totalAmount = fatGoal.totalAmount,
+        amountLeft = fatGoal.amountLeft + (uiModel.fat ?: 0),
+    ),
+)
+
 fun CalorieGoal.toUiModel(allIntakeEntries: List<IntakeEntry>): CalorieGoalUiModel {
     var consumedCalories = 0
     var consumedCarbohydrates = 0
