@@ -29,7 +29,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,7 +44,7 @@ import com.dominikgold.calorietracker.util.LengthInputFilter
 import com.dominikgold.calorietracker.util.Translated
 import com.dominikgold.calorietracker.util.inLightAndDarkTheme
 
-@OptIn(ExperimentalLayout::class)
+@OptIn(ExperimentalLayout::class, ExperimentalAnimationApi::class)
 @Composable
 fun IntakeEntryCard(uiModel: IntakeEntryUiModel, onIntakeEntryDeleted: (IntakeEntryUiModel) -> Unit) {
     Card(

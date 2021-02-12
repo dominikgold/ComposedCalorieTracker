@@ -48,4 +48,6 @@
     <string name="settings_item_change_calorie_goal">Change calorie goal</string>
     <string name="settings_item_change_measurement_system">Change measurement system</string>
     <string name="settings_item_set_reminders">Set reminders</string>
+    <string name="intake_entry_deleted">Intake entry %s deleted.</string>
+    <string name="undo_deletion_button">Undo</string>
 </resources>

@@ -11,10 +11,13 @@ import java.time.LocalDate
 interface IntakeEntryDao: IntakeEntryDataSource {
 
     @Insert
-    override suspend fun addIntakeEntry(intakeEntry: PersistedIntakeEntry)
+    override suspend fun addIntakeEntry(intakeEntry: PersistedIntakeEntry): Long
 
     @Query("DELETE FROM intake_entries WHERE id = :id")
-    override suspend fun deleteIntakeEntry(id: Int)
+    override suspend fun deleteIntakeEntry(id: Long)
+
+    @Query("SELECT * from intake_entries WHERE id = :id")
+    override suspend fun getIntakeEntryById(id: Long): PersistedIntakeEntry
 
     @Query("SELECT * from intake_entries WHERE date = :date")
     override suspend fun getIntakeEntriesForDate(date: LocalDate): List<PersistedIntakeEntry>

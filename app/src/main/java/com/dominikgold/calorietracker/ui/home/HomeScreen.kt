@@ -6,7 +6,6 @@ import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.material.Text
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,36 +15,64 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarResult
+import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.dominikgold.calorietracker.R
-import com.dominikgold.compose.viewmodel.viewModel
 import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
 import com.dominikgold.calorietracker.theming.TextStyles
 import com.dominikgold.calorietracker.theming.components.StandardTextButton
 import com.dominikgold.calorietracker.ui.bottomnav.CalorieTrackerBottomNavigation
 import com.dominikgold.calorietracker.ui.topbar.CalorieTrackerTopBar
 import com.dominikgold.calorietracker.util.Translated
+import com.dominikgold.compose.viewmodel.viewModel
 
 @Composable
 fun HomeScreen() {
     val viewModel: HomeScreenViewModel = viewModel()
     viewModel.reload()
-    val uiState = viewModel.uiState.collectAsState()
+    HomeScreenScaffold(viewModel = viewModel)
+}
+
+@Composable
+private fun HomeScreenScaffold(viewModel: HomeScreenViewModel) {
+    val uiState by viewModel.uiState.collectAsState()
+    val scaffoldState = rememberScaffoldState()
+    if (uiState.lastDeletedIntakeEntry != null) {
+        val snackbarMessage = Translated(R.string.intake_entry_deleted, listOf(uiState.lastDeletedIntakeEntry!!.name))
+        val undoButtonText = Translated(R.string.undo_deletion_button)
+        LaunchedEffect(key1 = uiState.lastDeletedIntakeEntry) {
+            val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
+                message = snackbarMessage,
+                actionLabel = undoButtonText,
+                duration = SnackbarDuration.Long,
+            )
+            when (snackbarResult) {
+                SnackbarResult.Dismissed -> viewModel.resetLastDeletedIntakeEntry()
+                SnackbarResult.ActionPerformed -> viewModel.undoIntakeEntryDeletion()
+            }
+        }
+    }
     Scaffold(
+        scaffoldState = scaffoldState,
         topBar = {
             CalorieTrackerTopBar(title = Translated(R.string.home_screen_title))
         },
         bottomBar = { CalorieTrackerBottomNavigation() },
     ) {
         HomeScreenContent(
-            uiState = uiState.value,
+            uiState = uiState,
             greeting = viewModel.greeting,
             onIntakeEntryAdded = viewModel::addIntakeEntry,
             onIntakeEntryDeleted = viewModel::deleteIntakeEntry,
@@ -139,22 +166,16 @@ fun HomeScreenGreeting(greeting: String) {
 @Preview
 fun HomeScreenContentPreview() {
     CalorieTrackerTheme(darkTheme = true) {
-        HomeScreenContent(
-            uiState = HomeScreenUiModel(
-                showNoCalorieGoalSet = false,
-                calorieGoal = CalorieGoalUiModel(
-                    totalCalories = 2000,
-                    caloriesLeft = 500,
-                    carbohydratesGoal = MacroGoalUiModel(200, 50),
-                    proteinGoal = MacroGoalUiModel(100, 20),
-                    fatGoal = MacroGoalUiModel(50, 10),
-                ),
-                intakeEntries = listOf(IntakeEntryUiModel("", "essen", 1500, 150, 80, 40)),
+        HomeScreenContent(uiState = HomeScreenUiModel(
+            showNoCalorieGoalSet = false,
+            calorieGoal = CalorieGoalUiModel(
+                totalCalories = 2000,
+                caloriesLeft = 500,
+                carbohydratesGoal = MacroGoalUiModel(200, 50),
+                proteinGoal = MacroGoalUiModel(100, 20),
+                fatGoal = MacroGoalUiModel(50, 10),
             ),
-            greeting = "Good morning!",
-            {},
-            {},
-            {}
-        )
+            intakeEntries = listOf(IntakeEntryUiModel("", "essen", 1500, 150, 80, 40)),
+        ), greeting = "Good morning!", {}, {}, {})
     }
 }

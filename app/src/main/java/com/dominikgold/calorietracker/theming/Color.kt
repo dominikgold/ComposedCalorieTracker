@@ -24,6 +24,9 @@ val textColorSubtitleNight = Color(0xFFB8B8B8)
 val colorDisabledDay = Color(0xFFE1DDD8)
 val colorDisabledNight = Color(0xFF646260)
 
+val lightGreyDay = Color(0xFFFAF5F0)
+val lightGreyNight = Color(0xFF212121)
+
 @Composable
 val textColorDefault
     get() = if (AmbientIsDarkTheme.current) textColorDefaultNight else textColorDefaultDay
@@ -47,3 +50,7 @@ val clearGreen
 @Composable
 val colorDisabled
     get() = if (AmbientIsDarkTheme.current) colorDisabledNight else colorDisabledDay
+
+@Composable
+val lightGrey
+    get() = if (AmbientIsDarkTheme.current) lightGreyNight else lightGreyDay

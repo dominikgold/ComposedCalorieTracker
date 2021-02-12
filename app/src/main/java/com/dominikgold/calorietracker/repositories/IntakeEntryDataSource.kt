@@ -5,9 +5,11 @@ import java.time.LocalDate
 
 interface IntakeEntryDataSource {
 
-    suspend fun addIntakeEntry(intakeEntry: PersistedIntakeEntry)
+    suspend fun addIntakeEntry(intakeEntry: PersistedIntakeEntry): Long
 
-    suspend fun deleteIntakeEntry(id: Int)
+    suspend fun deleteIntakeEntry(id: Long)
+
+    suspend fun getIntakeEntryById(id: Long): PersistedIntakeEntry
 
     suspend fun getIntakeEntriesForDate(date: LocalDate): List<PersistedIntakeEntry>
 

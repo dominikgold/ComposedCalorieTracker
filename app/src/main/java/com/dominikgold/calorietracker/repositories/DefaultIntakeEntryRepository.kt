@@ -2,8 +2,8 @@ package com.dominikgold.calorietracker.repositories
 
 import com.dominikgold.calorietracker.datasources.db.model.PersistedIntakeEntry
 import com.dominikgold.calorietracker.datasources.db.model.toEntity
-import com.dominikgold.calorietracker.datasources.db.model.toPersistedModel
 import com.dominikgold.calorietracker.entities.IntakeEntry
+import com.dominikgold.calorietracker.entities.MacroGoals
 import com.dominikgold.calorietracker.usecases.intakeentries.IntakeEntryRepository
 import java.time.LocalDate
 import javax.inject.Inject
@@ -17,11 +17,20 @@ class DefaultIntakeEntryRepository @Inject constructor(
     }
 
     override suspend fun deleteIntakeEntry(id: String) {
-        intakeEntryDataSource.deleteIntakeEntry(id.toInt())
+        intakeEntryDataSource.deleteIntakeEntry(id.toLong())
     }
 
-    override suspend fun saveIntakeEntry(intakeEntry: IntakeEntry) {
-        intakeEntryDataSource.addIntakeEntry(intakeEntry.toPersistedModel())
+    override suspend fun saveIntakeEntry(name: String, calories: Int, macroGoals: MacroGoals): IntakeEntry {
+        val persistedIntakeEntry = PersistedIntakeEntry(
+            name = name,
+            calories = calories,
+            carbohydrates = macroGoals.carbohydrates ?: -1,
+            protein = macroGoals.protein ?: -1,
+            fat = macroGoals.fat ?: -1,
+            date = LocalDate.now(),
+        )
+        val id = intakeEntryDataSource.addIntakeEntry(persistedIntakeEntry)
+        return intakeEntryDataSource.getIntakeEntryById(id).toEntity()
     }
 
 }

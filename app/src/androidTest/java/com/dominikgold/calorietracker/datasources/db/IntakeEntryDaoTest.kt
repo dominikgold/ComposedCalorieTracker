@@ -95,6 +95,18 @@ class IntakeEntryDaoTest {
     }
 
     @Test
+    fun adding_intake_entry_returns_generated_id() = runBlockingTest {
+        val id1 = db.intakeEntryDao().addIntakeEntry(testIntakeEntry)
+        db.intakeEntryDao().addIntakeEntry(testIntakeEntry.copy(name = "second"))
+        db.intakeEntryDao().deleteIntakeEntry(id1)
+
+        val id2 = db.intakeEntryDao().addIntakeEntry(testIntakeEntry.copy(name = "third"))
+        val insertedIntakeEntry = db.intakeEntryDao().getIntakeEntryById(id2)
+
+        insertedIntakeEntry shouldBeEqualTo testIntakeEntry.copy(name = "third")
+    }
+
+    @Test
     fun deleting_intake_entry_by_id() = runBlockingTest {
         db.intakeEntryDao().addIntakeEntry(testIntakeEntry)
 

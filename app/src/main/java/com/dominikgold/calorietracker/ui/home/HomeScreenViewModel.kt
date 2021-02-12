@@ -3,8 +3,8 @@ package com.dominikgold.calorietracker.ui.home
 import com.dominikgold.calorietracker.R
 import com.dominikgold.compose.viewmodel.ViewModel
 import com.dominikgold.calorietracker.di.ViewModelFactory
-import com.dominikgold.calorietracker.entities.CalorieGoal
 import com.dominikgold.calorietracker.entities.IntakeEntry
+import com.dominikgold.calorietracker.entities.MacroGoals
 import com.dominikgold.calorietracker.navigation.Navigator
 import com.dominikgold.calorietracker.navigation.Screen
 import com.dominikgold.calorietracker.usecases.caloriegoal.GetCalorieGoalUseCase
@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.inject.Inject
 
@@ -54,39 +53,6 @@ class HomeScreenViewModel(
         loadHomeScreenData()
     }
 
-    fun navigateToSetCalorieGoal() {
-        navigator.switchScreen(Screen.SetCalorieGoal)
-    }
-
-    fun addIntakeEntry(uiModel: AddIntakeEntryUiModel) {
-        require(uiModel.calories != null)
-        val intakeEntry = IntakeEntry(
-            id = "",
-            name = uiModel.name,
-            calories = uiModel.calories,
-            carbohydrates = uiModel.carbohydrates,
-            protein = uiModel.protein,
-            fat = uiModel.fat,
-        )
-        coroutineScope.launch {
-            saveIntakeEntryUseCase.saveIntakeEntry(intakeEntry)
-        }
-        _uiState.value = _uiState.value.copy(
-            calorieGoal = _uiState.value.calorieGoal?.addIntakeEntry(intakeEntry),
-            intakeEntries = _uiState.value.intakeEntries + intakeEntry.toUiModel(),
-        )
-    }
-
-    fun deleteIntakeEntry(uiModel: IntakeEntryUiModel) {
-        coroutineScope.launch {
-            deleteIntakeEntryUseCase.deleteIntakeEntry(uiModel.id)
-        }
-        _uiState.value = _uiState.value.copy(
-            calorieGoal = _uiState.value.calorieGoal?.removeIntakeEntry(uiModel),
-            intakeEntries = _uiState.value.intakeEntries - uiModel,
-        )
-    }
-
     private fun loadHomeScreenData() {
         coroutineScope.launch {
             val intakeEntriesJob = async { getIntakeEntriesUseCase.getIntakeEntries() }
@@ -103,6 +69,60 @@ class HomeScreenViewModel(
         }
     }
 
+    fun navigateToSetCalorieGoal() {
+        navigator.switchScreen(Screen.SetCalorieGoal)
+    }
+
+    fun addIntakeEntry(uiModel: AddIntakeEntryUiModel) {
+        require(uiModel.calories != null)
+        coroutineScope.launch {
+            val savedIntakeEntry = saveIntakeEntryUseCase.saveIntakeEntry(
+                name = uiModel.name,
+                calories = uiModel.calories,
+                macroGoals = MacroGoals(uiModel.carbohydrates, uiModel.protein, uiModel.fat),
+            )
+            _uiState.value = _uiState.value.copy(
+                calorieGoal = _uiState.value.calorieGoal?.addIntakeEntry(savedIntakeEntry),
+                intakeEntries = _uiState.value.intakeEntries + savedIntakeEntry.toUiModel(),
+            )
+        }
+    }
+
+    fun deleteIntakeEntry(uiModel: IntakeEntryUiModel) {
+        coroutineScope.launch {
+            deleteIntakeEntryUseCase.deleteIntakeEntry(uiModel.id)
+        }
+        _uiState.value = _uiState.value.copy(
+            calorieGoal = _uiState.value.calorieGoal?.removeIntakeEntry(uiModel),
+            intakeEntries = _uiState.value.intakeEntries - uiModel,
+            lastDeletedIntakeEntry = uiModel,
+        )
+    }
+
+    fun resetLastDeletedIntakeEntry() {
+        _uiState.value = _uiState.value.copy(lastDeletedIntakeEntry = null)
+    }
+
+    fun undoIntakeEntryDeletion() {
+        val lastDeletedIntakeEntry = uiState.value.lastDeletedIntakeEntry
+        require(lastDeletedIntakeEntry != null)
+        coroutineScope.launch {
+            val savedIntakeEntry = saveIntakeEntryUseCase.saveIntakeEntry(
+                name = lastDeletedIntakeEntry.name,
+                calories = lastDeletedIntakeEntry.calories,
+                macroGoals = MacroGoals(
+                    carbohydrates = lastDeletedIntakeEntry.carbohydrates,
+                    protein = lastDeletedIntakeEntry.protein,
+                    fat = lastDeletedIntakeEntry.fat,
+                ),
+            )
+            _uiState.value =
+                _uiState.value.copy(calorieGoal = _uiState.value.calorieGoal?.addIntakeEntry(savedIntakeEntry),
+                                    intakeEntries = _uiState.value.intakeEntries + savedIntakeEntry.toUiModel(),
+                                    lastDeletedIntakeEntry = null)
+        }
+    }
+
 }
 
 class HomeScreenViewModelFactory @Inject constructor(
@@ -115,12 +135,14 @@ class HomeScreenViewModelFactory @Inject constructor(
 ) : ViewModelFactory<HomeScreenViewModel, Nothing, Nothing> {
 
     override fun create(savedState: Nothing?, parameters: Nothing?): HomeScreenViewModel {
-        return HomeScreenViewModel(navigator,
-                                   getIntakeEntriesUseCase,
-                                   getCalorieGoalUseCase,
-                                   saveIntakeEntryUseCase,
-                                   deleteIntakeEntryUseCase,
-                                   stringProvider)
+        return HomeScreenViewModel(
+            navigator,
+            getIntakeEntriesUseCase,
+            getCalorieGoalUseCase,
+            saveIntakeEntryUseCase,
+            deleteIntakeEntryUseCase,
+            stringProvider,
+        )
     }
 
 }
