@@ -22,15 +22,32 @@ android {
         testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
     }
 
+    signingConfigs {
+        this.getByName("debug") {
+            storeFile = file(property("debugKeyStore") as String)
+            storePassword = property("debugStorePassword") as String
+            keyAlias = property("debugKeyAlias") as String
+            keyPassword = property("debugKeyPassword") as String
+        }
+        create("release") {
+            storeFile = file(property("releaseKeyStore") as String)
+            storePassword = property("releaseStorePassword") as String
+            keyAlias = property("releaseKeyAlias") as String
+            keyPassword = property("releaseKeyPassword") as String
+        }
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix(".debug")
             minifyEnabled(false)
+            signingConfig = signingConfigs.getByName("debug")
             debuggable(true)
         }
         release {
             minifyEnabled(true)
             debuggable(false)
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }

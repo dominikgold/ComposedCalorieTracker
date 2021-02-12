@@ -43,6 +43,7 @@ import com.dominikgold.calorietracker.theming.TextStyles
 import com.dominikgold.calorietracker.theming.textColorSubtitle
 import com.dominikgold.calorietracker.util.LengthInputFilter
 import com.dominikgold.calorietracker.util.Translated
+import com.dominikgold.calorietracker.util.inLightAndDarkTheme
 
 @OptIn(ExperimentalLayout::class)
 @Composable
@@ -184,9 +185,10 @@ private fun RowScope.AddIntakeEntryMacroField(currentValue: Int?, onChanged: (In
 @Preview
 @Composable
 fun IntakeEntryCardPreview() {
-    CalorieTrackerTheme {
+    inLightAndDarkTheme {
         Column {
             IntakeEntryCard(uiModel = IntakeEntryUiModel("protein.", 1000, 0, 250, 0))
+            IntakeEntryCard(uiModel = IntakeEntryUiModel("very very long food name that spans longer than one line.", 300, null, null, null))
         }
     }
 }

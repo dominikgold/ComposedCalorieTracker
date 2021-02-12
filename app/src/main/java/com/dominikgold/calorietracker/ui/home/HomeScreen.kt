@@ -85,9 +85,9 @@ private fun HomeScreenContent(
                         Spacer(modifier = Modifier.height(8.dp))
                     }
                 }
-                items(items = uiState.intakeEntries) {
+                items(items = uiState.intakeEntries) { intakeEntry ->
                     Spacer(modifier = Modifier.height(8.dp))
-                    IntakeEntryCard(uiModel = it)
+                    IntakeEntryCard(uiModel = intakeEntry)
                 }
                 item { Spacer(modifier = Modifier.height(8.dp)) }
                 item {
