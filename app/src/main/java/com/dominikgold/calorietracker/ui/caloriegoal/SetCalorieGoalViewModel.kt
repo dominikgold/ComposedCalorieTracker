@@ -7,6 +7,7 @@ import com.dominikgold.calorietracker.entities.Grams
 import com.dominikgold.calorietracker.entities.MacroGoals
 import com.dominikgold.calorietracker.entities.MacroSplit
 import com.dominikgold.calorietracker.navigation.Navigator
+import com.dominikgold.calorietracker.usecases.caloriegoal.GetCalorieGoalUseCase
 import com.dominikgold.calorietracker.usecases.caloriegoal.SetCalorieGoalUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,6 +16,7 @@ import javax.inject.Inject
 import kotlin.math.roundToInt
 
 class SetCalorieGoalViewModel(
+    private val getCalorieGoalUseCase: GetCalorieGoalUseCase,
     private val setCalorieGoalUseCase: SetCalorieGoalUseCase,
     private val navigator: Navigator,
     savedState: SetCalorieGoalUiState?,
@@ -23,6 +25,19 @@ class SetCalorieGoalViewModel(
     private val _uiState = MutableStateFlow(savedState ?: SetCalorieGoalUiState(null, null, null, null, null))
     val uiState: StateFlow<SetCalorieGoalUiState>
         get() = _uiState
+
+    init {
+        coroutineScope.launch {
+            getCalorieGoalUseCase.getCalorieGoal()?.let { currentCalorieGoal ->
+                _uiState.value = SetCalorieGoalUiState(
+                    tdeeInput = currentCalorieGoal.totalCalories,
+                    carbohydratesInput = currentCalorieGoal.macroGoals.carbohydrates,
+                    proteinInput = currentCalorieGoal.macroGoals.protein,
+                    fatInput = currentCalorieGoal.macroGoals.fat,
+                )
+            }
+        }
+    }
 
     fun saveCalorieGoal() {
         val tdee = uiState.value.tdeeInput
@@ -90,12 +105,13 @@ class SetCalorieGoalViewModel(
 }
 
 class SetCalorieGoalViewModelFactory @Inject constructor(
+    private val getCalorieGoalUseCase: GetCalorieGoalUseCase,
     private val setCalorieGoalUseCase: SetCalorieGoalUseCase,
     private val navigator: Navigator,
 ) : ViewModelFactory<SetCalorieGoalViewModel, SetCalorieGoalUiState, Nothing> {
 
     override fun create(savedState: SetCalorieGoalUiState?, parameters: Nothing?): SetCalorieGoalViewModel {
-        return SetCalorieGoalViewModel(setCalorieGoalUseCase, navigator, savedState)
+        return SetCalorieGoalViewModel(getCalorieGoalUseCase, setCalorieGoalUseCase, navigator, savedState)
     }
 
 }
