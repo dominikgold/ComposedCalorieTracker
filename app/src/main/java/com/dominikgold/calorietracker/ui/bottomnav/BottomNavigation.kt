@@ -32,7 +32,6 @@ fun CalorieTrackerBottomNavigationContent(
     selectedTab: BottomNavigationTab,
     onTabSelected: (BottomNavigationTab) -> Unit,
 ) {
-
     BottomNavigation(backgroundColor = MaterialTheme.colors.surface) {
         availableTabs.forEach { tab ->
             val isSelected = tab == selectedTab

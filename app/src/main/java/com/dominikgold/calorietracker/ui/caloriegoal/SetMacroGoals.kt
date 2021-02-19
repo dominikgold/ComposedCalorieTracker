@@ -23,7 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,11 +30,12 @@ import com.dominikgold.calorietracker.R
 import com.dominikgold.calorietracker.entities.Grams
 import com.dominikgold.calorietracker.entities.MacroSplit
 import com.dominikgold.calorietracker.theming.TextStyles
-import com.dominikgold.calorietracker.theming.textColorDefault
 import com.dominikgold.calorietracker.ui.common.TextDropdownToggle
 import com.dominikgold.calorietracker.util.LengthInputFilter
-import com.dominikgold.calorietracker.util.Translated
+import com.dominikgold.calorietracker.util.NaturalNumberInputFilter
+import com.dominikgold.calorietracker.util.translated
 import com.dominikgold.calorietracker.util.inLightAndDarkTheme
+import com.dominikgold.calorietracker.util.inputFilters
 
 @Composable
 fun SetMacroGoals(uiState: SetCalorieGoalUiState, setCalorieGoalActions: SetCalorieGoalActions) {
@@ -44,8 +44,8 @@ fun SetMacroGoals(uiState: SetCalorieGoalUiState, setCalorieGoalActions: SetCalo
         DropdownMenu(
             toggle = {
                 TextDropdownToggle(
-                    text = Translated(uiState.macroSplitName),
-                    placeholder = Translated(R.string.choose_macro_split_hint),
+                    text = translated(uiState.macroSplitName),
+                    placeholder = translated(R.string.choose_macro_split_hint),
                     isExpanded = dropdownMenuExpanded,
                     modifier = Modifier.fillMaxWidth(),
                 )
@@ -71,11 +71,11 @@ fun SetMacroGoals(uiState: SetCalorieGoalUiState, setCalorieGoalActions: SetCalo
 @Composable
 private fun MacroSplitDropdownItems(onItemSelected: (MacroSplit?) -> Unit) {
     DropdownMenuItem(onClick = { onItemSelected(null) }) {
-        Text(text = Translated(R.string.dropdown_reset_macro_split))
+        Text(text = translated(R.string.dropdown_reset_macro_split))
     }
     MacroSplit.values().forEach { macroSplit ->
         DropdownMenuItem(onClick = { onItemSelected(macroSplit) }) {
-            Text(text = Translated(macroSplit.translatableName))
+            Text(text = translated(macroSplit.translatableName))
         }
     }
 }
@@ -94,7 +94,7 @@ private fun IndividualMacroGoals(uiState: SetCalorieGoalUiState, setCalorieGoalA
                 top.linkTo(carbsInput.top)
                 bottom.linkTo(carbsInput.bottom)
             },
-            text = Translated(R.string.choose_macro_split_carbohydrates_title),
+            text = translated(R.string.choose_macro_split_carbohydrates_title),
             style = TextStyles.Title,
             overflow = TextOverflow.Ellipsis,
         )
@@ -105,7 +105,7 @@ private fun IndividualMacroGoals(uiState: SetCalorieGoalUiState, setCalorieGoalA
                 bottom.linkTo(proteinInput.bottom)
                 centerHorizontallyTo(carbsTitle)
             },
-            text = Translated(R.string.choose_macro_split_protein_title),
+            text = translated(R.string.choose_macro_split_protein_title),
             style = TextStyles.Title,
             overflow = TextOverflow.Ellipsis,
         )
@@ -116,13 +116,13 @@ private fun IndividualMacroGoals(uiState: SetCalorieGoalUiState, setCalorieGoalA
                 bottom.linkTo(fatInput.bottom)
                 centerHorizontallyTo(carbsTitle)
             },
-            text = Translated(R.string.choose_macro_split_fat_title),
+            text = translated(R.string.choose_macro_split_fat_title),
             style = TextStyles.Title,
             overflow = TextOverflow.Ellipsis,
         )
         OutlinedTextField(
             value = uiState.carbohydratesInput?.toString() ?: "",
-            onValueChange = LengthInputFilter(maxLength = 3) { newInput ->
+            onValueChange = inputFilters(NaturalNumberInputFilter(), LengthInputFilter(maxLength = 3)) { newInput ->
                 setCalorieGoalActions.updateCarbohydrates(newInput.toIntOrNull())
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -135,7 +135,7 @@ private fun IndividualMacroGoals(uiState: SetCalorieGoalUiState, setCalorieGoalA
         )
         OutlinedTextField(
             value = uiState.proteinInput?.toString() ?: "",
-            onValueChange = LengthInputFilter(maxLength = 3) { newInput ->
+            onValueChange = inputFilters(NaturalNumberInputFilter(), LengthInputFilter(maxLength = 3)) { newInput ->
                 setCalorieGoalActions.updateProtein(newInput.toIntOrNull())
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -148,7 +148,7 @@ private fun IndividualMacroGoals(uiState: SetCalorieGoalUiState, setCalorieGoalA
         )
         OutlinedTextField(
             value = uiState.fatInput?.toString() ?: "",
-            onValueChange = LengthInputFilter(maxLength = 3) { newInput ->
+            onValueChange = inputFilters(NaturalNumberInputFilter(), LengthInputFilter(maxLength = 3)) { newInput ->
                 setCalorieGoalActions.updateFat(newInput.toIntOrNull())
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),

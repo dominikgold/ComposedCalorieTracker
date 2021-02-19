@@ -35,8 +35,8 @@
     <string name="add_intake_entry_button">+ Add entry</string>
     <string name="add_intake_entry_button_cancel">Cancel</string>
     <string name="home_tab_title">Home</string>
-    <string name="statistics_tab_title">Statistics</string>
-    <string name="statistics_screen_title">Statistics</string>
+    <string name="body_weight_tab_title">Body weight</string>
+    <string name="body_weight_screen_title">Body weight</string>
     <string name="settings_tab_title">Settings</string>
     <string name="settings_screen_title">Settings</string>
     <string name="dropdown_reset_macro_split">Reset</string>
@@ -50,4 +50,6 @@
     <string name="settings_item_set_reminders">Set reminders</string>
     <string name="intake_entry_deleted">Intake entry %s deleted.</string>
     <string name="undo_deletion_button">Undo</string>
+    <string name="todays_body_weight">Today\'s body weight:</string>
+    <string name="kilo_grams_acronym">kg</string>
 </resources>

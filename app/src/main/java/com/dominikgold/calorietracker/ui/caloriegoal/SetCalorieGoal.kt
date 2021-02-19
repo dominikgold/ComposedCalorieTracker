@@ -9,7 +9,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
@@ -28,7 +27,9 @@ import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
 import com.dominikgold.calorietracker.ui.topbar.CalorieTrackerTopBar
 import com.dominikgold.calorietracker.ui.topbar.TopBarActionTextButton
 import com.dominikgold.calorietracker.util.LengthInputFilter
-import com.dominikgold.calorietracker.util.Translated
+import com.dominikgold.calorietracker.util.NaturalNumberInputFilter
+import com.dominikgold.calorietracker.util.translated
+import com.dominikgold.calorietracker.util.inputFilters
 import com.dominikgold.compose.viewmodel.viewModel
 
 @Composable
@@ -52,11 +53,11 @@ private fun SetCalorieGoalContent(
 ) {
     Scaffold(topBar = {
         CalorieTrackerTopBar(
-            title = Translated(R.string.set_calorie_goal_title),
+            title = translated(R.string.set_calorie_goal_title),
             navigationIcon = vectorResource(id = R.drawable.vec_icon_close),
             actions = {
                 TopBarActionTextButton(
-                    text = Translated(R.string.top_bar_action_save),
+                    text = translated(R.string.top_bar_action_save),
                     enabled = uiState.isSaveButtonEnabled,
                     onClick = onSaveButtonClicked,
                 )
@@ -78,9 +79,9 @@ private fun SetCalorieGoalBody(uiState: SetCalorieGoalUiState, setCalorieGoalAct
         OutlinedTextField(
             value = uiState.tdeeInput?.toString() ?: "",
             placeholder = {
-                Text(text = Translated(resourceId = R.string.tdee_input_placeholder))
+                Text(text = translated(resourceId = R.string.tdee_input_placeholder))
             },
-            onValueChange = LengthInputFilter(maxLength = 5) { newInput ->
+            onValueChange = inputFilters(NaturalNumberInputFilter(), LengthInputFilter(maxLength = 5)) { newInput ->
                 setCalorieGoalActions.updateTdee(newInput.toIntOrNull())
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),

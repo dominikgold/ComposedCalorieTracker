@@ -1,5 +1,6 @@
 package com.dominikgold.calorietracker.repositories
 
+import com.dominikgold.calorietracker.usecases.bodyweight.BodyWeightEntryRepository
 import com.dominikgold.calorietracker.usecases.caloriegoal.CalorieGoalRepository
 import com.dominikgold.calorietracker.usecases.intakeentries.IntakeEntryRepository
 import dagger.Binds
@@ -13,5 +14,8 @@ interface RepositoriesModule {
 
     @Binds
     fun bindCalorieGoalRepository(repository: DefaultCalorieGoalRepository): CalorieGoalRepository
+
+    @Binds
+    fun bindBodyWeightEntryRepository(repository: DefaultBodyWeightEntryRepository): BodyWeightEntryRepository
 
 }

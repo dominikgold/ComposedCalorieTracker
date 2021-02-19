@@ -13,7 +13,7 @@ import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
 import com.dominikgold.calorietracker.ui.caloriegoal.SetCalorieGoalScreen
 import com.dominikgold.calorietracker.ui.home.HomeScreen
 import com.dominikgold.calorietracker.ui.settings.SettingsScreen
-import com.dominikgold.calorietracker.ui.statistics.StatisticsScreen
+import com.dominikgold.calorietracker.ui.bodyweight.BodyWeightScreen
 import com.dominikgold.compose.viewmodel.AmbientViewModelContainer
 import javax.inject.Inject
 
@@ -53,7 +53,7 @@ fun Main(navigator: Navigator) {
     Providers(AmbientViewModelContainer provides navigationStateEntry.value.viewModelContainer) {
         when (navigationStateEntry.value.screen) {
             Screen.Home -> HomeScreen()
-            Screen.Statistics -> StatisticsScreen()
+            Screen.Statistics -> BodyWeightScreen()
             Screen.Settings -> SettingsScreen()
             Screen.SetCalorieGoal -> SetCalorieGoalScreen()
         }

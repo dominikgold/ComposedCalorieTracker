@@ -9,7 +9,7 @@ import com.dominikgold.calorietracker.R
 enum class BottomNavigationTab {
 
     HOME,
-    STATISTICS,
+    BODY_WEIGHT,
     SETTINGS,
 
 }
@@ -18,14 +18,14 @@ enum class BottomNavigationTab {
 val BottomNavigationTab.title: String
     get() = AmbientContext.current.getString(when (this) {
                                                  BottomNavigationTab.HOME -> R.string.home_tab_title
-                                                 BottomNavigationTab.STATISTICS -> R.string.statistics_tab_title
+                                                 BottomNavigationTab.BODY_WEIGHT -> R.string.body_weight_tab_title
                                                  BottomNavigationTab.SETTINGS -> R.string.settings_tab_title
                                              })
 
 @Composable
 val BottomNavigationTab.icon: ImageVector
-    get() = vectorResource(id = when (this) {
+    get() = vectorResource(when (this) {
         BottomNavigationTab.HOME -> R.drawable.vec_icon_home_tab
-        BottomNavigationTab.STATISTICS -> R.drawable.vec_icon_statistics_tab
+        BottomNavigationTab.BODY_WEIGHT -> R.drawable.vec_icon_body_weight_tab
         BottomNavigationTab.SETTINGS -> R.drawable.vec_icon_settings_tab
     })

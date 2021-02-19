@@ -31,7 +31,7 @@ class DefaultNavigator @Inject constructor(private val viewModelProvider: Defaul
 
     private val bottomNavigationStateContainer = BottomNavigationStateContainer(initialScreenForTabs = mapOf(
         HOME to NavigationStateEntry(Screen.Home, DefaultViewModelContainer(viewModelProvider)),
-        STATISTICS to NavigationStateEntry(Screen.Statistics, DefaultViewModelContainer(viewModelProvider)),
+        BODY_WEIGHT to NavigationStateEntry(Screen.Statistics, DefaultViewModelContainer(viewModelProvider)),
         SETTINGS to NavigationStateEntry(Screen.Settings, DefaultViewModelContainer(viewModelProvider)),
     ))
 

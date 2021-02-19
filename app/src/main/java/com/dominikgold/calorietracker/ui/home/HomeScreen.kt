@@ -35,7 +35,7 @@ import com.dominikgold.calorietracker.theming.TextStyles
 import com.dominikgold.calorietracker.theming.components.StandardTextButton
 import com.dominikgold.calorietracker.ui.bottomnav.CalorieTrackerBottomNavigation
 import com.dominikgold.calorietracker.ui.topbar.CalorieTrackerTopBar
-import com.dominikgold.calorietracker.util.Translated
+import com.dominikgold.calorietracker.util.translated
 import com.dominikgold.compose.viewmodel.viewModel
 
 @Composable
@@ -50,8 +50,8 @@ private fun HomeScreenScaffold(viewModel: HomeScreenViewModel) {
     val uiState by viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
     if (uiState.lastDeletedIntakeEntry != null) {
-        val snackbarMessage = Translated(R.string.intake_entry_deleted, listOf(uiState.lastDeletedIntakeEntry!!.name))
-        val undoButtonText = Translated(R.string.undo_deletion_button)
+        val snackbarMessage = translated(R.string.intake_entry_deleted, listOf(uiState.lastDeletedIntakeEntry!!.name))
+        val undoButtonText = translated(R.string.undo_deletion_button)
         LaunchedEffect(key1 = uiState.lastDeletedIntakeEntry) {
             val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
                 message = snackbarMessage,
@@ -67,7 +67,7 @@ private fun HomeScreenScaffold(viewModel: HomeScreenViewModel) {
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            CalorieTrackerTopBar(title = Translated(R.string.home_screen_title))
+            CalorieTrackerTopBar(title = translated(R.string.home_screen_title))
         },
         bottomBar = { CalorieTrackerBottomNavigation() },
     ) {
@@ -152,7 +152,7 @@ fun AnimatedAddIntakeEntryButton(
         exit = fadeOut(animSpec = TweenSpec(durationMillis = 200)),
     ) {
         Box(Modifier.padding(horizontal = 16.dp)) {
-            StandardTextButton(text = Translated(R.string.add_intake_entry_button), onClick = onClick)
+            StandardTextButton(text = translated(R.string.add_intake_entry_button), onClick = onClick)
         }
     }
 }

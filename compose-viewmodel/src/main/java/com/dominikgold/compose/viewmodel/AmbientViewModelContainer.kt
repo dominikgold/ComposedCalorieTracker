@@ -5,8 +5,8 @@ import androidx.compose.runtime.staticAmbientOf
 
 @Composable
 inline fun <reified VM : ViewModel, SavedState, Parameters> viewModel(
-    savedState: SavedState?,
-    parameters: Parameters?,
+    savedState: SavedState? = null,
+    parameters: Parameters? = null,
 ) = AmbientViewModelContainer.current.get(VM::class, savedState, parameters)
 
 @Composable

@@ -41,8 +41,10 @@ import com.dominikgold.calorietracker.R
 import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
 import com.dominikgold.calorietracker.theming.TextStyles
 import com.dominikgold.calorietracker.util.LengthInputFilter
-import com.dominikgold.calorietracker.util.Translated
+import com.dominikgold.calorietracker.util.NaturalNumberInputFilter
+import com.dominikgold.calorietracker.util.translated
 import com.dominikgold.calorietracker.util.inLightAndDarkTheme
+import com.dominikgold.calorietracker.util.inputFilters
 
 @OptIn(ExperimentalLayout::class, ExperimentalAnimationApi::class)
 @Composable
@@ -69,18 +71,18 @@ fun IntakeEntryCard(uiModel: IntakeEntryUiModel, onIntakeEntryDeleted: (IntakeEn
             Spacer(Modifier.height(8.dp))
             Box(Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
                 FlowRow(mainAxisSpacing = 16.dp, crossAxisSpacing = 8.dp) {
-                    Text(text = Translated(R.string.intake_entry_calorie_count, listOf(uiModel.calories)),
+                    Text(text = translated(R.string.intake_entry_calorie_count, listOf(uiModel.calories)),
                          style = TextStyles.SubtitleSmall)
                     uiModel.carbohydrates?.let { carbohydrates ->
-                        Text(text = Translated(R.string.intake_entry_carbs_count, listOf(carbohydrates)),
+                        Text(text = translated(R.string.intake_entry_carbs_count, listOf(carbohydrates)),
                              style = TextStyles.SubtitleSmall)
                     }
                     uiModel.protein?.let { protein ->
-                        Text(text = Translated(R.string.intake_entry_protein_count, listOf(protein)),
+                        Text(text = translated(R.string.intake_entry_protein_count, listOf(protein)),
                              style = TextStyles.SubtitleSmall)
                     }
                     uiModel.fat?.let { fat ->
-                        Text(text = Translated(R.string.intake_entry_fat_count, listOf(fat)),
+                        Text(text = translated(R.string.intake_entry_fat_count, listOf(fat)),
                              style = TextStyles.SubtitleSmall)
                     }
                 }
@@ -120,16 +122,16 @@ fun AddIntakeEntry(onConfirmed: (AddIntakeEntryUiModel) -> Unit, onCancelled: ()
             OutlinedTextField(
                 value = uiModel.name,
                 onValueChange = { uiModel = uiModel.copy(name = it) },
-                placeholder = { Text(text = Translated(resourceId = R.string.intake_entry_name_input_placeholder)) },
+                placeholder = { Text(text = translated(resourceId = R.string.intake_entry_name_input_placeholder)) },
                 modifier = Modifier.fillMaxWidth(),
             )
             Spacer(modifier = Modifier.height(16.dp))
             OutlinedTextField(
                 value = uiModel.calories?.toString() ?: "",
-                onValueChange = LengthInputFilter(maxLength = 5) { newInput ->
+                onValueChange = inputFilters(NaturalNumberInputFilter(), LengthInputFilter(maxLength = 5)) { newInput ->
                     uiModel = uiModel.copy(calories = newInput.toIntOrNull())
                 },
-                placeholder = { Text(text = Translated(R.string.intake_entry_calorie_input_placeholder)) },
+                placeholder = { Text(text = translated(R.string.intake_entry_calorie_input_placeholder)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -138,25 +140,25 @@ fun AddIntakeEntry(onConfirmed: (AddIntakeEntryUiModel) -> Unit, onCancelled: ()
                 AddIntakeEntryMacroField(
                     currentValue = uiModel.carbohydrates,
                     onChanged = { uiModel = uiModel.copy(carbohydrates = it) },
-                    placeholderText = Translated(resourceId = R.string.intake_entry_carbohydrates_input_placeholder),
+                    placeholderText = translated(resourceId = R.string.intake_entry_carbohydrates_input_placeholder),
                 )
                 Spacer(modifier = Modifier.width(16.dp))
                 AddIntakeEntryMacroField(
                     currentValue = uiModel.protein,
                     onChanged = { uiModel = uiModel.copy(protein = it) },
-                    placeholderText = Translated(resourceId = R.string.intake_entry_protein_input_placeholder),
+                    placeholderText = translated(resourceId = R.string.intake_entry_protein_input_placeholder),
                 )
                 Spacer(modifier = Modifier.width(16.dp))
                 AddIntakeEntryMacroField(
                     currentValue = uiModel.fat,
                     onChanged = { uiModel = uiModel.copy(fat = it) },
-                    placeholderText = Translated(resourceId = R.string.intake_entry_fat_input_placeholder),
+                    placeholderText = translated(resourceId = R.string.intake_entry_fat_input_placeholder),
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
             Row(Modifier.align(Alignment.End)) {
                 Button(onClick = onCancelled) {
-                    Text(text = Translated(R.string.add_intake_entry_button_cancel))
+                    Text(text = translated(R.string.add_intake_entry_button_cancel))
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 AddIntakeEntryConfirmButton(
@@ -174,7 +176,7 @@ fun AddIntakeEntryConfirmButton(
     onConfirmed: () -> Unit,
 ) {
     Button(onClick = onConfirmed, enabled = uiModel.isConfirmButtonEnabled) {
-        Text(text = Translated(R.string.add_intake_entry_button_confirm))
+        Text(text = translated(R.string.add_intake_entry_button_confirm))
     }
 }
 
@@ -182,7 +184,7 @@ fun AddIntakeEntryConfirmButton(
 private fun RowScope.AddIntakeEntryMacroField(currentValue: Int?, onChanged: (Int?) -> Unit, placeholderText: String) {
     OutlinedTextField(
         value = currentValue?.toString() ?: "",
-        onValueChange = LengthInputFilter(maxLength = 5) { newInput ->
+        onValueChange = inputFilters(NaturalNumberInputFilter(), LengthInputFilter(maxLength = 5)) { newInput ->
             onChanged(newInput.toIntOrNull())
         },
         placeholder = { Text(text = placeholderText) },

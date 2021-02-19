@@ -21,14 +21,14 @@ import com.dominikgold.calorietracker.R
 import com.dominikgold.calorietracker.theming.TextStyles
 import com.dominikgold.calorietracker.ui.bottomnav.CalorieTrackerBottomNavigation
 import com.dominikgold.calorietracker.ui.topbar.CalorieTrackerTopBar
-import com.dominikgold.calorietracker.util.Translated
+import com.dominikgold.calorietracker.util.translated
 import com.dominikgold.calorietracker.util.inLightAndDarkTheme
 import com.dominikgold.compose.viewmodel.viewModel
 
 @Composable
 fun SettingsScreen() {
     Scaffold(
-        topBar = { CalorieTrackerTopBar(title = Translated(R.string.settings_screen_title)) },
+        topBar = { CalorieTrackerTopBar(title = translated(R.string.settings_screen_title)) },
         bottomBar = { CalorieTrackerBottomNavigation() },
     ) {
         val viewModel: SettingsViewModel = viewModel()

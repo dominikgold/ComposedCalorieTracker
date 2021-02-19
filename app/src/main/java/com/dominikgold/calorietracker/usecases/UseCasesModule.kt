@@ -1,5 +1,9 @@
 package com.dominikgold.calorietracker.usecases
 
+import com.dominikgold.calorietracker.usecases.bodyweight.DefaultGetBodyWeightUseCase
+import com.dominikgold.calorietracker.usecases.bodyweight.DefaultSaveBodyWeightUseCase
+import com.dominikgold.calorietracker.usecases.bodyweight.GetBodyWeightUseCase
+import com.dominikgold.calorietracker.usecases.bodyweight.SaveBodyWeightUseCase
 import com.dominikgold.calorietracker.usecases.caloriegoal.DefaultGetCalorieGoalUseCase
 import com.dominikgold.calorietracker.usecases.caloriegoal.DefaultSetCalorieGoalUseCase
 import com.dominikgold.calorietracker.usecases.caloriegoal.GetCalorieGoalUseCase
@@ -30,5 +34,11 @@ interface UseCasesModule {
 
     @Binds
     fun bindGetCalorieGoalUseCase(useCase: DefaultGetCalorieGoalUseCase): GetCalorieGoalUseCase
+
+    @Binds
+    fun bindSaveBodyWeightUseCase(useCase: DefaultSaveBodyWeightUseCase): SaveBodyWeightUseCase
+
+    @Binds
+    fun bindGetBodyWeightUseCase(useCase: DefaultGetBodyWeightUseCase): GetBodyWeightUseCase
 
 }

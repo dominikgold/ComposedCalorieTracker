@@ -4,7 +4,7 @@ import com.dominikgold.calorietracker.di.DefaultViewModelProvider
 import com.dominikgold.calorietracker.ui.bottomnav.BottomNavigationTab
 import com.dominikgold.calorietracker.ui.bottomnav.BottomNavigationTab.HOME
 import com.dominikgold.calorietracker.ui.bottomnav.BottomNavigationTab.SETTINGS
-import com.dominikgold.calorietracker.ui.bottomnav.BottomNavigationTab.STATISTICS
+import com.dominikgold.calorietracker.ui.bottomnav.BottomNavigationTab.BODY_WEIGHT
 import com.dominikgold.compose.viewmodel.ViewModelContainer
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
@@ -26,7 +26,7 @@ class BottomNavigationStateContainerTest {
     fun setUp() {
         initialScreenForTabs = mapOf(
             HOME to NavigationStateEntry(Screen.Home, mock()),
-            STATISTICS to NavigationStateEntry(Screen.Statistics, mock()),
+            BODY_WEIGHT to NavigationStateEntry(Screen.Statistics, mock()),
             SETTINGS to NavigationStateEntry(Screen.Settings, mock()),
         )
         stateContainer = BottomNavigationStateContainer(initialScreenForTabs)
@@ -36,8 +36,8 @@ class BottomNavigationStateContainerTest {
     fun `initial screens for tabs are taken from given map`() {
         stateContainer.currentNavigationStateEntry.value.screen shouldBeEqualTo initialScreenForTabs[HOME]?.screen
 
-        stateContainer.switchSelectedTab(STATISTICS)
-        stateContainer.currentNavigationStateEntry.value.screen shouldBeEqualTo initialScreenForTabs[STATISTICS]?.screen
+        stateContainer.switchSelectedTab(BODY_WEIGHT)
+        stateContainer.currentNavigationStateEntry.value.screen shouldBeEqualTo initialScreenForTabs[BODY_WEIGHT]?.screen
 
         stateContainer.switchSelectedTab(SETTINGS)
         stateContainer.currentNavigationStateEntry.value.screen shouldBeEqualTo initialScreenForTabs[SETTINGS]?.screen
@@ -54,30 +54,30 @@ class BottomNavigationStateContainerTest {
 
     @Test
     fun `switching selected tab changes current navigation state entry`() {
-        stateContainer.switchSelectedTab(STATISTICS)
+        stateContainer.switchSelectedTab(BODY_WEIGHT)
 
         stateContainer.currentNavigationStateEntry.value.screen shouldBeEqualTo Screen.Statistics
     }
 
     @Test
     fun `switching selected tab changes selected tab`() {
-        stateContainer.switchSelectedTab(STATISTICS)
+        stateContainer.switchSelectedTab(BODY_WEIGHT)
 
-        stateContainer.selectedTab shouldBeEqualTo STATISTICS
+        stateContainer.selectedTab shouldBeEqualTo BODY_WEIGHT
     }
 
     @Test
     fun `switching selected tab does not clear view model container for current screen`() {
-        stateContainer.switchSelectedTab(STATISTICS)
+        stateContainer.switchSelectedTab(BODY_WEIGHT)
 
         verify(initialScreenForTabs.getValue(HOME).viewModelContainer, never()).release()
     }
 
     @Test
     fun `selecting tab that is in the history of selected tabs pushes it to top instead of adding to history`() {
-        stateContainer.switchSelectedTab(STATISTICS)
+        stateContainer.switchSelectedTab(BODY_WEIGHT)
         stateContainer.switchSelectedTab(SETTINGS)
-        stateContainer.switchSelectedTab(STATISTICS)
+        stateContainer.switchSelectedTab(BODY_WEIGHT)
 
         stateContainer.popBackStack()
         stateContainer.selectedTab shouldBeEqualTo SETTINGS
@@ -97,7 +97,7 @@ class BottomNavigationStateContainerTest {
 
     @Test
     fun `popping the last entry on a tab back stack switches to last tab in tab history`() {
-        stateContainer.switchSelectedTab(STATISTICS)
+        stateContainer.switchSelectedTab(BODY_WEIGHT)
 
         stateContainer.popBackStack()
 
@@ -107,11 +107,11 @@ class BottomNavigationStateContainerTest {
 
     @Test
     fun `popping the last entry on a tab back stack does not clear the view model container for that entry`() {
-        stateContainer.switchSelectedTab(STATISTICS)
+        stateContainer.switchSelectedTab(BODY_WEIGHT)
 
         stateContainer.popBackStack()
 
-        verify(initialScreenForTabs.getValue(STATISTICS).viewModelContainer, never()).release()
+        verify(initialScreenForTabs.getValue(BODY_WEIGHT).viewModelContainer, never()).release()
     }
 
     @Test
@@ -151,7 +151,7 @@ class BottomNavigationStateContainerTest {
         val viewModelContainer1 = createViewModelContainerMock()
         stateContainer.add(NavigationStateEntry(Screen.SetCalorieGoal, viewModelContainer1))
 
-        stateContainer.switchSelectedTab(STATISTICS)
+        stateContainer.switchSelectedTab(BODY_WEIGHT)
         val viewModelContainer2 = createViewModelContainerMock()
         stateContainer.add(NavigationStateEntry(Screen.SetCalorieGoal, viewModelContainer2))
 
@@ -177,12 +177,12 @@ class BottomNavigationStateContainerTest {
         verify(viewModelContainer3).release()
 
         stateContainer.popBackStack()
-        stateContainer.selectedTab shouldBeEqualTo STATISTICS
+        stateContainer.selectedTab shouldBeEqualTo BODY_WEIGHT
         stateContainer.currentNavigationStateEntry.value shouldBeEqualTo NavigationStateEntry(Screen.SetCalorieGoal,
                                                                                               viewModelContainer2)
 
         stateContainer.popBackStack()
-        stateContainer.currentNavigationStateEntry.value shouldBeEqualTo initialScreenForTabs.getValue(STATISTICS)
+        stateContainer.currentNavigationStateEntry.value shouldBeEqualTo initialScreenForTabs.getValue(BODY_WEIGHT)
         verify(viewModelContainer2).release()
 
         stateContainer.popBackStack() shouldBe null
@@ -191,13 +191,13 @@ class BottomNavigationStateContainerTest {
     @Test
     fun `complex save and restore state flow`() {
         stateContainer.add(NavigationStateEntry(Screen.SetCalorieGoal, createViewModelContainerMock()))
-        stateContainer.switchSelectedTab(STATISTICS)
+        stateContainer.switchSelectedTab(BODY_WEIGHT)
 
         val savedState = stateContainer.saveState()
         val newStateContainer = BottomNavigationStateContainer(initialScreenForTabs)
         newStateContainer.restoreState(savedState, DefaultViewModelProvider(mapOf()))
 
-        stateContainer.selectedTab shouldBeEqualTo STATISTICS
+        stateContainer.selectedTab shouldBeEqualTo BODY_WEIGHT
         stateContainer.currentNavigationStateEntry.value.screen shouldBeEqualTo Screen.Statistics
         stateContainer.popBackStack()
         stateContainer.selectedTab shouldBeEqualTo HOME

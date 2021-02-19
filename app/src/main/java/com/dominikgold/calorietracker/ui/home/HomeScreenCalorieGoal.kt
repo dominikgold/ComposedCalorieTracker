@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,7 +21,7 @@ import com.dominikgold.calorietracker.theming.ClearGreen
 import com.dominikgold.calorietracker.theming.TextStyles
 import com.dominikgold.calorietracker.theming.WarningRed
 import com.dominikgold.calorietracker.theming.components.ElevatedButton
-import com.dominikgold.calorietracker.util.Translated
+import com.dominikgold.calorietracker.util.translated
 import kotlin.math.absoluteValue
 
 @Composable
@@ -32,7 +30,7 @@ fun NoCalorieGoalSet(onSetCalorieGoalClicked: () -> Unit) {
                .fillMaxWidth()
                .padding(24.dp)) {
         Text(
-            text = Translated(R.string.home_screen_no_calorie_goal_set_message),
+            text = translated(R.string.home_screen_no_calorie_goal_set_message),
             textAlign = TextAlign.Center,
             style = TextStyles.Title,
             modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -40,7 +38,7 @@ fun NoCalorieGoalSet(onSetCalorieGoalClicked: () -> Unit) {
         Spacer(modifier = Modifier.height(32.dp))
         ElevatedButton(
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            text = Translated(R.string.set_first_calorie_goal_button),
+            text = translated(R.string.set_first_calorie_goal_button),
             onClick = onSetCalorieGoalClicked,
         )
     }
@@ -50,14 +48,14 @@ fun NoCalorieGoalSet(onSetCalorieGoalClicked: () -> Unit) {
 fun HomeScreenCalorieGoal(uiModel: CalorieGoalUiModel) {
     Column(Modifier.fillMaxWidth()) {
         AmountLeftText(
-            name = Translated(resourceId = R.string.home_screen_calories_name),
+            name = translated(resourceId = R.string.home_screen_calories_name),
             isExceeded = uiModel.isExceeded,
             amountLeft = uiModel.caloriesLeft,
         )
         uiModel.carbohydratesGoal?.let {
             Spacer(Modifier.height(8.dp))
             AmountLeftText(
-                name = Translated(resourceId = R.string.home_screen_carbs_name),
+                name = translated(resourceId = R.string.home_screen_carbs_name),
                 isExceeded = it.isExceeded,
                 amountLeft = it.amountLeft,
             )
@@ -65,7 +63,7 @@ fun HomeScreenCalorieGoal(uiModel: CalorieGoalUiModel) {
         uiModel.proteinGoal?.let {
             Spacer(Modifier.height(8.dp))
             AmountLeftText(
-                name = Translated(resourceId = R.string.home_screen_protein_name),
+                name = translated(resourceId = R.string.home_screen_protein_name),
                 isExceeded = it.isExceeded,
                 amountLeft = it.amountLeft,
             )
@@ -73,7 +71,7 @@ fun HomeScreenCalorieGoal(uiModel: CalorieGoalUiModel) {
         uiModel.fatGoal?.let {
             Spacer(Modifier.height(8.dp))
             AmountLeftText(
-                name = Translated(resourceId = R.string.home_screen_fat_name),
+                name = translated(resourceId = R.string.home_screen_fat_name),
                 isExceeded = it.isExceeded,
                 amountLeft = it.amountLeft,
             )
@@ -84,7 +82,7 @@ fun HomeScreenCalorieGoal(uiModel: CalorieGoalUiModel) {
 @Composable
 private fun AmountLeftText(name: String, isExceeded: Boolean, amountLeft: Int) {
     Row {
-        Text(text = Translated(if (isExceeded) {
+        Text(text = translated(if (isExceeded) {
             R.string.home_screen_amount_exceeded
         } else {
             R.string.home_screen_amount_left
