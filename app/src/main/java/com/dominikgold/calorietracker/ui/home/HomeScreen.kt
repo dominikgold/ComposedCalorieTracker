@@ -2,19 +2,24 @@ package com.dominikgold.calorietracker.ui.home
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarResult
 import androidx.compose.material.Text
@@ -50,19 +55,12 @@ private fun HomeScreenScaffold(viewModel: HomeScreenViewModel) {
     val uiState by viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
     if (uiState.lastDeletedIntakeEntry != null) {
-        val snackbarMessage = translated(R.string.intake_entry_deleted, listOf(uiState.lastDeletedIntakeEntry!!.name))
-        val undoButtonText = translated(R.string.undo_deletion_button)
-        LaunchedEffect(key1 = uiState.lastDeletedIntakeEntry) {
-            val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
-                message = snackbarMessage,
-                actionLabel = undoButtonText,
-                duration = SnackbarDuration.Long,
-            )
-            when (snackbarResult) {
-                SnackbarResult.Dismissed -> viewModel.resetLastDeletedIntakeEntry()
-                SnackbarResult.ActionPerformed -> viewModel.undoIntakeEntryDeletion()
-            }
-        }
+        UndoDeletionSnackbar(
+            deletedIntakeEntry = uiState.lastDeletedIntakeEntry!!,
+            scaffoldState = scaffoldState,
+            onDismissed = viewModel::resetLastDeletedIntakeEntry,
+            onUndoClicked = viewModel::undoIntakeEntryDeletion,
+        )
     }
     Scaffold(
         scaffoldState = scaffoldState,
@@ -81,6 +79,7 @@ private fun HomeScreenScaffold(viewModel: HomeScreenViewModel) {
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun HomeScreenContent(
     uiState: HomeScreenUiModel,
@@ -89,14 +88,12 @@ private fun HomeScreenContent(
     onIntakeEntryDeleted: (IntakeEntryUiModel) -> Unit,
     onSetCalorieGoalClicked: () -> Unit,
 ) {
-    Box(Modifier
-            .fillMaxSize()
-            .padding(vertical = 16.dp)) {
+    Box(Modifier.fillMaxSize()) {
         if (uiState.showNoCalorieGoalSet) {
             NoCalorieGoalSet(onSetCalorieGoalClicked = onSetCalorieGoalClicked)
         } else if (uiState.calorieGoal != null) {
             val isAddIntakeEntrySectionVisible = remember { mutableStateOf(false) }
-            LazyColumn {
+            LazyColumn(contentPadding = PaddingValues(vertical = 16.dp, horizontal = 0.dp)) {
                 item {
                     Column(Modifier.padding(horizontal = 16.dp)) {
                         HomeScreenGreeting(greeting = greeting)
@@ -105,9 +102,28 @@ private fun HomeScreenContent(
                         Spacer(modifier = Modifier.height(8.dp))
                     }
                 }
-                items(items = uiState.intakeEntries) { intakeEntry ->
-                    Spacer(modifier = Modifier.height(8.dp))
-                    IntakeEntryCard(uiModel = intakeEntry, onIntakeEntryDeleted = onIntakeEntryDeleted)
+                with(uiState) {
+                    val intakeEntriesToDisplay = if (previousIntakeEntries.size > currentIntakeEntries.size) {
+                        previousIntakeEntries
+                    } else {
+                        currentIntakeEntries
+                    }
+                    var animationDelay = 0
+                    items(items = intakeEntriesToDisplay) { intakeEntry ->
+                        Spacer(modifier = Modifier.height(8.dp))
+                        val animationState = intakeEntry.animationState(currentIntakeEntries, previousIntakeEntries)
+                        if (animationState != null) {
+                            AnimatedIntakeEntryCard(
+                                uiModel = intakeEntry,
+                                animationState = animationState,
+                                animationDelay = animationDelay,
+                                onIntakeEntryDeleted = onIntakeEntryDeleted,
+                            )
+                            animationDelay += 200
+                        } else {
+                            IntakeEntryCard(uiModel = intakeEntry, onIntakeEntryDeleted = onIntakeEntryDeleted)
+                        }
+                    }
                 }
                 item { Spacer(modifier = Modifier.height(8.dp)) }
                 item {
@@ -163,6 +179,28 @@ fun HomeScreenGreeting(greeting: String) {
 }
 
 @Composable
+private fun UndoDeletionSnackbar(
+    deletedIntakeEntry: IntakeEntryUiModel,
+    scaffoldState: ScaffoldState,
+    onDismissed: () -> Unit,
+    onUndoClicked: () -> Unit,
+) {
+    val snackbarMessage = translated(R.string.intake_entry_deleted, listOf(deletedIntakeEntry.name))
+    val undoButtonText = translated(R.string.undo_deletion_button)
+    LaunchedEffect(key1 = deletedIntakeEntry) {
+        val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
+            message = snackbarMessage,
+            actionLabel = undoButtonText,
+            duration = SnackbarDuration.Long,
+        )
+        when (snackbarResult) {
+            SnackbarResult.Dismissed -> onDismissed()
+            SnackbarResult.ActionPerformed -> onUndoClicked()
+        }
+    }
+}
+
+@Composable
 @Preview
 fun HomeScreenContentPreview() {
     CalorieTrackerTheme(darkTheme = true) {
@@ -175,7 +213,7 @@ fun HomeScreenContentPreview() {
                 proteinGoal = MacroGoalUiModel(100, 20),
                 fatGoal = MacroGoalUiModel(50, 10),
             ),
-            intakeEntries = listOf(IntakeEntryUiModel("", "essen", 1500, 150, 80, 40)),
+            currentIntakeEntries = listOf(IntakeEntryUiModel("", "essen", 1500, 150, 80, 40)),
         ), greeting = "Good morning!", {}, {}, {})
     }
 }

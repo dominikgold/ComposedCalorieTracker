@@ -3,6 +3,7 @@ package com.dominikgold.calorietracker.ui.home
 data class HomeScreenUiModel(
     val showNoCalorieGoalSet: Boolean,
     val calorieGoal: CalorieGoalUiModel?,
-    val intakeEntries: List<IntakeEntryUiModel>,
+    val currentIntakeEntries: List<IntakeEntryUiModel>,
+    val previousIntakeEntries: List<IntakeEntryUiModel> = listOf(),
     val lastDeletedIntakeEntry: IntakeEntryUiModel? = null,
 )

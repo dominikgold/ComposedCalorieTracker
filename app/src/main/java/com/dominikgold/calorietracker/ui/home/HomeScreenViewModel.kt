@@ -32,7 +32,7 @@ class HomeScreenViewModel(
     private val _uiState = MutableStateFlow(HomeScreenUiModel(
         showNoCalorieGoalSet = false,
         calorieGoal = null,
-        intakeEntries = listOf(),
+        currentIntakeEntries = listOf(),
     ))
 
     val uiState: StateFlow<HomeScreenUiModel>
@@ -45,9 +45,7 @@ class HomeScreenViewModel(
             else -> stringProvider.getString(R.string.home_screen_greeting_evening)
         }
 
-    init {
-        loadHomeScreenData()
-    }
+    private var hasLoadedInitially = false
 
     fun reload() {
         loadHomeScreenData()
@@ -60,11 +58,15 @@ class HomeScreenViewModel(
             val intakeEntries = intakeEntriesJob.await()
             val calorieGoal = calorieGoalJob.await()
             if (isActive) {
+                val previousIntakeEntries = if (hasLoadedInitially) _uiState.value.currentIntakeEntries else listOf()
                 _uiState.value = HomeScreenUiModel(
                     showNoCalorieGoalSet = calorieGoal == null,
                     calorieGoal = calorieGoal?.toUiModel(intakeEntries),
-                    intakeEntries = intakeEntries.map(IntakeEntry::toUiModel),
+                    lastDeletedIntakeEntry = null,
+                    previousIntakeEntries = previousIntakeEntries,
+                    currentIntakeEntries = intakeEntries.map(IntakeEntry::toUiModel),
                 )
+                hasLoadedInitially = true
             }
         }
     }
@@ -83,7 +85,8 @@ class HomeScreenViewModel(
             )
             _uiState.value = _uiState.value.copy(
                 calorieGoal = _uiState.value.calorieGoal?.addIntakeEntry(savedIntakeEntry),
-                intakeEntries = _uiState.value.intakeEntries + savedIntakeEntry.toUiModel(),
+                previousIntakeEntries = _uiState.value.currentIntakeEntries,
+                currentIntakeEntries = _uiState.value.currentIntakeEntries + savedIntakeEntry.toUiModel(),
             )
         }
     }
@@ -94,7 +97,8 @@ class HomeScreenViewModel(
         }
         _uiState.value = _uiState.value.copy(
             calorieGoal = _uiState.value.calorieGoal?.removeIntakeEntry(uiModel),
-            intakeEntries = _uiState.value.intakeEntries - uiModel,
+            previousIntakeEntries = _uiState.value.currentIntakeEntries,
+            currentIntakeEntries = _uiState.value.currentIntakeEntries - uiModel,
             lastDeletedIntakeEntry = uiModel,
         )
     }
@@ -116,10 +120,12 @@ class HomeScreenViewModel(
                     fat = lastDeletedIntakeEntry.fat,
                 ),
             )
-            _uiState.value =
-                _uiState.value.copy(calorieGoal = _uiState.value.calorieGoal?.addIntakeEntry(savedIntakeEntry),
-                                    intakeEntries = _uiState.value.intakeEntries + savedIntakeEntry.toUiModel(),
-                                    lastDeletedIntakeEntry = null)
+            _uiState.value = _uiState.value.copy(
+                calorieGoal = _uiState.value.calorieGoal?.addIntakeEntry(savedIntakeEntry),
+                previousIntakeEntries = _uiState.value.currentIntakeEntries,
+                currentIntakeEntries = _uiState.value.currentIntakeEntries + savedIntakeEntry.toUiModel(),
+                lastDeletedIntakeEntry = null,
+            )
         }
     }
 

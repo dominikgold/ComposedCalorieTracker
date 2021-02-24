@@ -3,10 +3,13 @@ package com.dominikgold.calorietracker.ui.home
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,9 +45,59 @@ import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
 import com.dominikgold.calorietracker.theming.TextStyles
 import com.dominikgold.calorietracker.util.LengthInputFilter
 import com.dominikgold.calorietracker.util.NaturalNumberInputFilter
-import com.dominikgold.calorietracker.util.translated
 import com.dominikgold.calorietracker.util.inLightAndDarkTheme
 import com.dominikgold.calorietracker.util.inputFilters
+import com.dominikgold.calorietracker.util.translated
+
+enum class IntakeEntryAnimationState {
+
+    Added,
+    Deleted,
+
+}
+
+fun IntakeEntryUiModel.animationState(
+    currentIntakeEntries: List<IntakeEntryUiModel>,
+    previousIntakeEntries: List<IntakeEntryUiModel>,
+) = when {
+    this in currentIntakeEntries && this !in previousIntakeEntries -> IntakeEntryAnimationState.Added
+    this in previousIntakeEntries && this !in currentIntakeEntries -> IntakeEntryAnimationState.Deleted
+    else -> null
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun AnimatedIntakeEntryCard(
+    uiModel: IntakeEntryUiModel,
+    animationState: IntakeEntryAnimationState,
+    animationDelay: Int,
+    onIntakeEntryDeleted: (IntakeEntryUiModel) -> Unit,
+) {
+    val expandVertically = expandVertically(
+        expandFrom = Alignment.Top,
+        animSpec = tween(durationMillis = 300),
+    )
+    val slideIn = slideInHorizontally(
+        initialOffsetX = { fullWidth -> -fullWidth },
+        animSpec = tween(durationMillis = 600, delayMillis = 150 + animationDelay),
+    )
+    val slideOut = slideOutHorizontally(
+        targetOffsetX = { fullWidth -> -fullWidth },
+        animSpec = tween(durationMillis = 600, delayMillis = animationDelay),
+    )
+    val shrinkVertically = shrinkVertically(
+        shrinkTowards = Alignment.Top,
+        animSpec = tween(durationMillis = 300, delayMillis = 450 + animationDelay),
+    )
+    AnimatedVisibility(
+        visible = animationState == IntakeEntryAnimationState.Added,
+        enter = expandVertically + slideIn,
+        exit = slideOut + shrinkVertically,
+        initiallyVisible = animationState != IntakeEntryAnimationState.Added,
+    ) {
+        IntakeEntryCard(uiModel = uiModel, onIntakeEntryDeleted = onIntakeEntryDeleted)
+    }
+}
 
 @OptIn(ExperimentalLayout::class, ExperimentalAnimationApi::class)
 @Composable
@@ -52,7 +105,7 @@ fun IntakeEntryCard(uiModel: IntakeEntryUiModel, onIntakeEntryDeleted: (IntakeEn
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = 16.dp, vertical = 2.dp),
         elevation = 2.dp,
     ) {
         Column {
@@ -181,7 +234,11 @@ fun AddIntakeEntryConfirmButton(
 }
 
 @Composable
-private fun RowScope.AddIntakeEntryMacroField(currentValue: Int?, onChanged: (Int?) -> Unit, placeholderText: String) {
+private fun RowScope.AddIntakeEntryMacroField(
+    currentValue: Int?,
+    onChanged: (Int?) -> Unit,
+    placeholderText: String,
+) {
     OutlinedTextField(
         value = currentValue?.toString() ?: "",
         onValueChange = inputFilters(NaturalNumberInputFilter(), LengthInputFilter(maxLength = 5)) { newInput ->
