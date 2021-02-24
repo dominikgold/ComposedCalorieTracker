@@ -1,6 +1,6 @@
 package com.dominikgold.calorietracker.ui.home
 
-data class HomeScreenUiModel(
+data class HomeScreenState(
     val showNoCalorieGoalSet: Boolean,
     val calorieGoal: CalorieGoalUiModel?,
     val currentIntakeEntries: List<IntakeEntryUiModel>,

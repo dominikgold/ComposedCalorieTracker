@@ -2,9 +2,7 @@ package com.dominikgold.calorietracker.ui.home
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.TweenSpec
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -16,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
@@ -82,7 +79,7 @@ private fun HomeScreenScaffold(viewModel: HomeScreenViewModel) {
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun HomeScreenContent(
-    uiState: HomeScreenUiModel,
+    uiState: HomeScreenState,
     greeting: String,
     onIntakeEntryAdded: (AddIntakeEntryUiModel) -> Unit,
     onIntakeEntryDeleted: (IntakeEntryUiModel) -> Unit,
@@ -204,7 +201,7 @@ private fun UndoDeletionSnackbar(
 @Preview
 fun HomeScreenContentPreview() {
     CalorieTrackerTheme(darkTheme = true) {
-        HomeScreenContent(uiState = HomeScreenUiModel(
+        HomeScreenContent(uiState = HomeScreenState(
             showNoCalorieGoalSet = false,
             calorieGoal = CalorieGoalUiModel(
                 totalCalories = 2000,

@@ -29,13 +29,13 @@ class HomeScreenViewModel(
     private val stringProvider: StringProvider,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(HomeScreenUiModel(
+    private val _uiState = MutableStateFlow(HomeScreenState(
         showNoCalorieGoalSet = false,
         calorieGoal = null,
         currentIntakeEntries = listOf(),
     ))
 
-    val uiState: StateFlow<HomeScreenUiModel>
+    val uiState: StateFlow<HomeScreenState>
         get() = _uiState
 
     val greeting: String
@@ -59,7 +59,7 @@ class HomeScreenViewModel(
             val calorieGoal = calorieGoalJob.await()
             if (isActive) {
                 val previousIntakeEntries = if (hasLoadedInitially) _uiState.value.currentIntakeEntries else listOf()
-                _uiState.value = HomeScreenUiModel(
+                _uiState.value = HomeScreenState(
                     showNoCalorieGoalSet = calorieGoal == null,
                     calorieGoal = calorieGoal?.toUiModel(intakeEntries),
                     lastDeletedIntakeEntry = null,
