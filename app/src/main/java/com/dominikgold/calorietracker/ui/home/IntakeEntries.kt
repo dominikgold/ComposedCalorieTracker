@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import com.dominikgold.calorietracker.R
 import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
 import com.dominikgold.calorietracker.theming.TextStyles
+import com.dominikgold.calorietracker.ui.common.FlowRow
 import com.dominikgold.calorietracker.util.LengthInputFilter
 import com.dominikgold.calorietracker.util.NaturalNumberInputFilter
 import com.dominikgold.calorietracker.util.inLightAndDarkTheme
@@ -125,24 +126,22 @@ fun IntakeEntryCard(uiModel: IntakeEntryUiModel, onIntakeEntryDeleted: (IntakeEn
             }
             Spacer(Modifier.height(8.dp))
             Box(Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
-
-                // TODO replace FlowRow with custom layout
-                //                FlowRow(mainAxisSpacing = 16.dp, crossAxisSpacing = 8.dp) {
-                //                    Text(text = translated(R.string.intake_entry_calorie_count, listOf(uiModel.calories)),
-                //                         style = TextStyles.SubtitleSmall)
-                //                    uiModel.carbohydrates?.let { carbohydrates ->
-                //                        Text(text = translated(R.string.intake_entry_carbs_count, listOf(carbohydrates)),
-                //                             style = TextStyles.SubtitleSmall)
-                //                    }
-                //                    uiModel.protein?.let { protein ->
-                //                        Text(text = translated(R.string.intake_entry_protein_count, listOf(protein)),
-                //                             style = TextStyles.SubtitleSmall)
-                //                    }
-                //                    uiModel.fat?.let { fat ->
-                //                        Text(text = translated(R.string.intake_entry_fat_count, listOf(fat)),
-                //                             style = TextStyles.SubtitleSmall)
-                //                    }
-                //                }
+                FlowRow(horizontalContentSpacing = 16.dp, verticalContentSpacing = 8.dp) {
+                    Text(text = translated(R.string.intake_entry_calorie_count, listOf(uiModel.calories)),
+                         style = TextStyles.SubtitleSmall)
+                    uiModel.carbohydrates?.let { carbohydrates ->
+                        Text(text = translated(R.string.intake_entry_carbs_count, listOf(carbohydrates)),
+                             style = TextStyles.SubtitleSmall)
+                    }
+                    uiModel.protein?.let { protein ->
+                        Text(text = translated(R.string.intake_entry_protein_count, listOf(protein)),
+                             style = TextStyles.SubtitleSmall)
+                    }
+                    uiModel.fat?.let { fat ->
+                        Text(text = translated(R.string.intake_entry_fat_count, listOf(fat)),
+                             style = TextStyles.SubtitleSmall)
+                    }
+                }
             }
         }
     }
