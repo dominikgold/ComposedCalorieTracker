@@ -156,13 +156,13 @@ fun AnimatedAddIntakeEntryButton(
 ) {
     val expandVertically = expandVertically(
         expandFrom = Alignment.Top,
-        animSpec = TweenSpec(durationMillis = 200, delay = enterAnimationDelay),
+        animationSpec = TweenSpec(durationMillis = 200, delay = enterAnimationDelay),
     )
-    val fadeIn = fadeIn(animSpec = TweenSpec(durationMillis = 200, delay = enterAnimationDelay))
+    val fadeIn = fadeIn(animationSpec = TweenSpec(durationMillis = 200, delay = enterAnimationDelay))
     AnimatedVisibility(
         visible = isVisible,
         enter = fadeIn + expandVertically,
-        exit = fadeOut(animSpec = TweenSpec(durationMillis = 200)),
+        exit = fadeOut(animationSpec = TweenSpec(durationMillis = 200)),
     ) {
         Box(Modifier.padding(horizontal = 16.dp)) {
             StandardTextButton(text = translated(R.string.add_intake_entry_button), onClick = onClick)

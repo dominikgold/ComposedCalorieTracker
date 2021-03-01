@@ -8,6 +8,7 @@ Example app for tracking nutritional intake and body weight written with Jetpack
 - Clean Architecture
 - MVVM without Jetpack ViewModel, view models are scoped to top level navigation destinations
 - back navigation
+- Kotlin Gradle DSL
 - #TODO: saving state across process death
 - #TODO: more advanced theming
 - #TODO: bigger and improved feature set

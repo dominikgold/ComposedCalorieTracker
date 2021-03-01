@@ -59,17 +59,17 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
         useIR = true
+        freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = Dependencies.composeVersion
-        kotlinCompilerVersion = Dependencies.kotlinVersion
     }
     packagingOptions {
-        exclude("META-INF/AL2.0")
-        exclude("META-INF/LGPL2.1")
+        resources.excludes.add("META-INF/AL2.0")
+        resources.excludes.add("META-INF/LGPL2.1")
     }
 }
 
@@ -82,6 +82,7 @@ dependencies {
     implementation(Dependencies.coroutinesAndroid)
 
     implementation(Dependencies.androidXCore)
+    implementation(Dependencies.activityCompose)
     implementation(Dependencies.appCompat)
     implementation(Dependencies.materialComponents)
     implementation(Dependencies.composeUi)
@@ -89,6 +90,7 @@ dependencies {
     implementation(Dependencies.composeTooling)
     implementation(Dependencies.composeFoundation)
     implementation(Dependencies.lifecycleRuntime)
+    implementation(Dependencies.constraintLayoutCompose)
 
     // Proto data store
     implementation(Dependencies.androidDataStore)

@@ -5,8 +5,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
-import androidx.compose.runtime.staticAmbientOf
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 private val DarkColorPalette = darkColors(
@@ -41,9 +41,9 @@ fun CalorieTrackerTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Co
         LightColorPalette
     }
 
-    Providers(AmbientIsDarkTheme provides darkTheme) {
+    CompositionLocalProvider(LocalIsDarkTheme provides darkTheme) {
         MaterialTheme(colors = colors, typography = typography, shapes = shapes, content = content)
     }
 }
 
-val AmbientIsDarkTheme = staticAmbientOf { false }
+val LocalIsDarkTheme = staticCompositionLocalOf { false }

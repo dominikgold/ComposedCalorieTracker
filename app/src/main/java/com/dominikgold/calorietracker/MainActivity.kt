@@ -1,20 +1,20 @@
 package com.dominikgold.calorietracker
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.platform.setContent
 import com.dominikgold.calorietracker.navigation.Navigator
 import com.dominikgold.calorietracker.navigation.NavigatorState
 import com.dominikgold.calorietracker.navigation.Screen
 import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
+import com.dominikgold.calorietracker.ui.bodyweight.BodyWeightScreen
 import com.dominikgold.calorietracker.ui.caloriegoal.SetCalorieGoalScreen
 import com.dominikgold.calorietracker.ui.home.HomeScreen
 import com.dominikgold.calorietracker.ui.settings.SettingsScreen
-import com.dominikgold.calorietracker.ui.bodyweight.BodyWeightScreen
-import com.dominikgold.compose.viewmodel.AmbientViewModelContainer
+import com.dominikgold.compose.viewmodel.LocalViewModelContainer
 import javax.inject.Inject
 
 private const val EXTRA_NAVIGATOR_STATE = "EXTRA_NAVIGATOR_STATE"
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun Main(navigator: Navigator) {
     val navigationStateEntry = navigator.currentNavigationStateEntry.collectAsState()
-    Providers(AmbientViewModelContainer provides navigationStateEntry.value.viewModelContainer) {
+    CompositionLocalProvider(LocalViewModelContainer provides navigationStateEntry.value.viewModelContainer) {
         when (navigationStateEntry.value.screen) {
             Screen.Home -> HomeScreen()
             Screen.Statistics -> BodyWeightScreen()

@@ -27,30 +27,23 @@ val colorDisabledNight = Color(0xFF646260)
 val lightGreyDay = Color(0xFFFAF5F0)
 val lightGreyNight = Color(0xFF212121)
 
-@Composable
 val textColorDefault
-    get() = if (AmbientIsDarkTheme.current) textColorDefaultNight else textColorDefaultDay
+    @Composable get() = if (LocalIsDarkTheme.current) textColorDefaultNight else textColorDefaultDay
 
-@Composable
 val textColorSubtitle
-    get() = if (AmbientIsDarkTheme.current) textColorSubtitleNight else textColorSubtitleDay
+    @Composable get() = if (LocalIsDarkTheme.current) textColorSubtitleNight else textColorSubtitleDay
 
-@Composable
 val primaryBlue
-    get() = if (AmbientIsDarkTheme.current) primaryBlueNight else primaryBlueDay
+    @Composable get() = if (LocalIsDarkTheme.current) primaryBlueNight else primaryBlueDay
 
-@Composable
 val warningRed
-    get() = if (AmbientIsDarkTheme.current) warningRedNight else warningRedDay
+    @Composable get() = if (LocalIsDarkTheme.current) warningRedNight else warningRedDay
 
-@Composable
 val clearGreen
-    get() = if (AmbientIsDarkTheme.current) clearGreenNight else clearGreenDay
+    @Composable get() = if (LocalIsDarkTheme.current) clearGreenNight else clearGreenDay
 
-@Composable
 val colorDisabled
-    get() = if (AmbientIsDarkTheme.current) colorDisabledNight else colorDisabledDay
+    @Composable get() = if (LocalIsDarkTheme.current) colorDisabledNight else colorDisabledDay
 
-@Composable
 val lightGrey
-    get() = if (AmbientIsDarkTheme.current) lightGreyNight else lightGreyDay
+    @Composable get() = if (LocalIsDarkTheme.current) lightGreyNight else lightGreyDay

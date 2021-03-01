@@ -4,8 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ConstraintLayout
-import androidx.compose.foundation.layout.Dimension
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,6 +24,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import com.dominikgold.calorietracker.R
 import com.dominikgold.calorietracker.entities.Grams
 import com.dominikgold.calorietracker.entities.MacroSplit
@@ -33,36 +33,36 @@ import com.dominikgold.calorietracker.theming.TextStyles
 import com.dominikgold.calorietracker.ui.common.TextDropdownToggle
 import com.dominikgold.calorietracker.util.LengthInputFilter
 import com.dominikgold.calorietracker.util.NaturalNumberInputFilter
-import com.dominikgold.calorietracker.util.translated
 import com.dominikgold.calorietracker.util.inLightAndDarkTheme
 import com.dominikgold.calorietracker.util.inputFilters
+import com.dominikgold.calorietracker.util.translated
 
 @Composable
 fun SetMacroGoals(uiState: SetCalorieGoalUiState, setCalorieGoalActions: SetCalorieGoalActions) {
     Column {
         var dropdownMenuExpanded by remember { mutableStateOf(false) }
-        DropdownMenu(
-            toggle = {
-                TextDropdownToggle(
-                    text = translated(uiState.macroSplitName),
-                    placeholder = translated(R.string.choose_macro_split_hint),
-                    isExpanded = dropdownMenuExpanded,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            },
-            toggleModifier = Modifier
-                .clickable(onClick = { dropdownMenuExpanded = !dropdownMenuExpanded })
-                .fillMaxWidth()
-                .padding(top = 8.dp, bottom = 8.dp),
-            expanded = dropdownMenuExpanded,
-            onDismissRequest = { dropdownMenuExpanded = false },
-            dropdownModifier = Modifier.fillMaxWidth(),
-        ) {
-            MacroSplitDropdownItems(onItemSelected = {
-                dropdownMenuExpanded = false
-                setCalorieGoalActions.updateChosenMacroSplit(it)
-            })
+        Box {
+            TextDropdownToggle(
+                text = translated(uiState.macroSplitName),
+                placeholder = translated(R.string.choose_macro_split_hint),
+                isExpanded = dropdownMenuExpanded,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable(onClick = { dropdownMenuExpanded = !dropdownMenuExpanded })
+                    .padding(top = 8.dp, bottom = 8.dp),
+            )
+            DropdownMenu(
+                expanded = dropdownMenuExpanded,
+                onDismissRequest = { dropdownMenuExpanded = false },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                MacroSplitDropdownItems(onItemSelected = {
+                    dropdownMenuExpanded = false
+                    setCalorieGoalActions.updateChosenMacroSplit(it)
+                })
+            }
         }
+
         Spacer(modifier = Modifier.height(16.dp))
         IndividualMacroGoals(uiState, setCalorieGoalActions)
     }
@@ -84,8 +84,7 @@ private fun MacroSplitDropdownItems(onItemSelected: (MacroSplit?) -> Unit) {
 private fun IndividualMacroGoals(uiState: SetCalorieGoalUiState, setCalorieGoalActions: SetCalorieGoalActions) {
     ConstraintLayout {
         val (carbsTitle, proteinTitle, fatTitle) = createRefs()
-        val (carbsInput, proteinInput, fatInput) = createRefs()
-        // TODO Unfortunately, creating an end barrier here results in a crash at runtime when recomposing - try again
+        val (carbsInput, proteinInput, fatInput) = createRefs() // TODO Unfortunately, creating an end barrier here results in a crash at runtime when recomposing - try again
         //  with a later version. For now, we'll have to make do with assuming that the Carbohydrates is always the
         //  longest.
         // val titleBarrier = createEndBarrier(carbsTitle, proteinTitle, fatTitle, margin = 32.dp)

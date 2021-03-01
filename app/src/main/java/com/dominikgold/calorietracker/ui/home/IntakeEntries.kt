@@ -13,8 +13,6 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayout
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -36,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -75,19 +74,19 @@ fun AnimatedIntakeEntryCard(
 ) {
     val expandVertically = expandVertically(
         expandFrom = Alignment.Top,
-        animSpec = tween(durationMillis = 300),
+        animationSpec = tween(durationMillis = 300),
     )
     val slideIn = slideInHorizontally(
         initialOffsetX = { fullWidth -> -fullWidth },
-        animSpec = tween(durationMillis = 600, delayMillis = 150 + animationDelay),
+        animationSpec = tween(durationMillis = 600, delayMillis = 150 + animationDelay),
     )
     val slideOut = slideOutHorizontally(
         targetOffsetX = { fullWidth -> -fullWidth },
-        animSpec = tween(durationMillis = 600, delayMillis = animationDelay),
+        animationSpec = tween(durationMillis = 600, delayMillis = animationDelay),
     )
     val shrinkVertically = shrinkVertically(
         shrinkTowards = Alignment.Top,
-        animSpec = tween(durationMillis = 300, delayMillis = 450 + animationDelay),
+        animationSpec = tween(durationMillis = 300, delayMillis = 450 + animationDelay),
     )
     AnimatedVisibility(
         visible = animationState == IntakeEntryAnimationState.Added,
@@ -99,7 +98,7 @@ fun AnimatedIntakeEntryCard(
     }
 }
 
-@OptIn(ExperimentalLayout::class, ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun IntakeEntryCard(uiModel: IntakeEntryUiModel, onIntakeEntryDeleted: (IntakeEntryUiModel) -> Unit) {
     Card(
@@ -118,27 +117,32 @@ fun IntakeEntryCard(uiModel: IntakeEntryUiModel, onIntakeEntryDeleted: (IntakeEn
                         .padding(top = 16.dp, start = 16.dp),
                 )
                 IconButton(modifier = Modifier.padding(4.dp), onClick = { onIntakeEntryDeleted(uiModel) }) {
-                    Icon(vectorResource(id = R.drawable.vec_icon_delete_intake_entry), contentDescription = null)
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.vec_icon_delete_intake_entry),
+                        contentDescription = null,
+                    )
                 }
             }
             Spacer(Modifier.height(8.dp))
             Box(Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
-                FlowRow(mainAxisSpacing = 16.dp, crossAxisSpacing = 8.dp) {
-                    Text(text = translated(R.string.intake_entry_calorie_count, listOf(uiModel.calories)),
-                         style = TextStyles.SubtitleSmall)
-                    uiModel.carbohydrates?.let { carbohydrates ->
-                        Text(text = translated(R.string.intake_entry_carbs_count, listOf(carbohydrates)),
-                             style = TextStyles.SubtitleSmall)
-                    }
-                    uiModel.protein?.let { protein ->
-                        Text(text = translated(R.string.intake_entry_protein_count, listOf(protein)),
-                             style = TextStyles.SubtitleSmall)
-                    }
-                    uiModel.fat?.let { fat ->
-                        Text(text = translated(R.string.intake_entry_fat_count, listOf(fat)),
-                             style = TextStyles.SubtitleSmall)
-                    }
-                }
+
+                // TODO replace FlowRow with custom layout
+                //                FlowRow(mainAxisSpacing = 16.dp, crossAxisSpacing = 8.dp) {
+                //                    Text(text = translated(R.string.intake_entry_calorie_count, listOf(uiModel.calories)),
+                //                         style = TextStyles.SubtitleSmall)
+                //                    uiModel.carbohydrates?.let { carbohydrates ->
+                //                        Text(text = translated(R.string.intake_entry_carbs_count, listOf(carbohydrates)),
+                //                             style = TextStyles.SubtitleSmall)
+                //                    }
+                //                    uiModel.protein?.let { protein ->
+                //                        Text(text = translated(R.string.intake_entry_protein_count, listOf(protein)),
+                //                             style = TextStyles.SubtitleSmall)
+                //                    }
+                //                    uiModel.fat?.let { fat ->
+                //                        Text(text = translated(R.string.intake_entry_fat_count, listOf(fat)),
+                //                             style = TextStyles.SubtitleSmall)
+                //                    }
+                //                }
             }
         }
     }
@@ -152,10 +156,10 @@ fun AnimatedAddIntakeEntry(
     onConfirmed: (AddIntakeEntryUiModel) -> Unit,
     onCancelled: () -> Unit,
 ) {
-    val expandVertically = expandVertically(animSpec = TweenSpec(durationMillis = 400, delay = enterAnimationDelay))
-    val fadeIn = fadeIn(animSpec = TweenSpec(durationMillis = 400, delay = enterAnimationDelay))
-    val fadeOut = fadeOut(animSpec = TweenSpec(durationMillis = 400))
-    val shrinkVertically = shrinkVertically(animSpec = TweenSpec(durationMillis = 400))
+    val expandVertically = expandVertically(animationSpec = TweenSpec(durationMillis = 400, enterAnimationDelay))
+    val fadeIn = fadeIn(animationSpec = TweenSpec(durationMillis = 400, delay = enterAnimationDelay))
+    val fadeOut = fadeOut(animationSpec = TweenSpec(durationMillis = 400))
+    val shrinkVertically = shrinkVertically(animationSpec = TweenSpec(durationMillis = 400))
     AnimatedVisibility(
         visible = isVisible,
         enter = expandVertically + fadeIn,

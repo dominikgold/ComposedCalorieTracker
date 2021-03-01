@@ -5,11 +5,11 @@ object Dependencies {
     val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
 
-    val kotlinVersion = "1.4.21-2"
+    val kotlinVersion = "1.4.30"
     val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     val kotlinSdk = "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
-    val composeVersion = "1.0.0-alpha11"
+    val composeVersion = "1.0.0-beta01"
     val composeUi = "androidx.compose.ui:ui:$composeVersion"
     val composeMaterial = "androidx.compose.material:material:$composeVersion"
     val composeTooling = "androidx.compose.ui:ui-tooling:$composeVersion"
@@ -24,11 +24,17 @@ object Dependencies {
     val appCompatVersion = "1.2.0"
     val appCompat = "androidx.appcompat:appcompat:$appCompatVersion"
 
+    val androidXActivity = "1.3.0-alpha03"
+    val activityCompose = "androidx.activity:activity-compose:$androidXActivity"
+
     val androidXCoreVersion = "1.3.2"
     val androidXCore = "androidx.core:core-ktx:$androidXCoreVersion"
 
     val androidArchCoreVersion = "2.1.0"
     val androidArchCoreTesting = "androidx.arch.core:core-testing:$androidArchCoreVersion"
+
+    val constraintLayoutVersion = "1.0.0-alpha03"
+    val constraintLayoutCompose = "androidx.constraintlayout:constraintlayout-compose:$constraintLayoutVersion"
 
     val androidDataStoreVersion = "1.0.0-alpha06"
     val androidDataStore = "androidx.datastore:datastore:$androidDataStoreVersion"

@@ -13,9 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.savedinstancestate.savedInstanceState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.autoSaver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,13 +31,15 @@ import com.dominikgold.calorietracker.ui.topbar.CalorieTrackerTopBar
 import com.dominikgold.calorietracker.ui.topbar.TopBarActionTextButton
 import com.dominikgold.calorietracker.util.LengthInputFilter
 import com.dominikgold.calorietracker.util.NaturalNumberInputFilter
-import com.dominikgold.calorietracker.util.translated
 import com.dominikgold.calorietracker.util.inputFilters
+import com.dominikgold.calorietracker.util.translated
 import com.dominikgold.compose.viewmodel.viewModel
 
 @Composable
 fun SetCalorieGoalScreen() {
-    val savedState: MutableState<SetCalorieGoalUiState?> = savedInstanceState { null }
+    val savedState: MutableState<SetCalorieGoalUiState?> = rememberSaveable(null, stateSaver = autoSaver()) {
+        mutableStateOf(null)
+    }
     val viewModel: SetCalorieGoalViewModel = viewModel(savedState = savedState.value)
     val uiState by viewModel.uiState.collectAsState()
     savedState.value = uiState
@@ -54,7 +59,7 @@ private fun SetCalorieGoalContent(
     Scaffold(topBar = {
         CalorieTrackerTopBar(
             title = translated(R.string.set_calorie_goal_title),
-            navigationIcon = vectorResource(id = R.drawable.vec_icon_close),
+            navigationIcon = ImageVector.vectorResource(id = R.drawable.vec_icon_close),
             actions = {
                 TopBarActionTextButton(
                     text = translated(R.string.top_bar_action_save),

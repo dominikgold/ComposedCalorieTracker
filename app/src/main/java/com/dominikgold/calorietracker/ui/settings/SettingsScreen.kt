@@ -66,8 +66,13 @@ private fun SettingsScreenContent(onItemClicked: (SettingsListItem) -> Unit) {
 
 @Composable
 private fun SettingsItem(onClick: () -> Unit, settingsListItem: SettingsListItem) {
-    Row(Modifier.clickable(onClick = onClick), verticalAlignment = Alignment.CenterVertically) {
-        Icon(imageVector = settingsListItem.icon, contentDescription = null, modifier = Modifier.size(40.dp))
+    Row(
+        modifier = Modifier
+            .clickable(onClick = onClick)
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(imageVector = settingsListItem.icon, contentDescription = null, modifier = Modifier.size(24.dp))
         Spacer(modifier = Modifier.width(16.dp))
         Text(text = settingsListItem.title, style = TextStyles.Title)
     }

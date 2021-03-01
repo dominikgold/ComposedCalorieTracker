@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,7 +29,11 @@ fun TextDropdownToggle(text: String?, placeholder: String?, isExpanded: Boolean,
             style = TextStyles.Subtitle,
         )
         Spacer(Modifier.weight(1f))
-        Icon(imageVector = vectorResource(id = iconResource), contentDescription = null, tint = textColorDefault)
+        Icon(
+            imageVector = ImageVector.vectorResource(id = iconResource),
+            contentDescription = null,
+            tint = textColorDefault,
+        )
     }
 }
 
