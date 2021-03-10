@@ -38,11 +38,6 @@ fun BodyWeightScreen() {
     ) {
         val viewModel = viewModel<BodyWeightViewModel>()
         val uiState by viewModel.bodyWeightState.collectAsState()
-        DisposableEffect(key1 = null, effect = {
-            onDispose {
-                viewModel.saveBodyWeight()
-            }
-        })
         BodyWeightScreenContent(uiState, viewModel::onBodyWeightInputChanged)
     }
 }

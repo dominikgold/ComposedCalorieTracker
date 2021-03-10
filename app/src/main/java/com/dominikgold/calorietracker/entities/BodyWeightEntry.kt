@@ -8,5 +8,5 @@ import java.time.LocalDate
  */
 data class BodyWeightEntry(
     val date: LocalDate,
-    val bodyWeight: Float,
+    val bodyWeight: Double,
 )

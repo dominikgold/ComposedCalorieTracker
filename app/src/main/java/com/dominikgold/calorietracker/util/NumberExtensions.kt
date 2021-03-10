@@ -2,7 +2,7 @@ package com.dominikgold.calorietracker.util
 
 import java.text.DecimalFormat
 
-fun Float.format(digitsAfterDecimal: Int = 1): String {
+fun Double.format(digitsAfterDecimal: Int = 1): String {
     var formatPattern = "0."
     repeat(digitsAfterDecimal) {
         formatPattern += "#"
@@ -13,6 +13,6 @@ fun Float.format(digitsAfterDecimal: Int = 1): String {
 /**
  * Parse a String to a Float respecting both commas and dots used as decimal points.
  */
-fun String.parseLocalizedFloat(): Float? {
-    return this.replace(',', '.').toFloatOrNull()
+fun String.parseLocalizedDouble(): Double? {
+    return this.replace(',', '.').toDoubleOrNull()
 }
