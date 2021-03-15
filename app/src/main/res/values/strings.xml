@@ -52,4 +52,8 @@
     <string name="undo_deletion_button">Undo</string>
     <string name="todays_body_weight">Today\'s body weight:</string>
     <string name="kilo_grams_acronym">kg</string>
+    <string name="past_body_weight_periods_weeks_title">Last %d weeks averages</string>
+    <string name="past_body_weight_periods_months_title">Last %d months averages</string>
+    <string name="past_body_weight_period_weekly_time_interval_format">%d week ago</string>
+    <string name="past_body_weight_period_monthly_time_interval_format">%d month ago</string>
 </resources>
