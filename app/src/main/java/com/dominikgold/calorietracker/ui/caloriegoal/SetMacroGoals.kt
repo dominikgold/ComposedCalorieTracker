@@ -33,7 +33,7 @@ import com.dominikgold.calorietracker.theming.TextStyles
 import com.dominikgold.calorietracker.ui.common.TextDropdownToggle
 import com.dominikgold.calorietracker.util.LengthInputFilter
 import com.dominikgold.calorietracker.util.NaturalNumberInputFilter
-import com.dominikgold.calorietracker.util.inLightAndDarkTheme
+import com.dominikgold.calorietracker.util.InLightAndDarkTheme
 import com.dominikgold.calorietracker.util.inputFilters
 import com.dominikgold.calorietracker.util.translated
 
@@ -164,7 +164,7 @@ private fun IndividualMacroGoals(uiState: SetCalorieGoalUiState, setCalorieGoalA
 @Composable
 @Preview
 fun SetMacroGoalsPreview() {
-    inLightAndDarkTheme {
+    InLightAndDarkTheme {
         Box(Modifier.background(MaterialTheme.colors.background)) {
             SetMacroGoals(SetCalorieGoalUiState(2000, 150, 100, 50, MacroSplit.HIGH_CARB),
                           object : SetCalorieGoalActions {

@@ -1,7 +1,5 @@
 package com.dominikgold.calorietracker.ui.bodyweight
 
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -30,13 +30,15 @@ import com.dominikgold.calorietracker.entities.TimeInterval
 import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
 import com.dominikgold.calorietracker.theming.TextStyles
 import com.dominikgold.calorietracker.ui.bottomnav.CalorieTrackerBottomNavigation
+import com.dominikgold.calorietracker.ui.common.linechart.SimpleLineChart
+import com.dominikgold.calorietracker.ui.common.linechart.SimpleLineChartDataPoint
 import com.dominikgold.calorietracker.ui.topbar.CalorieTrackerTopBar
 import com.dominikgold.calorietracker.util.DecimalNumberInputFilter
+import com.dominikgold.calorietracker.util.InLightAndDarkTheme
 import com.dominikgold.calorietracker.util.LengthInputFilter
 import com.dominikgold.calorietracker.util.format
-import com.dominikgold.calorietracker.util.inLightAndDarkTheme
-import com.dominikgold.calorietracker.util.translated
 import com.dominikgold.calorietracker.util.inputFilters
+import com.dominikgold.calorietracker.util.translated
 import com.dominikgold.compose.viewmodel.viewModel
 import java.time.LocalDate
 
@@ -45,24 +47,31 @@ fun BodyWeightScreen() {
     Scaffold(
         topBar = { CalorieTrackerTopBar(title = translated(R.string.body_weight_screen_title)) },
         bottomBar = { CalorieTrackerBottomNavigation() },
-    ) {
+    ) { innerPadding ->
         val viewModel = viewModel<BodyWeightViewModel>()
         val uiState by viewModel.bodyWeightState.collectAsState()
-        BodyWeightScreenContent(uiState, viewModel::onBodyWeightInputChanged)
+        BodyWeightScreenContent(Modifier.padding(innerPadding), uiState, viewModel::onBodyWeightInputChanged)
     }
 }
 
 @Composable
-private fun BodyWeightScreenContent(uiState: BodyWeightState, onBodyWeightChanged: (String) -> Unit) {
+private fun BodyWeightScreenContent(
+    modifier: Modifier,
+    uiState: BodyWeightState,
+    onBodyWeightChanged: (String) -> Unit,
+) {
     val scrollState = rememberScrollState()
-    Column(Modifier
-               .scrollable(scrollState, orientation = Orientation.Vertical)
+    Column(modifier
+               .verticalScroll(scrollState)
                .fillMaxSize()
                .padding(vertical = 16.dp)) {
         BodyWeightInput(uiState.bodyWeightInput, onBodyWeightChanged)
         Spacer(modifier = Modifier.height(24.dp))
-        PastBodyWeightPeriods(uiState.pastBodyWeightPeriods)
+        PastBodyWeightPeriodsTitle(uiState.pastBodyWeightPeriods)
         Spacer(modifier = Modifier.height(24.dp))
+        PastBodyWeightPeriodsGraph(uiState.pastBodyWeightPeriods)
+        Spacer(modifier = Modifier.height(24.dp))
+        PastBodyWeightPeriodsList(uiState.pastBodyWeightPeriods)
     }
 }
 
@@ -89,15 +98,32 @@ private fun BodyWeightInput(
 }
 
 @Composable
-fun PastBodyWeightPeriods(bodyWeightEntryPeriods: List<BodyWeightEntryPeriod>) {
+fun PastBodyWeightPeriodsTitle(bodyWeightEntryPeriods: List<BodyWeightEntryPeriod>) {
     val titleFormatString = when (bodyWeightEntryPeriods.firstOrNull()?.timeInterval) {
         TimeInterval.Monthly -> R.string.past_body_weight_periods_months_title
         TimeInterval.Weekly -> R.string.past_body_weight_periods_weeks_title
         null -> null
     }
     val titleText = translated(titleFormatString, formatArgs = listOf(bodyWeightEntryPeriods.size)) ?: ""
+    Text(text = titleText, style = TextStyles.Headline, modifier = Modifier.padding(horizontal = 24.dp))
+}
+
+@Composable
+fun PastBodyWeightPeriodsGraph(bodyWeightEntryPeriods: List<BodyWeightEntryPeriod>) {
+    SimpleLineChart(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp),
+        dataPoints = bodyWeightEntryPeriods.mapNotNull { bodyWeightEntryPeriod ->
+            bodyWeightEntryPeriod.average?.let { SimpleLineChartDataPoint(it) }
+        }.reversed(),
+        chartScaffoldColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
+    )
+}
+
+@Composable
+fun PastBodyWeightPeriodsList(bodyWeightEntryPeriods: List<BodyWeightEntryPeriod>) {
     Column(Modifier.padding(horizontal = 24.dp)) {
-        Text(text = titleText, style = TextStyles.Headline)
         bodyWeightEntryPeriods.forEachIndexed { index, bodyWeightEntryPeriod ->
             Spacer(modifier = Modifier.height(8.dp))
             PastBodyWeightPeriod(index, bodyWeightEntryPeriod)
@@ -122,21 +148,21 @@ fun PastBodyWeightPeriod(index: Int, bodyWeightEntryPeriod: BodyWeightEntryPerio
 @Composable
 fun BodyWeightScreenContentPreview() {
     CalorieTrackerTheme {
-        BodyWeightScreenContent(BodyWeightState("80,3", listOf()), {})
+        BodyWeightScreenContent(Modifier, BodyWeightState("80,3", listOf()), {})
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PastBodyWeightPeriodsPreview() {
-    inLightAndDarkTheme {
+    InLightAndDarkTheme {
         Column {
-            PastBodyWeightPeriods(listOf(
+            PastBodyWeightPeriodsTitle(listOf(
                 BodyWeightEntryPeriod(TimeInterval.Weekly, listOf(BodyWeightEntry(LocalDate.now(), 90.0))),
                 BodyWeightEntryPeriod(TimeInterval.Weekly, listOf(BodyWeightEntry(LocalDate.now(), 89.0))),
                 BodyWeightEntryPeriod(TimeInterval.Weekly, listOf(BodyWeightEntry(LocalDate.now(), 88.0))),
             ))
-            PastBodyWeightPeriods(listOf(
+            PastBodyWeightPeriodsTitle(listOf(
                 BodyWeightEntryPeriod(TimeInterval.Monthly, listOf(BodyWeightEntry(LocalDate.now(), 90.0))),
                 BodyWeightEntryPeriod(TimeInterval.Monthly, listOf(BodyWeightEntry(LocalDate.now(), 89.0))),
                 BodyWeightEntryPeriod(TimeInterval.Monthly, listOf(BodyWeightEntry(LocalDate.now(), 88.0))),

@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
 
 @Composable
-fun inLightAndDarkTheme(previewContent: @Composable () -> Unit) {
+fun InLightAndDarkTheme(previewContent: @Composable () -> Unit) {
     Column {
         CalorieTrackerTheme(darkTheme = false, content = previewContent)
         Spacer(modifier = Modifier.height(32.dp))

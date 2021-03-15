@@ -22,7 +22,7 @@ import com.dominikgold.calorietracker.theming.TextStyles
 import com.dominikgold.calorietracker.ui.bottomnav.CalorieTrackerBottomNavigation
 import com.dominikgold.calorietracker.ui.topbar.CalorieTrackerTopBar
 import com.dominikgold.calorietracker.util.translated
-import com.dominikgold.calorietracker.util.inLightAndDarkTheme
+import com.dominikgold.calorietracker.util.InLightAndDarkTheme
 import com.dominikgold.compose.viewmodel.viewModel
 
 @Composable
@@ -81,7 +81,7 @@ private fun SettingsItem(onClick: () -> Unit, settingsListItem: SettingsListItem
 @Preview
 @Composable
 fun SettingsScreenContentPreview() {
-    inLightAndDarkTheme {
+    InLightAndDarkTheme {
         SettingsScreenContent({})
     }
 }
@@ -89,7 +89,7 @@ fun SettingsScreenContentPreview() {
 @Preview
 @Composable
 fun SettingsItemPreview() {
-    inLightAndDarkTheme {
+    InLightAndDarkTheme {
         SettingsItem(onClick = { }, settingsListItem = SettingsListItem.ChangeCalorieGoal)
     }
 }

@@ -27,7 +27,7 @@ class BodyWeightViewModel(
     val bodyWeightState: StateFlow<BodyWeightState>
         get() = _bodyWeightState
 
-    private val bodyWeightSaveEvents = MutableSharedFlow<Double?>(onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    private val bodyWeightSaveEvents = MutableSharedFlow<Double?>()
 
     init {
         coroutineScope.launch {

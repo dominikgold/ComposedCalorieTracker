@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.dominikgold.calorietracker.R
 import com.dominikgold.calorietracker.theming.TextStyles
 import com.dominikgold.calorietracker.theming.textColorDefault
-import com.dominikgold.calorietracker.util.inLightAndDarkTheme
+import com.dominikgold.calorietracker.util.InLightAndDarkTheme
 
 @Composable
 fun TextDropdownToggle(text: String?, placeholder: String?, isExpanded: Boolean, modifier: Modifier = Modifier) {
@@ -40,7 +40,7 @@ fun TextDropdownToggle(text: String?, placeholder: String?, isExpanded: Boolean,
 @Preview
 @Composable
 fun TextDropdownTogglePreview() {
-    inLightAndDarkTheme {
+    InLightAndDarkTheme {
         Column(Modifier.background(MaterialTheme.colors.background)) {
             TextDropdownToggle(
                 text = "Example",

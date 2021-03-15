@@ -16,7 +16,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dominikgold.calorietracker.R
-import com.dominikgold.calorietracker.util.inLightAndDarkTheme
+import com.dominikgold.calorietracker.util.InLightAndDarkTheme
 import com.dominikgold.compose.viewmodel.viewModel
 
 @Composable
@@ -61,7 +61,7 @@ private fun NavigationIcon(icon: ImageVector, onClick: () -> Unit) {
 @Preview
 @Composable
 fun TopBarPreview() {
-    inLightAndDarkTheme {
+    InLightAndDarkTheme {
         Column {
             CalorieTrackerTopBarContent(title = "Chores")
             Spacer(Modifier.height(32.dp))

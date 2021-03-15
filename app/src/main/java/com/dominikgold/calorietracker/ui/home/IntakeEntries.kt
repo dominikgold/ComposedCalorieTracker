@@ -45,7 +45,7 @@ import com.dominikgold.calorietracker.theming.TextStyles
 import com.dominikgold.calorietracker.ui.common.FlowRow
 import com.dominikgold.calorietracker.util.LengthInputFilter
 import com.dominikgold.calorietracker.util.NaturalNumberInputFilter
-import com.dominikgold.calorietracker.util.inLightAndDarkTheme
+import com.dominikgold.calorietracker.util.InLightAndDarkTheme
 import com.dominikgold.calorietracker.util.inputFilters
 import com.dominikgold.calorietracker.util.translated
 
@@ -256,7 +256,7 @@ private fun RowScope.AddIntakeEntryMacroField(
 @Preview
 @Composable
 fun IntakeEntryCardPreview() {
-    inLightAndDarkTheme {
+    InLightAndDarkTheme {
         Column {
             IntakeEntryCard(uiModel = IntakeEntryUiModel("", "protein.", 1000, 0, 250, 0), {})
             IntakeEntryCard(uiModel = IntakeEntryUiModel(

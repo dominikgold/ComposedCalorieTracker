@@ -9,7 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.dominikgold.calorietracker.theming.primaryBlue
-import com.dominikgold.calorietracker.util.inLightAndDarkTheme
+import com.dominikgold.calorietracker.util.InLightAndDarkTheme
 import com.dominikgold.compose.viewmodel.viewModel
 
 @Composable
@@ -51,7 +51,7 @@ fun CalorieTrackerBottomNavigationContent(
 @Preview
 @Composable
 fun CalorieTrackerBottomNavigationPreview() {
-    inLightAndDarkTheme {
+    InLightAndDarkTheme {
         CalorieTrackerBottomNavigationContent(
             availableTabs = BottomNavigationTab.values(),
             selectedTab = BottomNavigationTab.HOME,
