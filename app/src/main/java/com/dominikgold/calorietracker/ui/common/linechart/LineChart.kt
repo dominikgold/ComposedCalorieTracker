@@ -63,7 +63,7 @@ private fun SimpleLineChartInternal(
     }
 }
 
-fun DrawScope.drawLineGraph(
+private fun DrawScope.drawLineGraph(
     dataPoints: NormalizedSimpleLineChartDataPoints,
     lineColor: Color,
     lineGraphWidth: Float,
