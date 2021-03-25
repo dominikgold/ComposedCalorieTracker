@@ -7,7 +7,6 @@ fun interpolateBetweenYAxisData(
     targetYAxisData: List<Percentage>,
     progress: Float,
 ): List<Point> {
-    require(progress in 0f..1f) { "progress value should be between 0 and 1" }
     val originalDataPoints = createPoints(yAxisValues = originalYAxisData)
     if (progress <= 0f) {
         return originalDataPoints

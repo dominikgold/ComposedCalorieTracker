@@ -71,8 +71,6 @@ private fun SimpleLineChartInternal(
                 padding = 0.1,
             )
         }
-        Log.d("AnimatedLineChart",
-              "composition! data points: ${dataPoints.normalizedYAxisValues}, previous data points: ${previousDataPoints.normalizedYAxisValues}")
         SimpleAnimatedLineChart(
             dataPoints = dataPoints,
             previousDataPoints = previousDataPoints,
@@ -108,14 +106,12 @@ private fun SimpleAnimatedLineChart(
             chartScaffoldColor = chartScaffoldColor,
             lineColor = lineColor,
         )
-        Log.d("AnimatedLineChart", "drawing empty line chart")
         return
     }
 
     var animationProgress by remember { mutableStateOf(0f) }
     LaunchedEffect(dataPoints) {
         animate(0f, 1f, animationSpec = animationSpec) { value, _ ->
-            Log.d("AnimatedLineChart", "animation progress: $value")
             animationProgress = value
         }
     }
@@ -124,7 +120,6 @@ private fun SimpleAnimatedLineChart(
         targetYAxisData = dataPoints.normalizedYAxisValues,
         progress = animationProgress,
     )
-    Log.d("AnimatedLineChart", "drawing line chart with points $points")
     LineChartInternal(
         points = points,
         modifier = modifier,
