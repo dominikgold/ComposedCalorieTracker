@@ -18,8 +18,13 @@ data class NormalizedSimpleLineChartDataPoints(
         val maxYAxisValueWithPadding = maxYAxisValue + yAxisRange * padding
         val minYAxisValueWithPadding = minYAxisValue - yAxisRange * padding
         val yAxisRangeWithPadding = maxYAxisValueWithPadding - minYAxisValueWithPadding
-        return@let originalDataPoints.map {
-            (it.yAxisValue - minYAxisValueWithPadding) / yAxisRangeWithPadding
+        return@let if (yAxisRangeWithPadding == 0.0) {
+            // return two y axis values representing a horizontal line in the middle of a line chart
+            listOf(0.5, 0.5)
+        } else {
+            originalDataPoints.map {
+                (it.yAxisValue - minYAxisValueWithPadding) / yAxisRangeWithPadding
+            }
         }
     }
 

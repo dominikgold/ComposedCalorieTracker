@@ -8,14 +8,8 @@ fun interpolateBetweenYAxisData(
     progress: Float,
 ): List<Point> {
     require(progress in 0f..1f) { "progress value should be between 0 and 1" }
-    val originalXAxisValues = (originalYAxisData.indices).map {
-        it.toDouble() / (originalYAxisData.size - 1).toDouble()
-    }
-    val targetXAxisValues = (targetYAxisData.indices).map {
-        it.toDouble() / (targetYAxisData.size - 1).toDouble()
-    }
-    val originalDataPoints = createPoints(originalXAxisValues, originalYAxisData)
-    val targetDataPoints = createPoints(targetXAxisValues, targetYAxisData)
+    val originalDataPoints = createPoints(yAxisValues = originalYAxisData)
+    val targetDataPoints = createPoints(yAxisValues = targetYAxisData)
     if (progress >= 1f) {
         return targetDataPoints
     }
@@ -49,7 +43,7 @@ private fun List<Point>.findPointsAtXAxisValuesOnOther(
     progress: Float,
     reverseProgressCalculation: Boolean,
 ): List<Point> {
-    val otherDataPointsIterator = otherDataPoints.listIterator()
+    val otherDataPointsIterator = otherDataPoints.iterator()
     var currentOtherPoint = otherDataPointsIterator.next()
     var previousOtherPoint = currentOtherPoint
     return this.map { sourcePoint ->
@@ -78,13 +72,3 @@ private fun interpolateYAxisValue(originalValue: Percentage, targetValue: Percen
     val delta = targetValue - originalValue
     return originalValue + delta * progress
 }
-
-private fun createPoints(xAxisValues: List<Percentage>, yAxisValues: List<Percentage>): List<Point> {
-    return if (xAxisValues.size >= yAxisValues.size) {
-        xAxisValues.mapIndexed { index, value -> Point(value, yAxisValues[index]) }
-    } else {
-        yAxisValues.mapIndexed { index, value -> Point(xAxisValues[index], value) }
-    }
-}
-
-data class Point(val x: Percentage, val y: Percentage)

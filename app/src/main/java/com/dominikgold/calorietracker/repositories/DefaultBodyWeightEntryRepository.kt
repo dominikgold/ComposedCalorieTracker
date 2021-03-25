@@ -27,7 +27,8 @@ class DefaultBodyWeightEntryRepository @Inject constructor(private val dataSourc
     BodyWeightEntryRepository {
 
     override suspend fun getBodyWeightEntriesAfterDate(after: LocalDate): List<BodyWeightEntry> {
-        return dataSource.getBodyWeightEntriesAfterDate(after).map { it.toEntity() }
+        return BodyWeightMockData
+//        return dataSource.getBodyWeightEntriesAfterDate(after).map { it.toEntity() }
     }
 
     override suspend fun getBodyWeightForToday(): BodyWeightEntry? {
