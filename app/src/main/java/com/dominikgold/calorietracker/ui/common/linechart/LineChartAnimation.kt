@@ -9,13 +9,10 @@ fun interpolateBetweenYAxisData(
 ): List<Point> {
     require(progress in 0f..1f) { "progress value should be between 0 and 1" }
     val originalDataPoints = createPoints(yAxisValues = originalYAxisData)
-    val targetDataPoints = createPoints(yAxisValues = targetYAxisData)
-    if (progress >= 1f) {
-        return targetDataPoints
-    }
     if (progress <= 0f) {
         return originalDataPoints
     }
+    val targetDataPoints = createPoints(yAxisValues = targetYAxisData)
     if (originalYAxisData.size == targetYAxisData.size) {
         return originalDataPoints.mapIndexed { index, point ->
             Point(point.x, interpolateYAxisValue(point.y, targetYAxisData[index], progress))
