@@ -76,6 +76,7 @@ android {
 dependencies {
 
     implementation(project(":compose-viewmodel"))
+    implementation(project(":compose-linecharts"))
     implementation(Dependencies.kotlinSdk)
 
     implementation(Dependencies.coroutinesCore)

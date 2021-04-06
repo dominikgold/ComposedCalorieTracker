@@ -30,8 +30,6 @@ import com.dominikgold.calorietracker.entities.TimeInterval
 import com.dominikgold.calorietracker.theming.CalorieTrackerTheme
 import com.dominikgold.calorietracker.theming.TextStyles
 import com.dominikgold.calorietracker.ui.bottomnav.CalorieTrackerBottomNavigation
-import com.dominikgold.calorietracker.ui.common.linechart.SimpleLineChart
-import com.dominikgold.calorietracker.ui.common.linechart.SimpleLineChartDataPoint
 import com.dominikgold.calorietracker.ui.topbar.CalorieTrackerTopBar
 import com.dominikgold.calorietracker.util.DecimalNumberInputFilter
 import com.dominikgold.calorietracker.util.InLightAndDarkTheme
@@ -39,6 +37,9 @@ import com.dominikgold.calorietracker.util.LengthInputFilter
 import com.dominikgold.calorietracker.util.format
 import com.dominikgold.calorietracker.util.inputFilters
 import com.dominikgold.calorietracker.util.translated
+import com.dominikgold.compose.linecharts.SimpleLineChart
+import com.dominikgold.compose.linecharts.SimpleLineChartDataPoint
+import com.dominikgold.compose.linecharts.rememberSimpleLineChartState
 import com.dominikgold.compose.viewmodel.viewModel
 import java.time.LocalDate
 
@@ -61,6 +62,12 @@ private fun BodyWeightScreenContent(
     onBodyWeightChanged: (String) -> Unit,
 ) {
     val scrollState = rememberScrollState()
+    val lineChartState = rememberSimpleLineChartState()
+    // TODO: the body weight line chart data should always contain 6 points - if there is no data for a certain period,
+    //  it should reuse the data from the period before
+    lineChartState.updateDataPoints(uiState.pastBodyWeightPeriods.mapNotNull { bodyWeightEntryPeriod ->
+        bodyWeightEntryPeriod.average?.let { SimpleLineChartDataPoint(it) }
+    }.reversed())
     Column(modifier
                .verticalScroll(scrollState)
                .fillMaxSize()
@@ -69,7 +76,7 @@ private fun BodyWeightScreenContent(
         Spacer(modifier = Modifier.height(24.dp))
         PastBodyWeightPeriodsTitle(uiState.pastBodyWeightPeriods)
         Spacer(modifier = Modifier.height(24.dp))
-        PastBodyWeightPeriodsGraph(uiState.pastBodyWeightPeriods)
+        PastBodyWeightPeriodsGraph(lineChartState)
         Spacer(modifier = Modifier.height(24.dp))
         PastBodyWeightPeriodsList(uiState.pastBodyWeightPeriods)
     }
@@ -109,14 +116,10 @@ fun PastBodyWeightPeriodsTitle(bodyWeightEntryPeriods: List<BodyWeightEntryPerio
 }
 
 @Composable
-fun PastBodyWeightPeriodsGraph(bodyWeightEntryPeriods: List<BodyWeightEntryPeriod>) {
+fun PastBodyWeightPeriodsGraph(lineChartState: com.dominikgold.compose.linecharts.SimpleLineChartState) {
     SimpleLineChart(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp),
-        dataPoints = bodyWeightEntryPeriods.mapNotNull { bodyWeightEntryPeriod ->
-            bodyWeightEntryPeriod.average?.let { SimpleLineChartDataPoint(it) }
-        }.reversed(),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
+        lineChartState = lineChartState,
         chartScaffoldColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
     )
 }

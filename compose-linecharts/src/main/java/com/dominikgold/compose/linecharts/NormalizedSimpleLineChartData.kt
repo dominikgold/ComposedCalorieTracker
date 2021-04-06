@@ -1,8 +1,6 @@
-package com.dominikgold.calorietracker.ui.common.linechart
+package com.dominikgold.compose.linecharts
 
-import com.dominikgold.calorietracker.entities.Percentage
-
-data class NormalizedSimpleLineChartDataPoints(
+internal data class NormalizedSimpleLineChartData(
     private val original: List<SimpleLineChartDataPoint>,
     private val padding: Double,
 ) {

@@ -1,11 +1,11 @@
-package com.dominikgold.calorietracker.ui.common.linechart
+package com.dominikgold.compose.linecharts
 
 import org.amshove.kluent.shouldBeEmpty
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldBeInRange
 import org.junit.Test
 
-class NormalizedSimpleLineChartDataPointsTest {
+class NormalizedSimpleLineChartDataTest {
 
     @Test
     fun `original data points are normalized to percentages with a 10 percent min and max padding`() {
@@ -18,7 +18,7 @@ class NormalizedSimpleLineChartDataPointsTest {
             SimpleLineChartDataPoint(yAxisValue = 91.5, null),
         )
 
-        val normalizedDataPoints = NormalizedSimpleLineChartDataPoints(originalDataPoints, padding = 0.1)
+        val normalizedDataPoints = NormalizedSimpleLineChartData(originalDataPoints, padding = 0.1)
 
         // With the 10% min and max 'padding' and a total range of 5.0 (94.0 - 89.0), a percentage of zero would be
         // equal to 88.5 and a percentage of 100 equal to 94.5
@@ -35,7 +35,7 @@ class NormalizedSimpleLineChartDataPointsTest {
     fun `gracefully handles empty original data points`() {
         val originalDataPoints = listOf<SimpleLineChartDataPoint>()
 
-        val normalizedDataPoints = NormalizedSimpleLineChartDataPoints(originalDataPoints, padding = 0.1)
+        val normalizedDataPoints = NormalizedSimpleLineChartData(originalDataPoints, padding = 0.1)
 
         normalizedDataPoints.normalizedYAxisValues.shouldBeEmpty()
     }
@@ -48,7 +48,7 @@ class NormalizedSimpleLineChartDataPointsTest {
             SimpleLineChartDataPoint(yAxisValue = 91.5, "data point 3"),
         )
 
-        val normalizedDataPoints = NormalizedSimpleLineChartDataPoints(originalDataPoints, 0.1)
+        val normalizedDataPoints = NormalizedSimpleLineChartData(originalDataPoints, 0.1)
 
         normalizedDataPoints.xAxisDescriptions[0] shouldBeEqualTo "data point 1"
         normalizedDataPoints.xAxisDescriptions[1] shouldBeEqualTo "data point 2"

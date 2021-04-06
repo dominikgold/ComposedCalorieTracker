@@ -1,25 +1,24 @@
-package com.dominikgold.calorietracker.ui.common.linechart
+package com.dominikgold.compose.linecharts
 
-import android.util.Log
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.animate
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -33,12 +32,11 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.constrainHeight
 import androidx.compose.ui.unit.dp
-import com.dominikgold.calorietracker.util.InLightAndDarkTheme
 import kotlin.math.roundToInt
 
 @Composable
 fun SimpleLineChart(
-    dataPoints: List<SimpleLineChartDataPoint>,
+    lineChartState: SimpleLineChartState,
     modifier: Modifier = Modifier,
     chartScaffoldColor: Color = MaterialTheme.colors.onBackground,
     lineColor: Color = MaterialTheme.colors.primary,
@@ -48,7 +46,8 @@ fun SimpleLineChart(
     ),
 ) {
     SimpleLineChartInternal(
-        dataPoints = NormalizedSimpleLineChartDataPoints(dataPoints, padding = 0.1),
+        data = lineChartState.currentDataPoints,
+        previousData = lineChartState.previousDataPoints,
         modifier = modifier,
         chartScaffoldColor = chartScaffoldColor,
         lineColor = lineColor,
@@ -58,31 +57,25 @@ fun SimpleLineChart(
 
 @Composable
 private fun SimpleLineChartInternal(
-    dataPoints: NormalizedSimpleLineChartDataPoints,
+    data: NormalizedSimpleLineChartData,
+    previousData: NormalizedSimpleLineChartData,
     modifier: Modifier,
     chartScaffoldColor: Color,
     lineColor: Color,
     animationSpec: AnimationSpec<Float>?,
 ) {
     if (animationSpec != null) {
-        var previousDataPoints = remember {
-            NormalizedSimpleLineChartDataPoints(
-                original = listOf(SimpleLineChartDataPoint(0.0)),
-                padding = 0.1,
-            )
-        }
         SimpleAnimatedLineChart(
-            dataPoints = dataPoints,
-            previousDataPoints = previousDataPoints,
+            data = data,
+            previousData = previousData,
             animationSpec = animationSpec,
             modifier = modifier,
             chartScaffoldColor = chartScaffoldColor,
             lineColor = lineColor,
         )
-        previousDataPoints = dataPoints
     } else {
         LineChartInternal(
-            points = createPoints(dataPoints.normalizedYAxisValues),
+            points = createPoints(data.normalizedYAxisValues),
             modifier = modifier,
             chartScaffoldColor = chartScaffoldColor,
             lineColor = lineColor,
@@ -92,14 +85,14 @@ private fun SimpleLineChartInternal(
 
 @Composable
 private fun SimpleAnimatedLineChart(
-    dataPoints: NormalizedSimpleLineChartDataPoints,
-    previousDataPoints: NormalizedSimpleLineChartDataPoints,
+    data: NormalizedSimpleLineChartData,
+    previousData: NormalizedSimpleLineChartData,
     animationSpec: AnimationSpec<Float>,
     modifier: Modifier = Modifier,
     chartScaffoldColor: Color = MaterialTheme.colors.onBackground,
     lineColor: Color = MaterialTheme.colors.primary,
 ) {
-    if (dataPoints.normalizedYAxisValues.isEmpty()) {
+    if (data.normalizedYAxisValues.isEmpty()) {
         LineChartInternal(
             points = listOf(),
             modifier = modifier,
@@ -110,14 +103,14 @@ private fun SimpleAnimatedLineChart(
     }
 
     var animationProgress by remember { mutableStateOf(0f) }
-    LaunchedEffect(dataPoints) {
-        animate(0f, 1f, animationSpec = animationSpec) { value, _ ->
+    LaunchedEffect(data) {
+        animate(initialValue = 0f, targetValue = 1f, animationSpec = animationSpec) { value, _ ->
             animationProgress = value
         }
     }
     val points = interpolateBetweenYAxisData(
-        originalYAxisData = previousDataPoints.normalizedYAxisValues,
-        targetYAxisData = dataPoints.normalizedYAxisValues,
+        originalYAxisData = previousData.normalizedYAxisValues,
+        targetYAxisData = data.normalizedYAxisValues,
         progress = animationProgress,
     )
     LineChartInternal(
@@ -203,21 +196,52 @@ private fun DrawScope.drawChartBackground(color: Color, outlineWidth: Float) {
 @Preview(showBackground = true)
 @Composable
 fun SimpleLineChartPreview() {
-    InLightAndDarkTheme {
-        Box(Modifier
-                .background(MaterialTheme.colors.background)
-                .padding(16.dp)) {
-            SimpleLineChart(
-                dataPoints = listOf(
-                    SimpleLineChartDataPoint(yAxisValue = 90.0, "6 w ago"),
-                    SimpleLineChartDataPoint(yAxisValue = 89.0, "5 w ago"),
-                    SimpleLineChartDataPoint(yAxisValue = 91.0, "4 w ago"),
-                    SimpleLineChartDataPoint(yAxisValue = 93.0, "3 w ago"),
-                    SimpleLineChartDataPoint(yAxisValue = 90.0, "2 w ago"),
-                    SimpleLineChartDataPoint(yAxisValue = 92.0, "1 w ago"),
-                ),
-                animationSpec = null,
-            )
+    Box(Modifier
+            .background(MaterialTheme.colors.background)
+            .padding(16.dp)) {
+        val lineChartState = remember { SimpleLineChartState() }
+        lineChartState.updateDataPoints(listOf(
+            SimpleLineChartDataPoint(yAxisValue = 90.0, "6 w ago"),
+            SimpleLineChartDataPoint(yAxisValue = 89.0, "5 w ago"),
+            SimpleLineChartDataPoint(yAxisValue = 91.0, "4 w ago"),
+            SimpleLineChartDataPoint(yAxisValue = 93.0, "3 w ago"),
+            SimpleLineChartDataPoint(yAxisValue = 90.0, "2 w ago"),
+            SimpleLineChartDataPoint(yAxisValue = 92.0, "1 w ago"),
+        ))
+        SimpleLineChart(
+            lineChartState = lineChartState,
+            animationSpec = null,
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun AnimatedLineChartPreview() {
+    val lineChartState = remember { SimpleLineChartState() }
+    lineChartState.updateDataPoints(listOf(
+        SimpleLineChartDataPoint(yAxisValue = 90.0, "6 w ago"),
+        SimpleLineChartDataPoint(yAxisValue = 89.0, "5 w ago"),
+        SimpleLineChartDataPoint(yAxisValue = 91.0, "4 w ago"),
+        SimpleLineChartDataPoint(yAxisValue = 93.0, "3 w ago"),
+        SimpleLineChartDataPoint(yAxisValue = 90.0, "2 w ago"),
+        SimpleLineChartDataPoint(yAxisValue = 92.0, "1 w ago"),
+    ))
+    Column(Modifier
+               .background(MaterialTheme.colors.background)
+               .padding(16.dp)) {
+        SimpleLineChart(lineChartState, animationSpec = tween(500))
+        Button(onClick = {
+            lineChartState.updateDataPoints(listOf(
+                SimpleLineChartDataPoint(yAxisValue = 88.0, "6 w ago"),
+                SimpleLineChartDataPoint(yAxisValue = 90.0, "5 w ago"),
+                SimpleLineChartDataPoint(yAxisValue = 92.0, "4 w ago"),
+                SimpleLineChartDataPoint(yAxisValue = 89.0, "3 w ago"),
+                SimpleLineChartDataPoint(yAxisValue = 87.0, "2 w ago"),
+                SimpleLineChartDataPoint(yAxisValue = 91.0, "1 w ago"),
+            ))
+        }) {
+            Text("Click me!")
         }
     }
 }

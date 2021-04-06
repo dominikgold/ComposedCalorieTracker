@@ -1,4 +1,4 @@
-package com.dominikgold.calorietracker.ui.common.linechart
+package com.dominikgold.compose.linecharts
 
 data class SimpleLineChartDataPoint(
     val yAxisValue: Double,

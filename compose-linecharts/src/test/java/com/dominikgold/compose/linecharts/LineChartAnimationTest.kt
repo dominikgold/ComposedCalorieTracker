@@ -1,4 +1,4 @@
-package com.dominikgold.calorietracker.ui.common.linechart
+package com.dominikgold.compose.linecharts
 
 import org.amshove.kluent.shouldBeNear
 import org.junit.Test
@@ -80,8 +80,9 @@ class LineChartAnimationTest {
         val withFullProgress = interpolateBetweenYAxisData(originalData, targetData, 1f)
         withFullProgress[0].shouldBeNear(Point(0.0, 0.6), delta = 0.0001)
         withFullProgress[1].shouldBeNear(Point(0.3333, 0.5), delta = 0.0001)
-        withFullProgress[2].shouldBeNear(Point(0.6666, 0.8), delta = 0.0001)
-        withFullProgress[3].shouldBeNear(Point(1.0, 0.4), delta = 0.0001)
+        withFullProgress[2].shouldBeNear(Point(0.5, 0.65), delta = 0.0001)
+        withFullProgress[3].shouldBeNear(Point(0.6666, 0.8), delta = 0.0001)
+        withFullProgress[4].shouldBeNear(Point(1.0, 0.4), delta = 0.0001)
     }
 
     @Test
@@ -118,8 +119,10 @@ class LineChartAnimationTest {
 
         val withFullProgress = interpolateBetweenYAxisData(originalData, targetData, 1f)
         withFullProgress[0].shouldBeNear(Point(0.0, 0.5), delta = 0.0001)
-        withFullProgress[1].shouldBeNear(Point(0.5, 0.82), delta = 0.0001)
-        withFullProgress[2].shouldBeNear(Point(1.0, 0.4), delta = 0.0001)
+        withFullProgress[1].shouldBeNear(Point(0.3333, 0.7133), delta = 0.0001)
+        withFullProgress[2].shouldBeNear(Point(0.5, 0.82), delta = 0.0001)
+        withFullProgress[3].shouldBeNear(Point(0.6666, 0.6799), delta = 0.0001)
+        withFullProgress[4].shouldBeNear(Point(1.0, 0.4), delta = 0.0001)
     }
 
 }

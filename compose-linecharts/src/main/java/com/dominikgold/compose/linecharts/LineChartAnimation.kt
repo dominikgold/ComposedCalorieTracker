@@ -1,8 +1,6 @@
-package com.dominikgold.calorietracker.ui.common.linechart
+package com.dominikgold.compose.linecharts
 
-import com.dominikgold.calorietracker.entities.Percentage
-
-fun interpolateBetweenYAxisData(
+internal fun interpolateBetweenYAxisData(
     originalYAxisData: List<Percentage>,
     targetYAxisData: List<Percentage>,
     progress: Float,
