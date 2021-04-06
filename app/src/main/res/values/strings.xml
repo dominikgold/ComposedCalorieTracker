@@ -54,6 +54,10 @@
     <string name="kilo_grams_acronym">kg</string>
     <string name="past_body_weight_periods_weeks_title">Last %d weeks averages</string>
     <string name="past_body_weight_periods_months_title">Last %d months averages</string>
-    <string name="past_body_weight_period_weekly_time_interval_format">%d week ago</string>
-    <string name="past_body_weight_period_monthly_time_interval_format">%d month ago</string>
+    <string name="past_body_weight_period_weekly_time_interval_format">%d weeks ago</string>
+    <string name="past_body_weight_period_monthly_time_interval_format">%d months ago</string>
+    <string name="body_weight_period_current_week">Current week</string>
+    <string name="body_weight_period_current_month">Current month</string>
+    <string name="body_weight_period_last_week">Last week</string>
+    <string name="body_weight_period_last_month">Last month</string>
 </resources>

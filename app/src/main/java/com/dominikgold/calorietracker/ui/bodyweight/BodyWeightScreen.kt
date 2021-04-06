@@ -118,7 +118,9 @@ fun PastBodyWeightPeriodsTitle(bodyWeightEntryPeriods: List<BodyWeightEntryPerio
 @Composable
 fun PastBodyWeightPeriodsGraph(lineChartState: com.dominikgold.compose.linecharts.SimpleLineChartState) {
     SimpleLineChart(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp),
         lineChartState = lineChartState,
         chartScaffoldColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
     )
@@ -136,13 +138,12 @@ fun PastBodyWeightPeriodsList(bodyWeightEntryPeriods: List<BodyWeightEntryPeriod
 
 @Composable
 fun PastBodyWeightPeriod(index: Int, bodyWeightEntryPeriod: BodyWeightEntryPeriod) {
-    val formatString = when (bodyWeightEntryPeriod.timeInterval) {
-        TimeInterval.Weekly -> R.string.past_body_weight_period_weekly_time_interval_format
-        TimeInterval.Monthly -> R.string.past_body_weight_period_monthly_time_interval_format
-    }
-    val timeAgoText = translated(formatString, formatArgs = listOf(index + 1))
     Row(Modifier.fillMaxWidth(), verticalAlignment = CenterVertically) {
-        Text(text = timeAgoText, style = TextStyles.Title, modifier = Modifier.weight(1f))
+        Text(
+            text = bodyWeightEntryPeriod.timeInterval.getTimeAgoText(timePeriodIndex = index),
+            style = TextStyles.Title,
+            modifier = Modifier.weight(1f),
+        )
         Text(text = bodyWeightEntryPeriod.average?.format() ?: "-", style = TextStyles.NumberInformation)
     }
 }
