@@ -5,7 +5,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-parcelize")
     id("kotlin-kapt")
-    id("com.google.protobuf") version "0.8.13"
+    id("com.google.protobuf") version "0.8.16"
 }
 
 android {
@@ -108,7 +108,7 @@ dependencies {
 
     coreLibraryDesugaring(Dependencies.desugarJdkLibs)
 
-    testImplementation("junit:junit:4.13.1")
+    testImplementation(Dependencies.jUnit)
     testImplementation(Dependencies.kluent)
     testImplementation(Dependencies.mockitoKotlin)
     testImplementation(Dependencies.coroutinesTest)

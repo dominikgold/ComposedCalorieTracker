@@ -2,9 +2,8 @@ package com.dominikgold.calorietracker.datasources
 
 import android.content.Context
 import androidx.datastore.core.CorruptionException
-import androidx.datastore.core.DataStore
 import androidx.datastore.core.Serializer
-import androidx.datastore.createDataStore
+import androidx.datastore.dataStore
 import com.dominikgold.calorietracker.datasources.models.ProtoCalorieGoal
 import com.dominikgold.calorietracker.di.ApplicationContext
 import com.dominikgold.calorietracker.entities.CalorieGoal
@@ -16,24 +15,23 @@ import java.io.OutputStream
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class DefaultAppProtoStore @Inject constructor(@ApplicationContext context: Context) : AppProtoStore {
+private val Context.calorieGoalStore by dataStore(
+    fileName = "calorie_tracker_data_store",
+    serializer = ProtoCalorieGoalSerializer,
+)
 
-    private val calorieGoalStore: DataStore<ProtoCalorieGoal> =
-        context.createDataStore(fileName = "calorie_tracker_data_store", serializer = ProtoCalorieGoalSerializer)
+@Singleton
+class DefaultAppProtoStore @Inject constructor(@ApplicationContext private val context: Context) : AppProtoStore {
 
     override suspend fun getCalorieGoal(): CalorieGoal? {
-        return calorieGoalStore.data.firstOrNull()?.takeIf { it != ProtoCalorieGoal.getDefaultInstance() }?.toEntity()
+        return context.calorieGoalStore.data.firstOrNull()?.takeIf { it != ProtoCalorieGoal.getDefaultInstance() }?.toEntity()
     }
 
     override suspend fun saveCalorieGoal(calorieGoal: CalorieGoal) {
-        calorieGoalStore.updateData {
-            ProtoCalorieGoal.newBuilder()
-                .setCalories(calorieGoal.totalCalories)
+        context.calorieGoalStore.updateData {
+            ProtoCalorieGoal.newBuilder().setCalories(calorieGoal.totalCalories)
                 .setCarbohydrates(calorieGoal.macroGoals.carbohydrates ?: -1)
-                .setProtein(calorieGoal.macroGoals.protein ?: -1)
-                .setFat(calorieGoal.macroGoals.fat ?: -1)
-                .build()
+                .setProtein(calorieGoal.macroGoals.protein ?: -1).setFat(calorieGoal.macroGoals.fat ?: -1).build()
         }
     }
 
@@ -50,7 +48,7 @@ class DefaultAppProtoStore @Inject constructor(@ApplicationContext context: Cont
 
 object ProtoCalorieGoalSerializer : Serializer<ProtoCalorieGoal> {
 
-    override fun readFrom(input: InputStream): ProtoCalorieGoal {
+    override suspend fun readFrom(input: InputStream): ProtoCalorieGoal {
         try {
             return ProtoCalorieGoal.parseFrom(input)
         } catch (exception: Exception) {
@@ -58,7 +56,7 @@ object ProtoCalorieGoalSerializer : Serializer<ProtoCalorieGoal> {
         }
     }
 
-    override fun writeTo(
+    override suspend fun writeTo(
         t: ProtoCalorieGoal,
         output: OutputStream,
     ) = t.writeTo(output)

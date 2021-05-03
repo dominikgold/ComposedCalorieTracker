@@ -18,7 +18,6 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerVersion = Dependencies.kotlinVersion
         kotlinCompilerExtensionVersion = Dependencies.composeVersion
     }
 
@@ -43,7 +42,7 @@ dependencies {
     implementation(Dependencies.composeTooling)
     implementation(Dependencies.composeFoundation)
 
-    testImplementation("junit:junit:4.13.1")
+    testImplementation(Dependencies.jUnit)
     testImplementation(Dependencies.kluent)
     testImplementation(Dependencies.mockitoKotlin)
 }
