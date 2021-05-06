@@ -4,16 +4,12 @@ import com.dominikgold.calorietracker.entities.BodyWeightEntry
 import com.dominikgold.calorietracker.entities.BodyWeightEntryPeriod
 import com.dominikgold.calorietracker.entities.TimeInterval
 import com.dominikgold.calorietracker.util.LocalDateProvider
+import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.test.runBlockingTest
-import org.amshove.kluent.When
-import org.amshove.kluent.any
-import org.amshove.kluent.calling
-import org.amshove.kluent.itReturns
 import org.amshove.kluent.shouldBeEqualTo
 import org.junit.Before
-
-import org.junit.Assert.*
 import org.junit.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
@@ -42,8 +38,8 @@ class DefaultGetBodyWeightUseCaseTest {
         val timeInterval = TimeInterval.Weekly
         val amountOfPeriods = 6
         val expectedDate = LocalDate.of(2021, 1, 25)
-        When calling localDateProvider.getLocalDateForToday() itReturns localDate
-        When calling repository.getBodyWeightEntriesAfterDate(any()) itReturns listOf()
+        whenever(localDateProvider.getLocalDateForToday()).thenReturn(localDate)
+        whenever(repository.getBodyWeightEntriesAfterDate(any())).thenReturn(listOf())
 
         useCase.getBodyWeightEntryPeriods(timeInterval, amountOfPeriods)
 
@@ -56,8 +52,8 @@ class DefaultGetBodyWeightUseCaseTest {
         val timeInterval = TimeInterval.Monthly
         val amountOfPeriods = 6
         val expectedDate = LocalDate.of(2020, 9, 9)
-        When calling localDateProvider.getLocalDateForToday() itReturns localDate
-        When calling repository.getBodyWeightEntriesAfterDate(any()) itReturns listOf()
+        whenever(localDateProvider.getLocalDateForToday()).thenReturn(localDate)
+        whenever(repository.getBodyWeightEntriesAfterDate(any())).thenReturn(listOf())
 
         useCase.getBodyWeightEntryPeriods(timeInterval, amountOfPeriods)
 
@@ -69,8 +65,8 @@ class DefaultGetBodyWeightUseCaseTest {
         val localDate = LocalDate.of(2021, 3, 8)
         val timeInterval = TimeInterval.Weekly
         val amountOfPeriods = 3
-        When calling localDateProvider.getLocalDateForToday() itReturns localDate
-        When calling repository.getBodyWeightEntriesAfterDate(any()) itReturns listOf(
+        whenever(localDateProvider.getLocalDateForToday()).thenReturn(localDate)
+        whenever(repository.getBodyWeightEntriesAfterDate(any())).thenReturn(listOf(
             // first week before today
             BodyWeightEntry(date = LocalDate.of(2021, 3, 5), 90.0),
             BodyWeightEntry(date = LocalDate.of(2021, 3, 3), 90.0),
@@ -79,7 +75,7 @@ class DefaultGetBodyWeightUseCaseTest {
             // third week before today
             BodyWeightEntry(date = LocalDate.of(2021, 2, 22), 90.0),
             BodyWeightEntry(date = LocalDate.of(2021, 2, 20), 90.0),
-        )
+        ))
 
         val result = useCase.getBodyWeightEntryPeriods(timeInterval, amountOfPeriods)
 
@@ -110,8 +106,8 @@ class DefaultGetBodyWeightUseCaseTest {
         val localDate = LocalDate.of(2021, 3, 8)
         val timeInterval = TimeInterval.Monthly
         val amountOfPeriods = 3
-        When calling localDateProvider.getLocalDateForToday() itReturns localDate
-        When calling repository.getBodyWeightEntriesAfterDate(any()) itReturns listOf(
+        whenever(localDateProvider.getLocalDateForToday()).thenReturn(localDate)
+        whenever(repository.getBodyWeightEntriesAfterDate(any())).thenReturn(listOf(
             // first month before today
             BodyWeightEntry(date = LocalDate.of(2021, 3, 5), 90.0),
             BodyWeightEntry(date = LocalDate.of(2021, 2, 7), 90.0),
@@ -120,7 +116,7 @@ class DefaultGetBodyWeightUseCaseTest {
             // third month before today
             BodyWeightEntry(date = LocalDate.of(2021, 1, 4), 90.0),
             BodyWeightEntry(date = LocalDate.of(2020, 12, 20), 90.0),
-        )
+        ))
 
         val result = useCase.getBodyWeightEntryPeriods(timeInterval, amountOfPeriods)
 

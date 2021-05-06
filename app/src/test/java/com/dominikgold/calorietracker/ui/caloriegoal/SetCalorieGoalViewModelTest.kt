@@ -4,6 +4,7 @@ import com.dominikgold.calorietracker.entities.CalorieGoal
 import com.dominikgold.calorietracker.entities.MacroGoals
 import com.dominikgold.calorietracker.entities.MacroSplit
 import com.dominikgold.calorietracker.navigation.Navigator
+import com.dominikgold.calorietracker.usecases.caloriegoal.GetCalorieGoalUseCase
 import com.dominikgold.calorietracker.usecases.caloriegoal.SetCalorieGoalUseCase
 import com.dominikgold.calorietracker.util.CoroutinesTestRule
 import com.nhaarman.mockitokotlin2.verify
@@ -28,14 +29,17 @@ class SetCalorieGoalViewModelTest {
     private lateinit var setCalorieGoalUseCase: SetCalorieGoalUseCase
 
     @Mock
+    private lateinit var getCalorieGoalUseCase: GetCalorieGoalUseCase
+
+    @Mock
     private lateinit var navigator: Navigator
 
-    @InjectMocks
     private lateinit var viewModel: SetCalorieGoalViewModel
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
+        viewModel = SetCalorieGoalViewModel(getCalorieGoalUseCase, setCalorieGoalUseCase, navigator, null)
     }
 
     @Test
