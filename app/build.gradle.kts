@@ -9,17 +9,17 @@ plugins {
 }
 
 android {
-    compileSdkVersion(30)
-    buildToolsVersion("30.0.2")
+    compileSdk = 30
+    buildToolsVersion = "30.0.2"
 
     defaultConfig {
-        applicationId("com.dominikgold.calorietracker")
-        minSdkVersion(24)
-        targetSdkVersion(30)
-        versionCode(1)
-        versionName("1.0")
+        applicationId = "com.dominikgold.calorietracker"
+        minSdk = 24
+        targetSdk = 30
+        versionCode = 1
+        versionName = "1.0"
 
-        testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
@@ -39,14 +39,14 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix(".debug")
-            minifyEnabled(false)
+            applicationIdSuffix = ".debug"
+            isMinifyEnabled = false
             signingConfig = signingConfigs.getByName("debug")
-            debuggable(true)
+            isDebuggable = true
         }
         release {
-            minifyEnabled(true)
-            debuggable(true)
+            isMinifyEnabled = true
+            isDebuggable = true
             signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
