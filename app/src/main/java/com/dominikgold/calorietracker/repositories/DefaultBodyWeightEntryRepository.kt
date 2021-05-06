@@ -8,19 +8,13 @@ import javax.inject.Inject
 import kotlin.math.roundToInt
 
 private val BodyWeightMockData = listOf(
-    BodyWeightEntry(date = LocalDate.of(2021, 2, 3), bodyWeight = 90.0),
-    BodyWeightEntry(date = LocalDate.of(2021, 2, 8), bodyWeight = 89.0),
-    BodyWeightEntry(date = LocalDate.of(2021, 2, 11), bodyWeight = 91.0),
-    BodyWeightEntry(date = LocalDate.of(2021, 2, 13), bodyWeight = 92.0),
-    BodyWeightEntry(date = LocalDate.of(2021, 2, 17), bodyWeight = 90.0),
-    BodyWeightEntry(date = LocalDate.of(2021, 2, 23), bodyWeight = 89.0),
-    BodyWeightEntry(date = LocalDate.of(2021, 2, 26), bodyWeight = 88.0),
-    BodyWeightEntry(date = LocalDate.of(2021, 2, 28), bodyWeight = 90.0),
-    BodyWeightEntry(date = LocalDate.of(2021, 3, 3), bodyWeight = 91.0),
-    BodyWeightEntry(date = LocalDate.of(2021, 3, 6), bodyWeight = 92.0),
-    BodyWeightEntry(date = LocalDate.of(2021, 3, 8), bodyWeight = 91.0),
-    BodyWeightEntry(date = LocalDate.of(2021, 3, 12), bodyWeight = 93.0),
-    BodyWeightEntry(date = LocalDate.of(2021, 3, 14), bodyWeight = 92.0),
+    BodyWeightEntry(date = LocalDate.of(2021, 4, 3), bodyWeight = 90.0),
+    BodyWeightEntry(date = LocalDate.of(2021, 4, 8), bodyWeight = 89.0),
+    BodyWeightEntry(date = LocalDate.of(2021, 4, 11), bodyWeight = 91.0),
+    BodyWeightEntry(date = LocalDate.of(2021, 4, 13), bodyWeight = 92.0),
+    BodyWeightEntry(date = LocalDate.of(2021, 4, 17), bodyWeight = 90.0),
+    BodyWeightEntry(date = LocalDate.of(2021, 5, 3), bodyWeight = 91.0),
+    BodyWeightEntry(date = LocalDate.of(2021, 5, 6), bodyWeight = 92.0),
 )
 
 class DefaultBodyWeightEntryRepository @Inject constructor(private val dataSource: BodyWeightEntryDataSource) :

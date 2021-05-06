@@ -53,7 +53,7 @@ class DefaultGetBodyWeightUseCase @Inject constructor(
                     bodyWeightEntriesIterator.remove()
                 }
             }
-            bodyWeightEntryPeriods.add(BodyWeightEntryPeriod(timeInterval, bodyWeightEntriesForPeriod))
+            bodyWeightEntryPeriods.add(BodyWeightEntryPeriod(bodyWeightEntriesForPeriod))
         }
         return bodyWeightEntryPeriods
     }

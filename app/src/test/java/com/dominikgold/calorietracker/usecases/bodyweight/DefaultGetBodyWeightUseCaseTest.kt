@@ -80,24 +80,15 @@ class DefaultGetBodyWeightUseCaseTest {
         val result = useCase.getBodyWeightEntryPeriods(timeInterval, amountOfPeriods)
 
         result shouldBeEqualTo listOf(
-            BodyWeightEntryPeriod(
-                timeInterval = TimeInterval.Weekly,
-                bodyWeightEntries = listOf(
-                    BodyWeightEntry(date = LocalDate.of(2021, 3, 5), 90.0),
-                    BodyWeightEntry(date = LocalDate.of(2021, 3, 3), 90.0),
-                ),
-            ),
-            BodyWeightEntryPeriod(
-                timeInterval = TimeInterval.Weekly,
-                bodyWeightEntries = listOf(BodyWeightEntry(date = LocalDate.of(2021, 2, 28), 90.0)),
-            ),
-            BodyWeightEntryPeriod(
-                timeInterval = TimeInterval.Weekly,
-                bodyWeightEntries = listOf(
-                    BodyWeightEntry(date = LocalDate.of(2021, 2, 22), 90.0),
-                    BodyWeightEntry(date = LocalDate.of(2021, 2, 20), 90.0),
-                ),
-            ),
+            BodyWeightEntryPeriod(bodyWeightEntries = listOf(
+                BodyWeightEntry(date = LocalDate.of(2021, 3, 5), 90.0),
+                BodyWeightEntry(date = LocalDate.of(2021, 3, 3), 90.0),
+            )),
+            BodyWeightEntryPeriod(bodyWeightEntries = listOf(BodyWeightEntry(date = LocalDate.of(2021, 2, 28), 90.0))),
+            BodyWeightEntryPeriod(bodyWeightEntries = listOf(
+                BodyWeightEntry(date = LocalDate.of(2021, 2, 22), 90.0),
+                BodyWeightEntry(date = LocalDate.of(2021, 2, 20), 90.0),
+            )),
         )
     }
 
@@ -121,24 +112,15 @@ class DefaultGetBodyWeightUseCaseTest {
         val result = useCase.getBodyWeightEntryPeriods(timeInterval, amountOfPeriods)
 
         result shouldBeEqualTo listOf(
-            BodyWeightEntryPeriod(
-                timeInterval = TimeInterval.Monthly,
-                bodyWeightEntries = listOf(
-                    BodyWeightEntry(date = LocalDate.of(2021, 3, 5), 90.0),
-                    BodyWeightEntry(date = LocalDate.of(2021, 2, 7), 90.0),
-                ),
-            ),
-            BodyWeightEntryPeriod(
-                timeInterval = TimeInterval.Monthly,
-                bodyWeightEntries = listOf(BodyWeightEntry(date = LocalDate.of(2021, 2, 3), 90.0)),
-            ),
-            BodyWeightEntryPeriod(
-                timeInterval = TimeInterval.Monthly,
-                bodyWeightEntries = listOf(
-                    BodyWeightEntry(date = LocalDate.of(2021, 1, 4), 90.0),
-                    BodyWeightEntry(date = LocalDate.of(2020, 12, 20), 90.0),
-                ),
-            ),
+            BodyWeightEntryPeriod(bodyWeightEntries = listOf(
+                BodyWeightEntry(date = LocalDate.of(2021, 3, 5), 90.0),
+                BodyWeightEntry(date = LocalDate.of(2021, 2, 7), 90.0),
+            )),
+            BodyWeightEntryPeriod(bodyWeightEntries = listOf(BodyWeightEntry(date = LocalDate.of(2021, 2, 3), 90.0))),
+            BodyWeightEntryPeriod(bodyWeightEntries = listOf(
+                BodyWeightEntry(date = LocalDate.of(2021, 1, 4), 90.0),
+                BodyWeightEntry(date = LocalDate.of(2020, 12, 20), 90.0),
+            )),
         )
     }
 

@@ -1,9 +1,6 @@
 package com.dominikgold.calorietracker.entities
 
-data class BodyWeightEntryPeriod(
-    val timeInterval: TimeInterval,
-    val bodyWeightEntries: List<BodyWeightEntry>,
-) {
+data class BodyWeightEntryPeriod(val bodyWeightEntries: List<BodyWeightEntry>) {
 
     val average: Double? by lazy {
         if (bodyWeightEntries.isEmpty()) {

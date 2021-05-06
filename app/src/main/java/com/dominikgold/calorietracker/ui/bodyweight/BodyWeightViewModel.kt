@@ -23,7 +23,8 @@ class BodyWeightViewModel(
     private val getBodyWeightUseCase: GetBodyWeightUseCase,
 ) : ViewModel() {
 
-    private val _bodyWeightState = MutableStateFlow(BodyWeightState("", listOf()))
+    private val _bodyWeightState =
+        MutableStateFlow(BodyWeightState("", BodyWeightHistoryUiModel(listOf(), TimeInterval.Weekly, 6)))
     val bodyWeightState: StateFlow<BodyWeightState>
         get() = _bodyWeightState
 
@@ -35,7 +36,7 @@ class BodyWeightViewModel(
             val pastBodyWeightPeriods = async { getBodyWeightUseCase.getBodyWeightEntryPeriods(TimeInterval.Weekly, 6) }
             _bodyWeightState.value = BodyWeightState(
                 bodyWeightInput = bodyWeightForToday.await()?.format() ?: "",
-                pastBodyWeightPeriods = pastBodyWeightPeriods.await(),
+                bodyWeightHistory = BodyWeightHistoryUiModel(pastBodyWeightPeriods.await(), TimeInterval.Weekly, 6),
             )
         }
         bodyWeightSaveEvents.debounce(500).onEach { bodyWeight ->
