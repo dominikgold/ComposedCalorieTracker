@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import com.dominikgold.calorietracker.datasources.db.model.PersistedBodyWeightEntry
 import com.dominikgold.calorietracker.datasources.db.model.PersistedIntakeEntry
 
-@Database(entities = [PersistedIntakeEntry::class, PersistedBodyWeightEntry::class], version = 2)
+@Database(entities = [PersistedIntakeEntry::class, PersistedBodyWeightEntry::class], version = 2, exportSchema = false)
 @TypeConverters(RoomTypeConverters::class)
 abstract class CalorieTrackerRoomDb : RoomDatabase() {
 

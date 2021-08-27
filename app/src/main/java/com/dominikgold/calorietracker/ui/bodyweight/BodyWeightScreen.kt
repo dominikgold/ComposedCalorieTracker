@@ -32,8 +32,6 @@ import com.dominikgold.calorietracker.util.InLightAndDarkTheme
 import com.dominikgold.calorietracker.util.LengthInputFilter
 import com.dominikgold.calorietracker.util.inputFilters
 import com.dominikgold.calorietracker.util.translated
-import com.dominikgold.compose.linecharts.SimpleLineChartDataPoint
-import com.dominikgold.compose.linecharts.rememberSimpleLineChartState
 import com.dominikgold.compose.viewmodel.viewModel
 
 @Composable

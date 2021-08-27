@@ -84,10 +84,11 @@ private fun MacroSplitDropdownItems(onItemSelected: (MacroSplit?) -> Unit) {
 private fun IndividualMacroGoals(uiState: SetCalorieGoalUiState, setCalorieGoalActions: SetCalorieGoalActions) {
     ConstraintLayout {
         val (carbsTitle, proteinTitle, fatTitle) = createRefs()
-        val (carbsInput, proteinInput, fatInput) = createRefs() // TODO Unfortunately, creating an end barrier here results in a crash at runtime when recomposing - try again
+        val (carbsInput, proteinInput, fatInput) = createRefs()
+        // TODO Unfortunately, creating an end barrier here results in a crash at runtime when recomposing - try again
         //  with a later version. For now, we'll have to make do with assuming that the Carbohydrates is always the
         //  longest.
-        // val titleBarrier = createEndBarrier(carbsTitle, proteinTitle, fatTitle, margin = 32.dp)
+        //  val titleBarrier = createEndBarrier(carbsTitle, proteinTitle, fatTitle, margin = 32.dp)
         Text(
             modifier = Modifier.constrainAs(carbsTitle) {
                 top.linkTo(carbsInput.top)

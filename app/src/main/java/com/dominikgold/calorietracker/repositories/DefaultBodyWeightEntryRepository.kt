@@ -7,22 +7,24 @@ import java.time.LocalDate
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
-private val BodyWeightMockData = listOf(
-    BodyWeightEntry(date = LocalDate.of(2021, 4, 3), bodyWeight = 90.0),
-    BodyWeightEntry(date = LocalDate.of(2021, 4, 8), bodyWeight = 89.0),
-    BodyWeightEntry(date = LocalDate.of(2021, 4, 11), bodyWeight = 91.0),
-    BodyWeightEntry(date = LocalDate.of(2021, 4, 13), bodyWeight = 92.0),
-    BodyWeightEntry(date = LocalDate.of(2021, 4, 17), bodyWeight = 90.0),
-    BodyWeightEntry(date = LocalDate.of(2021, 5, 3), bodyWeight = 91.0),
-    BodyWeightEntry(date = LocalDate.of(2021, 5, 6), bodyWeight = 92.0),
-)
+private val BodyWeightMockData = LocalDate.now().let { today ->
+    listOf(
+        BodyWeightEntry(date = today, bodyWeight = 90.0),
+        BodyWeightEntry(date = today.minusDays(2), bodyWeight = 89.0),
+        BodyWeightEntry(date = today.minusDays(3), bodyWeight = 91.0),
+        BodyWeightEntry(date = today.minusDays(6), bodyWeight = 92.0),
+        BodyWeightEntry(date = today.minusDays(10), bodyWeight = 90.0),
+        BodyWeightEntry(date = today.minusDays(19), bodyWeight = 91.0),
+        BodyWeightEntry(date = today.minusDays(21), bodyWeight = 92.0),
+    )
+}
 
 class DefaultBodyWeightEntryRepository @Inject constructor(private val dataSource: BodyWeightEntryDataSource) :
     BodyWeightEntryRepository {
 
     override suspend fun getBodyWeightEntriesAfterDate(after: LocalDate): List<BodyWeightEntry> {
-        return BodyWeightMockData
-//        return dataSource.getBodyWeightEntriesAfterDate(after).map { it.toEntity() }
+//        return BodyWeightMockData
+        return dataSource.getBodyWeightEntriesAfterDate(after).map { it.toEntity() }
     }
 
     override suspend fun getBodyWeightForToday(): BodyWeightEntry? {

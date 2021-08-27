@@ -7,6 +7,7 @@ import com.dominikgold.calorietracker.navigation.Navigator
 import com.dominikgold.calorietracker.usecases.caloriegoal.GetCalorieGoalUseCase
 import com.dominikgold.calorietracker.usecases.caloriegoal.SetCalorieGoalUseCase
 import com.dominikgold.calorietracker.util.CoroutinesTestRule
+import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.test.runBlockingTest
 import org.amshove.kluent.shouldBe

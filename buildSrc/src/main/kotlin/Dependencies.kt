@@ -1,15 +1,15 @@
 object Dependencies {
 
-    val coroutinesVersion = "1.4.3"
+    val coroutinesVersion = "1.5.0"
     val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
     val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
 
-    val kotlinVersion = "1.4.32"
+    val kotlinVersion = "1.5.21"
     val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     val kotlinSdk = "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
-    val composeVersion = "1.0.0-beta05"
+    val composeVersion = "1.0.1"
     val composeUi = "androidx.compose.ui:ui:$composeVersion"
     val composeMaterial = "androidx.compose.material:material:$composeVersion"
     val composeTooling = "androidx.compose.ui:ui-tooling:$composeVersion"
@@ -24,7 +24,7 @@ object Dependencies {
     val appCompatVersion = "1.2.0"
     val appCompat = "androidx.appcompat:appcompat:$appCompatVersion"
 
-    val androidXActivity = "1.3.0-alpha07"
+    val androidXActivity = "1.3.1"
     val activityCompose = "androidx.activity:activity-compose:$androidXActivity"
 
     val androidXCoreVersion = "1.3.2"
@@ -33,7 +33,7 @@ object Dependencies {
     val androidArchCoreVersion = "2.1.0"
     val androidArchCoreTesting = "androidx.arch.core:core-testing:$androidArchCoreVersion"
 
-    val constraintLayoutVersion = "1.0.0-alpha03"
+    val constraintLayoutVersion = "1.0.0-alpha07"
     val constraintLayoutCompose = "androidx.constraintlayout:constraintlayout-compose:$constraintLayoutVersion"
 
     val androidDataStoreVersion = "1.0.0-beta01"
@@ -56,7 +56,7 @@ object Dependencies {
     val dagger = "com.google.dagger:dagger:$daggerVersion"
     val daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
 
-    val desugarJdkLibsVersion = "1.0.9"
+    val desugarJdkLibsVersion = "1.1.5"
     val desugarJdkLibs = "com.android.tools:desugar_jdk_libs:$desugarJdkLibsVersion"
 
     val roomVersion = "2.3.0"
@@ -74,4 +74,7 @@ object Dependencies {
     val kluentVersion = "1.65"
     val kluent = "org.amshove.kluent:kluent:$kluentVersion"
     val kluentAndroid = "org.amshove.kluent:kluent-android:$kluentVersion"
+
+    val composeLineChartVersion = "main-SNAPSHOT"
+    val composeLineChart = "com.github.dominikgold:compose-linechart:$composeLineChartVersion"
 }

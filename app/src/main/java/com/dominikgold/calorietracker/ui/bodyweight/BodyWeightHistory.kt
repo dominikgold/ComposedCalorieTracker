@@ -7,28 +7,40 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.dominikgold.calorietracker.R
 import com.dominikgold.calorietracker.entities.TimeInterval
 import com.dominikgold.calorietracker.theming.TextStyles
 import com.dominikgold.calorietracker.util.format
+import com.dominikgold.calorietracker.util.rangeRoundedToNearestFive
 import com.dominikgold.calorietracker.util.translated
 import com.dominikgold.compose.linecharts.SimpleLineChart
-import com.dominikgold.compose.linecharts.SimpleLineChartDataPoint
-import com.dominikgold.compose.linecharts.SimpleLineChartState
-import com.dominikgold.compose.linecharts.rememberSimpleLineChartState
+import com.dominikgold.compose.linecharts.models.SimpleLineChartConfig
+import com.dominikgold.compose.linecharts.models.SimpleLineChartDataPoint
+import com.dominikgold.compose.linecharts.models.SimpleLineChartState
+import com.dominikgold.compose.linecharts.models.rememberSimpleLineChartState
+import kotlin.math.roundToInt
 
 @Composable
 fun BodyWeightHistory(bodyWeightHistory: BodyWeightHistoryUiModel) {
     val lineChartState = rememberSimpleLineChartState()
-    lineChartState.updateDataPoints(bodyWeightHistory.averagesForLineChart.map { averageBodyWeight ->
-        SimpleLineChartDataPoint(averageBodyWeight)
-    })
+    lineChartState.updateDataPoints(
+        simpleDataPoints = bodyWeightHistory.averagesForLineChart.mapIndexed { index, averageBodyWeight ->
+            SimpleLineChartDataPoint(
+                yAxisValue = averageBodyWeight,
+                description = bodyWeightHistory.timeInterval
+                    .getTimeAgoText(timePeriodIndex = bodyWeightHistory.averagesForLineChart.lastIndex - index),
+            )
+        },
+        customDataRange = bodyWeightHistory.averagesForLineChart.rangeRoundedToNearestFive()
+    )
     Column(Modifier.fillMaxSize()) {
         BodyWeightHistoryTitle(bodyWeightHistory)
         Spacer(modifier = Modifier.height(24.dp))
@@ -55,7 +67,18 @@ fun BodyWeightHistoryLineChart(lineChartState: SimpleLineChartState) {
             .fillMaxWidth()
             .padding(horizontal = 24.dp),
         lineChartState = lineChartState,
-        chartScaffoldColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
+        config = SimpleLineChartConfig(
+            chartScaffoldColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
+            yAxisLabelsText = { Text(text = it.roundToInt().toString(), style = TextStyles.SubtitleSmall) }
+        ),
+        hoverPopup = { dataPoint ->
+            Card(elevation = 8.dp) {
+                Column(Modifier.padding(8.dp)) {
+                    Text(text = dataPoint.yAxisValue.format(digitsAfterDecimal = 1))
+                    dataPoint.description?.let { Text(text = it, style = TextStyles.Subtitle) }
+                }
+            }
+        },
     )
 }
 
