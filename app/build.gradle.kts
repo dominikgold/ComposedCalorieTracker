@@ -5,7 +5,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-parcelize")
     id("kotlin-kapt")
-    id("com.google.protobuf") version "0.8.16"
+    id("com.google.protobuf") version "0.8.17"
 }
 
 android {

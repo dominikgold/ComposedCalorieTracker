@@ -39,7 +39,7 @@ object Dependencies {
     val androidDataStoreVersion = "1.0.0-beta01"
     val androidDataStore = "androidx.datastore:datastore:$androidDataStoreVersion"
 
-    val protobufVersion = "3.11.0"
+    val protobufVersion = "3.17.3"
     val protobuf = "com.google.protobuf:protobuf-javalite:$protobufVersion"
     val protoC = "com.google.protobuf:protoc:$protobufVersion"
     val protoCJavalite = "com.google.protobuf:protoc-gen-javalite:$protobufVersion"
@@ -59,7 +59,7 @@ object Dependencies {
     val desugarJdkLibsVersion = "1.1.5"
     val desugarJdkLibs = "com.android.tools:desugar_jdk_libs:$desugarJdkLibsVersion"
 
-    val roomVersion = "2.3.0"
+    val roomVersion = "2.4.0-alpha03"
     val roomRuntime = "androidx.room:room-runtime:$roomVersion"
     val roomKtx = "androidx.room:room-ktx:$roomVersion"
     val roomCompiler = "androidx.room:room-compiler:$roomVersion"
