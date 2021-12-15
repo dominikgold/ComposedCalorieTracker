@@ -24,5 +24,4 @@ class BottomNavigationViewModelFactory @Inject constructor(private val navigator
     override fun create(savedState: Nothing?, parameters: Nothing?): BottomNavigationViewModel {
         return BottomNavigationViewModel(navigator)
     }
-
 }

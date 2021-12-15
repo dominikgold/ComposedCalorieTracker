@@ -59,5 +59,4 @@ class BodyWeightViewModelFactory @Inject constructor(
     override fun create(savedState: Nothing?, parameters: Nothing?): BodyWeightViewModel {
         return BodyWeightViewModel(saveBodyWeightUseCase, getBodyWeightUseCase)
     }
-
 }

@@ -4,8 +4,8 @@ plugins {
 }
 
 android {
-    compileSdk = 30
-    buildToolsVersion = "30.0.2"
+    compileSdk = 31
+    buildToolsVersion = "31.0.0"
 
     defaultConfig {
         minSdk = 24
@@ -21,7 +21,6 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
-        useIR = true
     }
 
     compileOptions {

@@ -1,21 +1,21 @@
 object Dependencies {
 
-    val coroutinesVersion = "1.5.0"
+    val coroutinesVersion = "1.5.2"
     val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
     val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
 
-    val kotlinVersion = "1.5.21"
+    val kotlinVersion = "1.5.31"
     val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     val kotlinSdk = "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
-    val composeVersion = "1.0.1"
+    val composeVersion = "1.0.5"
     val composeUi = "androidx.compose.ui:ui:$composeVersion"
     val composeMaterial = "androidx.compose.material:material:$composeVersion"
     val composeTooling = "androidx.compose.ui:ui-tooling:$composeVersion"
     val composeFoundation = "androidx.compose.foundation:foundation:$composeVersion"
 
-    val lifecycleVersion = "2.3.0-rc01"
+    val lifecycleVersion = "2.4.0"
     val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
 
     val materialComponentsVersion = "1.2.1"
@@ -33,10 +33,10 @@ object Dependencies {
     val androidArchCoreVersion = "2.1.0"
     val androidArchCoreTesting = "androidx.arch.core:core-testing:$androidArchCoreVersion"
 
-    val constraintLayoutVersion = "1.0.0-alpha07"
+    val constraintLayoutVersion = "1.0.0-rc02"
     val constraintLayoutCompose = "androidx.constraintlayout:constraintlayout-compose:$constraintLayoutVersion"
 
-    val androidDataStoreVersion = "1.0.0-beta01"
+    val androidDataStoreVersion = "1.0.0"
     val androidDataStore = "androidx.datastore:datastore:$androidDataStoreVersion"
 
     val protobufVersion = "3.17.3"
